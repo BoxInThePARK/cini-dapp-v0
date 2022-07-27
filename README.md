@@ -1,8 +1,9 @@
-# Example React Native dApp
+# Capture to Earn
+It is a decentralized "Capture to Earn" android mobile app for people who love taking photos. 
 
-This demonstrates how you can use the mobile wallet adapter protocol in a React Native app.
+With a brand new token economics and native gallery for share and transact the Photo NFTs
 
-https://user-images.githubusercontent.com/13243/180274812-9cff2bdf-01d2-44fe-b094-52d3f9b22c4e.mp4
+# Build From Example React Native dApp
 
 ## Features
 
