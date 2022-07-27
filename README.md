@@ -1,9 +1,8 @@
 # Capture to Earn
+
 It is a decentralized "Capture to Earn" android mobile app for people who love taking photos. 
 
 With a brand new token economics and native gallery for share and transact the Photo NFTs
-
-# Build From Example React Native dApp
 
 ## Features
 
@@ -27,3 +26,24 @@ With a brand new token economics and native gallery for share and transact the P
 ## Development
 
 After making changes to any of the client libraries in `js/packages/` you will need to re-run `yarn` in this directory. This will rebuild the client libraries and copy their build artifacts into the `node_modules/` folder of this example app.
+
+
+## Authors and acknowledgment
+
+### Team: Box-in-the-Park
+
+### Members:
+
+- [Dan](https://github.com/danhsucowboy) | Front-end | hsu86110@gmail.com
+- [Ting](https://github.com/this-ting) | Front-end | tchangysl@gmail.com
+- [Peter](https://github.com/sc0Vu) | Full-stack | alk03073135@gmail.com
+- [Wade](https://github.com/Nasuyue) | Product | wadde.yang@gmail.com
+- [Cavin]() | Photographer & Designer | cavin@live.com
+- [Yolanda]() | CM | yolicai1028@gmail.com
+
+## Built with
+
+Example React Native dApp
+## License
+
+This project is licensed under the MIT License.
