@@ -1,5 +1,5 @@
 {
-  "name": "@solana-mobile/example-react-native-app",
+  "name": "capture2earn-dapp-v0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
