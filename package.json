@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.7",
+    "@react-navigation/native": "^6.0.11",
+    "@react-navigation/native-stack": "^6.7.0",
     "@solana-mobile/mobile-wallet-adapter-protocol": "file:../../js/packages/mobile-wallet-adapter-protocol",
     "@solana-mobile/mobile-wallet-adapter-protocol-web3js": "file:../../js/packages/mobile-wallet-adapter-protocol-web3js",
     "@solana/wallet-adapter-base": "^0.9.8",
@@ -22,6 +24,8 @@
     "react-native": "^0.69.0",
     "react-native-get-random-values": "^1.8.0",
     "react-native-paper": "^5.0.0-rc.3",
+    "react-native-safe-area-context": "^4.3.1",
+    "react-native-screens": "^3.15.0",
     "react-native-url-polyfill": "^1.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-vision-camera": "^2.14.0",

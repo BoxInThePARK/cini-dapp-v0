@@ -7,7 +7,7 @@ import RecordMessageButton from '../components/RecordMessageButton';
 import SignMessageButton from '../components/SignMessageButton';
 import useAuthorization from '../utils/useAuthorization';
 
-export default function MainScreen() {
+export default function DemoConnectionScreen() {
   const {publicKey} = useAuthorization();
   const [memoText, setMemoText] = useState('');
   return (

@@ -1,11 +1,13 @@
 import {ConnectionProvider} from '@solana/wallet-adapter-react';
+import {NavigationContainer} from '@react-navigation/native';
 import {clusterApiUrl} from '@solana/web3.js';
 import React, {Suspense} from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
+import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 
 import SnackbarProvider from './components/SnackbarProvider';
-import MainScreen from './screens/MainScreen';
+import DemoConnectionScreen from './screens/DemoConnectionScreen';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
 
@@ -24,7 +26,9 @@ export default function App() {
                   />
                 </View>
               }>
-              <MainScreen />
+              <NavigationContainer>
+                <DemoConnectionScreen />
+              </NavigationContainer>
             </Suspense>
           </SnackbarProvider>
         </PaperProvider>
