@@ -9,6 +9,7 @@ import SnackbarProvider from './components/SnackbarProvider';
 import DemoConnectionScreen from './screens/DemoConnectionScreen';
 import {PermissionsPage} from './screens/PermissionsPage';
 import CameraScreen from './screens/CameraScreen';
+import {MediaPage} from './screens/MediaPage';
 // import {CameraPage} from './screens/CameraPage';
 import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -62,6 +63,14 @@ export default function App() {
                     component={PermissionsPage}
                   />
                   <Stack.Screen name="CameraPage" component={CameraScreen} />
+                  <Stack.Screen
+                    name="MediaPage"
+                    component={MediaPage}
+                    options={{
+                      animation: 'none',
+                      presentation: 'transparentModal',
+                    }}
+                  />
                 </Stack.Navigator>
               </NavigationContainer>
             </Suspense>
