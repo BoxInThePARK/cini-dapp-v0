@@ -1,17 +1,38 @@
 import {ConnectionProvider} from '@solana/wallet-adapter-react';
 import {NavigationContainer} from '@react-navigation/native';
 import {clusterApiUrl} from '@solana/web3.js';
-import React, {Suspense} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
-import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 
 import SnackbarProvider from './components/SnackbarProvider';
 import DemoConnectionScreen from './screens/DemoConnectionScreen';
+import {PermissionsPage} from './screens/PermissionsPage';
+import CameraScreen from './screens/CameraScreen';
+// import {CameraPage} from './screens/CameraPage';
+import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import type {Routes} from './screens/Routes';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
 
+const Stack = createNativeStackNavigator<Routes>();
+
 export default function App() {
+  const [cameraPermission, setCameraPermission] =
+    useState<CameraPermissionStatus>();
+
+  useEffect(() => {
+    Camera.getCameraPermissionStatus().then(setCameraPermission);
+  }, []);
+
+  if (cameraPermission == null) {
+    // still loading
+    return null;
+  }
+
+  const showPermissionsPage = cameraPermission !== 'authorized';
+
   return (
     <ConnectionProvider endpoint={DEVNET_ENDPOINT}>
       <SafeAreaView style={styles.shell}>
@@ -27,7 +48,21 @@ export default function App() {
                 </View>
               }>
               <NavigationContainer>
-                <DemoConnectionScreen />
+                <Stack.Navigator
+                  screenOptions={{
+                    headerShown: false,
+                    statusBarStyle: 'dark',
+                    animationTypeForReplace: 'push',
+                  }}
+                  initialRouteName={
+                    showPermissionsPage ? 'PermissionsPage' : 'CameraPage'
+                  }>
+                  <Stack.Screen
+                    name="PermissionsPage"
+                    component={PermissionsPage}
+                  />
+                  <Stack.Screen name="CameraPage" component={CameraScreen} />
+                </Stack.Navigator>
               </NavigationContainer>
             </Suspense>
           </SnackbarProvider>
