@@ -14,6 +14,7 @@ import {
   useCameraDevices,
   sortFormats,
   PhotoFile,
+  CameraDevice,
 } from 'react-native-vision-camera';
 import {useIsForeground} from '../hooks/useIsForeground';
 import CaptureButton from '../views/CaptureButton';
@@ -24,14 +25,17 @@ import {MediaPage} from './MediaPage';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const BORDER_WIDTH = CAPTURE_BUTTON_SIZE * 0.1;
 const TRANSITIONS = ['fade', 'slide', 'none'];
 type FLASH_STATUS = 'off' | 'on';
+type CAMERA_STATUS = 'front' | 'back';
 
 type Props = NativeStackScreenProps<Routes, 'CameraPage'>;
 const CameraScreen = ({navigation}: Props) => {
   const camera = useRef<Camera>(null);
+  const [mockRollFilmNFTChech, setMockRollFilmNFTChech] =
+    useState<Boolean>(false);
   const [flashStatus, setFlashStatus] = useState<FLASH_STATUS>('off');
+  const [cameraStatus, setCameraStatus] = useState<CAMERA_STATUS>('back');
   const [hidden, setHidden] = useState(false);
   const [statusBarTransition, setStatusBarTransition] = useState(
     TRANSITIONS[0],
@@ -40,11 +44,12 @@ const CameraScreen = ({navigation}: Props) => {
     useState<CameraPermissionStatus>();
 
   const devices = useCameraDevices();
-  const device = devices.back;
-  const formats = useMemo<CameraDeviceFormat[]>(() => {
-    if (device?.formats == null) return [];
-    return device.formats.sort(sortFormats);
-  }, [device?.formats]);
+  //   const testDevice = devices.back;
+
+  //   const formats = useMemo<CameraDeviceFormat[]>(() => {
+  //     if (device?.formats == null) return [];
+  //     return device.formats.sort(sortFormats);
+  //   }, [device?.formats]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -89,6 +94,24 @@ const CameraScreen = ({navigation}: Props) => {
     }
   }, [flashStatus]);
 
+  const cameraVariant = useMemo<CameraDevice | undefined>(():
+    | CameraDevice
+    | undefined => {
+    if (cameraStatus === 'back') {
+      return devices.back;
+    } else {
+      return devices.front;
+    }
+  }, [cameraStatus, devices]);
+
+  if (cameraVariant === null || cameraVariant === undefined) {
+    return (
+      <View style={StyleSheet.absoluteFill}>
+        <Text>Loading ...</Text>
+      </View>
+    );
+  }
+
   const handleFlashStatusChange = () => {
     if (flashStatus === 'off') {
       setFlashStatus('on');
@@ -97,18 +120,22 @@ const CameraScreen = ({navigation}: Props) => {
     }
   };
 
+  const handleCameraStatusChange = () => {
+    if (cameraStatus === 'back') {
+      setCameraStatus('front');
+    } else {
+      setCameraStatus('back');
+    }
+  };
+
+  const handleSettingClick = () => {
+    
+  };
+
   if (cameraPermission === null) {
     return (
       <View>
         <Text>Need camera permission</Text>
-      </View>
-    );
-  }
-
-  if (device === null || device === undefined) {
-    return (
-      <View style={StyleSheet.absoluteFill}>
-        <Text>Loading ...</Text>
       </View>
     );
   }
@@ -122,7 +149,9 @@ const CameraScreen = ({navigation}: Props) => {
         </TouchableOpacity>
       </View>
       <View style={styles.flashButton}>
-        <TouchableOpacity onPress={handleFlashStatusChange}>{flashIcons}</TouchableOpacity>
+        <TouchableOpacity onPress={handleFlashStatusChange}>
+          {flashIcons}
+        </TouchableOpacity>
       </View>
       <View style={styles.settingButton}>
         <TouchableOpacity onPress={closeCamera}>
@@ -136,7 +165,7 @@ const CameraScreen = ({navigation}: Props) => {
       </View>
       <Camera
         ref={camera}
-        device={device}
+        device={cameraVariant}
         isActive={isFocused}
         style={StyleSheet.absoluteFill}
         photo={true}
@@ -158,12 +187,12 @@ const CameraScreen = ({navigation}: Props) => {
         flash={flashStatus}
       />
       <View style={styles.flipCameraButton}>
-        <TouchableOpacity onPress={closeCamera}>
+        <TouchableOpacity onPress={handleCameraStatusChange}>
           <MaterialIcons
             name="flip-camera-android"
             size={48}
             color="white"
-            style={styles.icon}
+            style={cameraStatus === 'back' ? styles.icon : styles.iconFlip}
           />
         </TouchableOpacity>
       </View>
@@ -253,6 +282,15 @@ const styles = StyleSheet.create({
       width: 0,
     },
     textShadowRadius: 1,
+  },
+  iconFlip: {
+    textShadowColor: 'black',
+    textShadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    textShadowRadius: 1,
+    transform: [{rotate: '180deg'}],
   },
   cameraControlPannel: {},
 });
