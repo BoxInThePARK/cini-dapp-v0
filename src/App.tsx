@@ -59,6 +59,10 @@ export default function App() {
                     showPermissionsPage ? 'PermissionsPage' : 'CameraPage'
                   }>
                   <Stack.Screen
+                    name="MockHome"
+                    component={DemoConnectionScreen}
+                  />
+                  <Stack.Screen
                     name="PermissionsPage"
                     component={PermissionsPage}
                   />
