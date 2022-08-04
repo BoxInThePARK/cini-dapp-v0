@@ -6,6 +6,7 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {
   Camera,
@@ -25,6 +26,7 @@ import {MediaPage} from './MediaPage';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+const MockRollFilm = ['kodak', 'FUJI', 'Metropolis', 'canon', 'vintage'];
 const TRANSITIONS = ['fade', 'slide', 'none'];
 type FLASH_STATUS = 'off' | 'on';
 type CAMERA_STATUS = 'front' | 'back';
@@ -36,6 +38,8 @@ const CameraScreen = ({navigation}: Props) => {
     useState<Boolean>(false);
   const [flashStatus, setFlashStatus] = useState<FLASH_STATUS>('off');
   const [cameraStatus, setCameraStatus] = useState<CAMERA_STATUS>('back');
+  const [isRollFilmListOpen, setIsRollFilmListOpen] = useState<Boolean>(false);
+  const [selectedRollFilm, setSelectRollFilm] = useState<String>('kodak');
   const [hidden, setHidden] = useState(false);
   const [statusBarTransition, setStatusBarTransition] = useState(
     TRANSITIONS[0],
@@ -128,9 +132,24 @@ const CameraScreen = ({navigation}: Props) => {
     }
   };
 
-  const handleSettingClick = () => {
-    
+  const handleDisplayRollFilmList = () => {
+    if (isRollFilmListOpen) {
+      setIsRollFilmListOpen(false);
+    } else {
+      setIsRollFilmListOpen(true);
+    }
   };
+
+  const handleSelectRollFilm = (selectedItem: string) => {
+    setSelectRollFilm(selectedItem);
+    setIsRollFilmListOpen(false);
+    MockRollFilm.splice(MockRollFilm.indexOf(selectedItem), 1);
+    MockRollFilm.unshift(selectedItem);
+  };
+
+  const handleSettingClick = () => {};
+
+  const handleNavigateToUndevelopedPage = () => {};
 
   if (cameraPermission === null) {
     return (
@@ -196,16 +215,40 @@ const CameraScreen = ({navigation}: Props) => {
           />
         </TouchableOpacity>
       </View>
-      <View style={styles.rollFilmButton}>
-        <TouchableOpacity onPress={closeCamera}>
-          <MaterialIcons
-            name="camera-roll"
-            size={48}
-            color="white"
-            style={styles.icon}
+      <View
+        style={
+          isRollFilmListOpen ? styles.rollFilmList : styles.rollFilmButton
+        }>
+        {isRollFilmListOpen ? (
+          <FlatList
+            data={MockRollFilm}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                style={{marginBottom: 8}}
+                onPress={() => {
+                  handleSelectRollFilm(item);
+                }}>
+                <MaterialIcons
+                  name="camera-roll"
+                  size={48}
+                  color="white"
+                  style={styles.icon}
+                />
+                <Text style={{color: 'white'}}>{item}</Text>
+              </TouchableOpacity>
+            )}
           />
-          <Text style={{color: 'white'}}>Kodak</Text>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handleDisplayRollFilmList}>
+            <MaterialIcons
+              name="camera-roll"
+              size={48}
+              color="white"
+              style={styles.icon}
+            />
+            <Text style={{color: 'white'}}>{selectedRollFilm}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -273,6 +316,14 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
+    zIndex: 1,
+  },
+  rollFilmList: {
+    position: 'absolute',
+    top: '50%',
+    right: SAFE_AREA_PADDING.paddingRight,
+    width: 56,
+    height: 200,
     zIndex: 1,
   },
   icon: {
