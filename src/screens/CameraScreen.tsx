@@ -25,6 +25,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {MediaPage} from './MediaPage';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import RNFS from 'react-native-fs';
 
 const MockRollFilm = ['kodak', 'FUJI', 'Metropolis', 'canon', 'vintage'];
 const TRANSITIONS = ['fade', 'slide', 'none'];
@@ -48,7 +49,6 @@ const CameraScreen = ({navigation}: Props) => {
     useState<CameraPermissionStatus>();
 
   const devices = useCameraDevices();
-  //   const testDevice = devices.back;
 
   //   const formats = useMemo<CameraDeviceFormat[]>(() => {
   //     if (device?.formats == null) return [];
@@ -56,8 +56,30 @@ const CameraScreen = ({navigation}: Props) => {
   //   }, [device?.formats]);
   const isFocused = useIsFocused();
 
+  const checkDirExists = useCallback(async () => {
+    // console.log('check:', RNFS.CachesDirectoryPath);
+    // console.log('check:', RNFS.DocumentDirectoryPath);
+    // console.log('check:', RNFS.ExternalDirectoryPath);
+    // console.log('check:', RNFS.ExternalStorageDirectoryPath);
+    // console.log('check:', RNFS.TemporaryDirectoryPath);
+    // console.log('check:', RNFS.PicturesDirectoryPath);
+
+    // RNFS.getAllExternalFilesDirs().then(res => {
+    //   console.log('test',res)
+    // })
+
+    const dirExist = await RNFS.exists(
+      `${RNFS.DocumentDirectoryPath}/cini_media`,
+    );
+    console.log('check exist:', dirExist);
+    if (!dirExist) {
+      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media`);
+    }
+  }, []);
+
   useEffect(() => {
     Camera.getCameraPermissionStatus().then(setCameraPermission);
+    checkDirExists();
     setHidden(true);
   }, []);
 
@@ -71,10 +93,6 @@ const CameraScreen = ({navigation}: Props) => {
     },
     [navigation],
   );
-
-  const closeCamera = useCallback(() => {
-    navigation.navigate('MockHome');
-  }, [navigation]);
 
   const flashIcons = useMemo(() => {
     if (flashStatus === 'off') {
@@ -115,6 +133,10 @@ const CameraScreen = ({navigation}: Props) => {
       </View>
     );
   }
+
+  const handleCloseCamera = () => {
+    navigation.navigate('MockHome');
+  };
 
   const handleFlashStatusChange = () => {
     if (flashStatus === 'off') {
@@ -163,7 +185,7 @@ const CameraScreen = ({navigation}: Props) => {
     <View style={styles.cameraWrapper}>
       <StatusBar showHideTransition={'slide'} hidden={true} />
       <View style={styles.closeButton}>
-        <TouchableOpacity onPress={closeCamera}>
+        <TouchableOpacity onPress={handleCloseCamera}>
           <IonIcon name="close" size={48} color="white" style={styles.icon} />
         </TouchableOpacity>
       </View>
@@ -173,7 +195,7 @@ const CameraScreen = ({navigation}: Props) => {
         </TouchableOpacity>
       </View>
       <View style={styles.settingButton}>
-        <TouchableOpacity onPress={closeCamera}>
+        <TouchableOpacity onPress={handleSettingClick}>
           <IonIcon
             name="ios-settings-sharp"
             size={48}
@@ -190,7 +212,7 @@ const CameraScreen = ({navigation}: Props) => {
         photo={true}
       />
       <View style={styles.photosButton}>
-        <TouchableOpacity onPress={closeCamera}>
+        <TouchableOpacity onPress={handleNavigateToUndevelopedPage}>
           <MaterialIcons
             name="photo"
             size={48}
@@ -211,7 +233,7 @@ const CameraScreen = ({navigation}: Props) => {
             name="flip-camera-android"
             size={48}
             color="white"
-            style={cameraStatus === 'back' ? styles.icon : styles.iconFlip}
+            style={styles.icon}
           />
         </TouchableOpacity>
       </View>

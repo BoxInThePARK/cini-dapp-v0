@@ -15,9 +15,11 @@ import type {
   PhotoFile,
 } from 'react-native-vision-camera';
 import CameraRoll from '@react-native-community/cameraroll';
+import RNFS from 'react-native-fs';
 
 const BORDER_WIDTH = CAPTURE_BUTTON_SIZE * 0.1;
 const MEDIA_TYPE = 'photo';
+const PHOTOS_PATH = RNFS.ExternalStorageDirectoryPath+'/DCIM'
 
 interface CaptureButtonProps extends ViewProps {
   camera: React.RefObject<Camera>;
@@ -33,14 +35,13 @@ const CaptureButton = ({
   onMediaCaptured,
   flash,
 }: CaptureButtonProps) => {
-
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
     () => ({
-      // photoCodec: 'jpeg',
-      // qualityPrioritization: 'speed',
+      photoCodec: 'jpeg',
+      qualityPrioritization: 'speed',
       flash: flash,
-      // quality: 90,
-      // skipMetadata: true,
+      quality: 90,
+      skipMetadata: true,
     }),
     [flash],
   );
@@ -51,28 +52,26 @@ const CaptureButton = ({
 
       console.log('Taking photo...');
       const media = await camera.current.takePhoto(takePhotoOptions);
-      // const media = await camera.current.takeSnapshot({
-      //   quality: 85,
-      //   skipMetadata: true,
-      // });
       if (media) {
-        // setPhoto(newPhoto);
         console.log(`Media captured! ${JSON.stringify(media)}`);
         const splitString = media.path.split('/');
         const fileName = splitString.pop();
-        // await CameraRoll.save(`file://${splitString.join('/')}/image/${fileName}`, {
-        //   type: MEDIA_TYPE,
-        // });
         await CameraRoll.save(`file://${media.path}`, {
           type: MEDIA_TYPE,
         });
-        console.log('Done');
-        // onMediaCaptured(media, MEDIA_TYPE);
+
+        await RNFS.copyFile(
+          `file://${media.path}`,
+          `file://${RNFS.DocumentDirectoryPath}/cini_media/${fileName}`,
+        );
+
+        await RNFS.unlink(`file://${media.path}`)
+        await RNFS.unlink(`file://${PHOTOS_PATH}/${fileName}`)
       } else {
         console.error('Failed to take photo!');
       }
     } catch (e) {
-      console.error('Failed to take photo!', e);
+      console.error('Failed', e);
     }
   }, [camera, takePhotoOptions]);
 
