@@ -7,6 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
   FlatList,
+  Linking,
 } from 'react-native';
 import {
   Camera,
@@ -34,6 +35,8 @@ type CAMERA_STATUS = 'front' | 'back';
 
 type Props = NativeStackScreenProps<Routes, 'CameraPage'>;
 const CameraScreen = ({navigation}: Props) => {
+  const [cameraPermissionStatus, setCameraPermissionStatus] =
+    useState<CameraPermissionStatus>('not-determined');
   const camera = useRef<Camera>(null);
   const [mockRollFilmNFTChech, setMockRollFilmNFTChech] =
     useState<Boolean>(false);
@@ -49,29 +52,19 @@ const CameraScreen = ({navigation}: Props) => {
     useState<CameraPermissionStatus>();
 
   const devices = useCameraDevices();
-
-  //   const formats = useMemo<CameraDeviceFormat[]>(() => {
-  //     if (device?.formats == null) return [];
-  //     return device.formats.sort(sortFormats);
-  //   }, [device?.formats]);
   const isFocused = useIsFocused();
 
+  const requestCameraPermission = useCallback(async () => {
+    const permission = await Camera.requestCameraPermission();
+
+    if (permission === 'denied') await Linking.openSettings();
+    setCameraPermissionStatus(permission);
+  }, []);
+
   const checkDirExists = useCallback(async () => {
-    // console.log('check:', RNFS.CachesDirectoryPath);
-    // console.log('check:', RNFS.DocumentDirectoryPath);
-    // console.log('check:', RNFS.ExternalDirectoryPath);
-    // console.log('check:', RNFS.ExternalStorageDirectoryPath);
-    // console.log('check:', RNFS.TemporaryDirectoryPath);
-    // console.log('check:', RNFS.PicturesDirectoryPath);
-
-    // RNFS.getAllExternalFilesDirs().then(res => {
-    //   console.log('test',res)
-    // })
-
     const dirExist = await RNFS.exists(
       `${RNFS.DocumentDirectoryPath}/cini_media`,
     );
-    console.log('check exist:', dirExist);
     if (!dirExist) {
       await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media`);
     }
@@ -85,7 +78,7 @@ const CameraScreen = ({navigation}: Props) => {
 
   const onMediaCaptured = useCallback(
     (media: PhotoFile, type: 'photo') => {
-      console.log(`Media captured! ${JSON.stringify(media)}`);
+      // console.log(`Media captured! ${JSON.stringify(media)}`);
       navigation.navigate('MediaPage', {
         path: media.path,
         type: type,
