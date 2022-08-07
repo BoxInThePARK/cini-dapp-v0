@@ -16,6 +16,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import type {Routes} from './screens/Routes';
 import InitialScreen from './screens/InitialScreen';
 import MockGallery from './screens/MockGallery';
+import UserProfileScreen from './screens/UserProfileScreen';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
 
@@ -62,6 +63,7 @@ export default function App() {
                     name="InitialPage"
                     component={InitialScreen}
                   />
+                  <Stack.Screen name="UserProfilePage" component={UserProfileScreen} />
                   <Stack.Screen
                     name="MockHome"
                     component={MockGallery}
