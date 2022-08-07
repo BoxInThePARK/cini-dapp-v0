@@ -56,9 +56,7 @@ export default function App() {
                     statusBarStyle: 'dark',
                     animationTypeForReplace: 'push',
                   }}
-                  initialRouteName={
-                    showPermissionsPage ? 'InitialPage' : 'CameraPage'
-                  }>
+                  initialRouteName='InitialPage'>
                   <Stack.Screen
                     name="InitialPage"
                     component={InitialScreen}
