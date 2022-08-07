@@ -7,10 +7,9 @@ import {Button} from 'react-native-paper';
 type Props = NativeStackScreenProps<Routes, 'MockHome'>;
 
 const MockGallery = ({navigation}: Props) => {
-
-    const goToCamera = () => {
-        navigation.navigate('CameraPage');
-    }
+  const goToCamera = () => {
+    navigation.navigate('CameraPage');
+  };
 
   return (
     <View style={styles.container}>
