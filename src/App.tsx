@@ -14,6 +14,7 @@ import {MediaPage} from './screens/MediaPage';
 import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import type {Routes} from './screens/Routes';
+import InitialScreen from './screens/InitialScreen';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
 
@@ -56,8 +57,12 @@ export default function App() {
                     animationTypeForReplace: 'push',
                   }}
                   initialRouteName={
-                    showPermissionsPage ? 'PermissionsPage' : 'CameraPage'
+                    showPermissionsPage ? 'InitialPage' : 'CameraPage'
                   }>
+                  <Stack.Screen
+                    name="InitialPage"
+                    component={InitialScreen}
+                  />
                   <Stack.Screen
                     name="MockHome"
                     component={DemoConnectionScreen}

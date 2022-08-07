@@ -1,4 +1,5 @@
 export type Routes = {
+  InitialPage: undefined;
   MockHome: undefined;
   PermissionsPage: undefined;
   CameraPage: undefined;
