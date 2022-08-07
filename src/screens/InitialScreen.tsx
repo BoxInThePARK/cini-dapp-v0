@@ -1,18 +1,31 @@
 import React, {useState} from 'react';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {Routes} from './Routes';
 import {View, ImageBackground, Text, StyleSheet} from 'react-native';
 import {Button, Divider} from 'react-native-paper';
+import RNFS from 'react-native-fs';
 // import coverImg from '../assets/img/coverImg.png';
 
-const InitialScreen = () => {
+type Props = NativeStackScreenProps<Routes, 'InitialPage'>;
+
+const InitialScreen = ({navigation}: Props) => {
   const [nextStep, setNextStep] = useState(false);
 
-  const walletConnection = () => {};
+  const walletConnection = () => {
+    navigation.navigate('MockHome');
+  };
 
-  const googleLogin = () => {};
+  const googleLogin = () => {
+    navigation.navigate('MockHome');
+  };
 
-  const appleLogin = () => {};
+  const appleLogin = () => {
+    navigation.navigate('MockHome');
+  };
 
-  const facebookLogin = () => {};
+  const facebookLogin = () => {
+    navigation.navigate('MockHome');
+  };
 
   const addLoginCredentials = () => {};
 
@@ -42,7 +55,7 @@ const InitialScreen = () => {
                   contentStyle={styles.startButton}
                   mode="contained"
                   uppercase
-                  onPress={() => {walletConnection}}>
+                  onPress={walletConnection}>
                   <Text style={styles.buttonText}>Connect Wallet</Text>
                 </Button>
               </View>
@@ -60,7 +73,7 @@ const InitialScreen = () => {
                   contentStyle={styles.startButton}
                   mode="contained"
                   uppercase
-                  onPress={() => {googleLogin}}>
+                  onPress={googleLogin}>
                   <Text style={styles.buttonText}>Goolge Login</Text>
                 </Button>
                 {/* <Button
@@ -73,7 +86,7 @@ const InitialScreen = () => {
                   contentStyle={styles.startButton}
                   mode="contained"
                   uppercase
-                  onPress={() => {appleLogin}}>
+                  onPress={appleLogin}>
                   <Text style={styles.buttonText}>Apple Login</Text>
                 </Button> */}
                 <Button
@@ -86,7 +99,7 @@ const InitialScreen = () => {
                   contentStyle={styles.startButton}
                   mode="contained"
                   uppercase
-                  onPress={() => {facebookLogin}}>
+                  onPress={facebookLogin}>
                   <Text style={styles.buttonText}>Facebook Login</Text>
                 </Button>
               </View>
