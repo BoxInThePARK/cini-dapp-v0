@@ -76,16 +76,16 @@ const CameraScreen = ({navigation}: Props) => {
     setHidden(true);
   }, []);
 
-  const onMediaCaptured = useCallback(
-    (media: PhotoFile, type: 'photo') => {
-      // console.log(`Media captured! ${JSON.stringify(media)}`);
-      navigation.navigate('MediaPage', {
-        path: media.path,
-        type: type,
-      });
-    },
-    [navigation],
-  );
+  // const onMediaCaptured = useCallback(
+  //   (media: PhotoFile, type: 'photo') => {
+  //     // console.log(`Media captured! ${JSON.stringify(media)}`);
+  //     navigation.navigate('MediaPage', {
+  //       path: media.path,
+  //       type: type,
+  //     });
+  //   },
+  //   [navigation],
+  // );
 
   const flashIcons = useMemo(() => {
     if (flashStatus === 'off') {
@@ -217,7 +217,6 @@ const CameraScreen = ({navigation}: Props) => {
       <CaptureButton
         style={styles.captureButton}
         camera={camera}
-        onMediaCaptured={onMediaCaptured}
         flash={flashStatus}
       />
       <View style={styles.flipCameraButton}>
@@ -282,7 +281,8 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: SAFE_AREA_PADDING.paddingTop,
+    // top: SAFE_AREA_PADDING.paddingTop,
+    top: 16,
     left: SAFE_AREA_PADDING.paddingLeft,
     width: 56,
     height: 56,
@@ -291,14 +291,16 @@ const styles = StyleSheet.create({
   flashButton: {
     position: 'absolute',
     alignSelf: 'center',
-    top: SAFE_AREA_PADDING.paddingTop,
+    top: 16,
+    // top: SAFE_AREA_PADDING.paddingTop,
     width: 56,
     height: 56,
     zIndex: 1,
   },
   settingButton: {
     position: 'absolute',
-    top: SAFE_AREA_PADDING.paddingTop,
+    top: 16,
+    // top: SAFE_AREA_PADDING.paddingTop,
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
