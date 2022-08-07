@@ -23,16 +23,12 @@ const PHOTOS_PATH = RNFS.ExternalStorageDirectoryPath+'/DCIM'
 
 interface CaptureButtonProps extends ViewProps {
   camera: React.RefObject<Camera>;
-
-  onMediaCaptured: (media: PhotoFile, type: 'photo') => void;
-
   flash: 'off' | 'on';
 }
 
 const CaptureButton = ({
   style,
   camera,
-  onMediaCaptured,
   flash,
 }: CaptureButtonProps) => {
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(

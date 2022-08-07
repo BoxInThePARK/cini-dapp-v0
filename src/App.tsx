@@ -15,6 +15,7 @@ import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import type {Routes} from './screens/Routes';
 import InitialScreen from './screens/InitialScreen';
+import MockGallery from './screens/MockGallery';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
 
@@ -63,7 +64,7 @@ export default function App() {
                   />
                   <Stack.Screen
                     name="MockHome"
-                    component={DemoConnectionScreen}
+                    component={MockGallery}
                   />
                   <Stack.Screen
                     name="PermissionsPage"
