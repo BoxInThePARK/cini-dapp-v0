@@ -11,7 +11,7 @@ type Props = NativeStackScreenProps<Routes, 'InitialPage'>;
 const InitialScreen = ({navigation}: Props) => {
   const [nextStep, setNextStep] = useState(false);
 
-  const walletConnection = () => {
+  const walletLogin = () => {
     navigation.navigate('MockHome');
   };
 
@@ -49,34 +49,20 @@ const InitialScreen = ({navigation}: Props) => {
         <View style={nextStep ? styles.loginPannel : styles.controlPannel}>
           {nextStep ? (
             <>
-              <View style={styles.walletConnectWrapper}>
-                <Button
-                  style={{width: '80%', height: 52, backgroundColor: '#279AF1'}}
-                  contentStyle={styles.startButton}
-                  mode="contained"
-                  uppercase
-                  onPress={walletConnection}>
-                  <Text style={styles.buttonText}>Connect Wallet</Text>
-                </Button>
-              </View>
-
-              <Divider bold style={styles.spacer} />
-
-              <View style={styles.web2LoginWrapper}>
-                <Button
-                  style={{
-                    width: '80%',
-                    height: 52,
-                    backgroundColor: '#279AF1',
-                    marginBottom: 24,
-                  }}
-                  contentStyle={styles.startButton}
-                  mode="contained"
-                  uppercase
-                  onPress={googleLogin}>
-                  <Text style={styles.buttonText}>Goolge Login</Text>
-                </Button>
-                {/* <Button
+              <Button
+                style={{
+                  width: '80%',
+                  height: 52,
+                  backgroundColor: '#ffffff',
+                  marginBottom: 24,
+                }}
+                contentStyle={styles.startButton}
+                mode="contained"
+                uppercase
+                onPress={googleLogin}>
+                <Text style={styles.buttonText}>Goolge Login</Text>
+              </Button>
+              {/* <Button
                   style={{
                     width: '80%',
                     height: 52,
@@ -89,20 +75,32 @@ const InitialScreen = ({navigation}: Props) => {
                   onPress={appleLogin}>
                   <Text style={styles.buttonText}>Apple Login</Text>
                 </Button> */}
-                <Button
-                  style={{
-                    width: '80%',
-                    height: 52,
-                    backgroundColor: '#279AF1',
-                    marginBottom: 24,
-                  }}
-                  contentStyle={styles.startButton}
-                  mode="contained"
-                  uppercase
-                  onPress={facebookLogin}>
-                  <Text style={styles.buttonText}>Facebook Login</Text>
-                </Button>
-              </View>
+              <Button
+                style={{
+                  width: '80%',
+                  height: 52,
+                  backgroundColor: '#ffffff',
+                  marginBottom: 24,
+                }}
+                contentStyle={styles.startButton}
+                mode="contained"
+                uppercase
+                onPress={facebookLogin}>
+                <Text style={styles.buttonText}>Facebook Login</Text>
+              </Button>
+              <Button
+                style={{
+                  width: '80%',
+                  height: 52,
+                  //   backgroundColor: '#ffffff',
+                  borderColor: '#ffffff',
+                  marginBottom: 24,
+                }}
+                mode="outlined"
+                uppercase
+                onPress={walletLogin}>
+                <Text style={styles.connectWalletText}>Wallet Login</Text>
+              </Button>
             </>
           ) : (
             <Button
@@ -174,6 +172,7 @@ const styles = StyleSheet.create({
     height: '80%',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    paddingTop: 160,
   },
   walletConnectWrapper: {
     width: '100%',
@@ -191,12 +190,19 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 52,
     // paddingVertical: 12,
-    backgroundColor: '#279AF1',
+    backgroundColor: '#ffffff',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
+    width: '100%',
+    fontSize: 24,
+    lineHeight: 40,
+    fontWeight: 'bold',
+    color: '#262626',
+  },
+  connectWalletText: {
     width: '100%',
     fontSize: 24,
     lineHeight: 40,
