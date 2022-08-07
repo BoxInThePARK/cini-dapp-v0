@@ -71,10 +71,14 @@ const CameraScreen = ({navigation}: Props) => {
   }, []);
 
   useEffect(() => {
+    requestCameraPermission();
+  }, []);
+
+  useEffect(() => {
     Camera.getCameraPermissionStatus().then(setCameraPermission);
     checkDirExists();
     setHidden(true);
-  }, []);
+  }, [cameraPermissionStatus]);
 
   // const onMediaCaptured = useCallback(
   //   (media: PhotoFile, type: 'photo') => {
