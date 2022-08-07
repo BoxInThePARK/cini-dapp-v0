@@ -1,41 +1,69 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, ImageBackground, Text, StyleSheet} from 'react-native';
 import {Button} from 'react-native-paper';
+// import coverImg from '../assets/img/coverImg.png';
 
 const InitialScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Share Your View</Text>
-      <Button
-        style={styles.startButton}
-        mode="contained"
-        uppercase
-        onPress={() => {}}>
-        <Text style={styles.buttonText}>Let's Capture</Text>
-      </Button>
+    <View style={styles.baseContainer}>
+      <ImageBackground
+        source={require('../assets/img/coverImg.png')}
+        resizeMode="cover"
+        style={styles.imageContainer}>
+        <View style={styles.textPannel}>
+          <Text style={styles.title}>Share Your View</Text>
+          <Text style={styles.title}>Expend How You Earn</Text>
+        </View>
+        <View style={styles.controlPannel}>
+          <Button
+            style={{width:'80%'}}
+            contentStyle={styles.startButton}
+            mode="contained"
+            uppercase
+            onPress={() => {}}>
+            <Text style={styles.buttonText}>Let's Capture</Text>
+          </Button>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  baseContainer: {
     width: '100%',
     height: '100%',
     backgroundColor: '#fff',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 108,
+    // justifyContent: 'flex-start',
+    // alignItems: 'center',
+  },
+  imageContainer: {
+    // width: '100%',
+    // height: '100%',
+    flex: 2,
+    justifyContent: 'flex-end',
+    paddingVertical: 48,
     paddingHorizontal: 24,
+  },
+  textPannel: {
+    width: '100%',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  controlPannel: {
+    width: '100%',
+    height: '48%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   startButton: {
-    width: '80%',
+    width: '100%',
     height: 80,
-    paddingVertical: 16,
+    paddingVertical: 12,
     backgroundColor: '#279AF1',
     display: 'flex',
     justifyContent: 'center',
@@ -43,9 +71,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     width: '100%',
-    height: '100%',
-    fontSize: 28,
-    lineHeight: 42,
+    fontSize: 24,
+    lineHeight: 36,
     fontWeight: 'bold',
     color: '#ffffff',
   },
