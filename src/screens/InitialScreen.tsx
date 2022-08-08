@@ -4,6 +4,7 @@ import type {Routes} from './Routes';
 import {View, ImageBackground, Text, StyleSheet} from 'react-native';
 import {Button, Divider} from 'react-native-paper';
 import RNFS from 'react-native-fs';
+import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 // import coverImg from '../assets/img/coverImg.png';
 
 type Props = NativeStackScreenProps<Routes, 'InitialPage'>;
@@ -116,6 +117,10 @@ const InitialScreen = ({navigation}: Props) => {
           )}
         </View>
       </ImageBackground>
+      <View style={styles.informationBox}>
+        <Text style={styles.informationText}>Team: BoxInThePARK, Cini-prototype-v0.0.1</Text>
+        <Text style={styles.informationText}>Background image comes from Unsplash: https://unsplash.com/photos/o7wNBwl8sFk </Text>
+      </View>
     </View>
   );
 };
@@ -125,6 +130,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#fff',
+    position: 'relative',
     // justifyContent: 'flex-start',
     // alignItems: 'center',
   },
@@ -215,6 +221,16 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     borderRadius: 2,
   },
+  informationBox: {
+    width: '100%',
+    position: 'absolute',
+    bottom: StaticSafeAreaInsets.safeAreaInsetsBottom,
+    paddingHorizontal: StaticSafeAreaInsets.safeAreaInsetsLeft+16,
+  },
+  informationText: {
+    fontSize: 8,
+    color: '#ffffff'
+  }
 });
 
 export default InitialScreen;
