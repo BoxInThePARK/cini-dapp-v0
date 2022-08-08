@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {clusterApiUrl} from '@solana/web3.js';
 import React, {Suspense, useEffect, useState} from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider, BottomNavigation} from 'react-native-paper';
 
 import SnackbarProvider from './components/SnackbarProvider';
 import DemoConnectionScreen from './screens/DemoConnectionScreen';
