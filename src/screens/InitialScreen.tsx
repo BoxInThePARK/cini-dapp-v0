@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {Routes} from './Routes';
 import {View, ImageBackground, Text, StyleSheet} from 'react-native';
 import {Button, Divider} from 'react-native-paper';
 import RNFS from 'react-native-fs';
+import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 // import coverImg from '../assets/img/coverImg.png';
 
 type Props = NativeStackScreenProps<Routes, 'InitialPage'>;
@@ -11,20 +12,20 @@ type Props = NativeStackScreenProps<Routes, 'InitialPage'>;
 const InitialScreen = ({navigation}: Props) => {
   const [nextStep, setNextStep] = useState(false);
 
-  const walletConnection = () => {
-    navigation.navigate('MockHome');
+  const walletLogin = () => {
+    navigation.navigate('MainPages');
   };
 
   const googleLogin = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('MainPages');
   };
 
   const appleLogin = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('MainPages');
   };
 
   const facebookLogin = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('MainPages');
   };
 
   const addLoginCredentials = () => {};
@@ -49,34 +50,20 @@ const InitialScreen = ({navigation}: Props) => {
         <View style={nextStep ? styles.loginPannel : styles.controlPannel}>
           {nextStep ? (
             <>
-              <View style={styles.walletConnectWrapper}>
-                <Button
-                  style={{width: '80%', height: 52, backgroundColor: '#279AF1'}}
-                  contentStyle={styles.startButton}
-                  mode="contained"
-                  uppercase
-                  onPress={walletConnection}>
-                  <Text style={styles.buttonText}>Connect Wallet</Text>
-                </Button>
-              </View>
-
-              <Divider bold style={styles.spacer} />
-
-              <View style={styles.web2LoginWrapper}>
-                <Button
-                  style={{
-                    width: '80%',
-                    height: 52,
-                    backgroundColor: '#279AF1',
-                    marginBottom: 24,
-                  }}
-                  contentStyle={styles.startButton}
-                  mode="contained"
-                  uppercase
-                  onPress={googleLogin}>
-                  <Text style={styles.buttonText}>Goolge Login</Text>
-                </Button>
-                {/* <Button
+              <Button
+                style={{
+                  width: '80%',
+                  height: 52,
+                  backgroundColor: '#ffffff',
+                  marginBottom: 24,
+                }}
+                contentStyle={styles.startButton}
+                mode="contained"
+                uppercase
+                onPress={googleLogin}>
+                <Text style={styles.buttonText}>Goolge Login</Text>
+              </Button>
+              {/* <Button
                   style={{
                     width: '80%',
                     height: 52,
@@ -89,20 +76,32 @@ const InitialScreen = ({navigation}: Props) => {
                   onPress={appleLogin}>
                   <Text style={styles.buttonText}>Apple Login</Text>
                 </Button> */}
-                <Button
-                  style={{
-                    width: '80%',
-                    height: 52,
-                    backgroundColor: '#279AF1',
-                    marginBottom: 24,
-                  }}
-                  contentStyle={styles.startButton}
-                  mode="contained"
-                  uppercase
-                  onPress={facebookLogin}>
-                  <Text style={styles.buttonText}>Facebook Login</Text>
-                </Button>
-              </View>
+              <Button
+                style={{
+                  width: '80%',
+                  height: 52,
+                  backgroundColor: '#ffffff',
+                  marginBottom: 24,
+                }}
+                contentStyle={styles.startButton}
+                mode="contained"
+                uppercase
+                onPress={facebookLogin}>
+                <Text style={styles.buttonText}>Facebook Login</Text>
+              </Button>
+              <Button
+                style={{
+                  width: '80%',
+                  height: 52,
+                  //   backgroundColor: '#ffffff',
+                  borderColor: '#ffffff',
+                  marginBottom: 24,
+                }}
+                mode="outlined"
+                uppercase
+                onPress={walletLogin}>
+                <Text style={styles.connectWalletText}>Wallet Login</Text>
+              </Button>
             </>
           ) : (
             <Button
@@ -118,6 +117,15 @@ const InitialScreen = ({navigation}: Props) => {
           )}
         </View>
       </ImageBackground>
+      <View style={styles.informationBox}>
+        <Text style={styles.informationText}>
+          Team: BoxInThePARK, Cini-prototype-v0.0.1
+        </Text>
+        <Text style={styles.informationText}>
+          Background image comes from Unsplash:
+          https://unsplash.com/photos/o7wNBwl8sFk{' '}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -127,6 +135,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#fff',
+    position: 'relative',
     // justifyContent: 'flex-start',
     // alignItems: 'center',
   },
@@ -174,6 +183,7 @@ const styles = StyleSheet.create({
     height: '80%',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    paddingTop: 160,
   },
   walletConnectWrapper: {
     width: '100%',
@@ -191,12 +201,19 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 52,
     // paddingVertical: 12,
-    backgroundColor: '#279AF1',
+    backgroundColor: '#ffffff',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
+    width: '100%',
+    fontSize: 24,
+    lineHeight: 40,
+    fontWeight: 'bold',
+    color: '#262626',
+  },
+  connectWalletText: {
     width: '100%',
     fontSize: 24,
     lineHeight: 40,
@@ -208,6 +225,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#DBD9DB',
     marginVertical: 16,
     borderRadius: 2,
+  },
+  informationBox: {
+    width: '100%',
+    position: 'absolute',
+    bottom: StaticSafeAreaInsets.safeAreaInsetsBottom,
+    paddingHorizontal: StaticSafeAreaInsets.safeAreaInsetsLeft + 16,
+  },
+  informationText: {
+    fontSize: 8,
+    color: '#ffffff',
   },
 });
 

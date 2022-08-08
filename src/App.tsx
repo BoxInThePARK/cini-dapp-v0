@@ -1,9 +1,9 @@
 import {ConnectionProvider} from '@solana/wallet-adapter-react';
 import {NavigationContainer} from '@react-navigation/native';
 import {clusterApiUrl} from '@solana/web3.js';
-import React, {Suspense, useEffect, useState} from 'react';
+import React, {createContext, Suspense, useEffect, useState} from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider, Text} from 'react-native-paper';
 
 import SnackbarProvider from './components/SnackbarProvider';
 import DemoConnectionScreen from './screens/DemoConnectionScreen';
@@ -16,29 +16,24 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import type {Routes} from './screens/Routes';
 import InitialScreen from './screens/InitialScreen';
 import MockGallery from './screens/MockGallery';
+import UserProfileScreen from './screens/UserProfileScreen';
+import NavBar from './components/NavBar';
+import Main from './Main';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
+
+// export const ThemeContext = createContext((close: boolean) => {});
 
 const Stack = createNativeStackNavigator<Routes>();
 
 export default function App() {
-  const [cameraPermission, setCameraPermission] =
-    useState<CameraPermissionStatus>();
 
-  useEffect(() => {
-    Camera.getCameraPermissionStatus().then(setCameraPermission);
-  }, []);
-
-  if (cameraPermission == null) {
-    // still loading
-    return null;
-  }
-
-  const showPermissionsPage = cameraPermission !== 'authorized';
+  // const showPermissionsPage = cameraPermission !== 'authorized';
 
   return (
     <ConnectionProvider endpoint={DEVNET_ENDPOINT}>
       <SafeAreaView style={styles.shell}>
+        {/* <ThemeContext.Provider value={handleNavBar}> */}
         <PaperProvider>
           <SnackbarProvider>
             <Suspense
@@ -57,29 +52,12 @@ export default function App() {
                     statusBarStyle: 'dark',
                     animationTypeForReplace: 'push',
                   }}
-                  initialRouteName='InitialPage'>
-                  <Stack.Screen
-                    name="InitialPage"
-                    component={InitialScreen}
-                  />
-                  <Stack.Screen
-                    name="MockHome"
-                    component={MockGallery}
-                  />
-                  <Stack.Screen
-                    name="PermissionsPage"
-                    component={PermissionsPage}
-                  />
+                  initialRouteName="InitialPage">
+                  <Stack.Screen name="InitialPage" component={InitialScreen} />
+                  <Stack.Screen name="MainPages" component={Main} />
                   <Stack.Screen name="CameraPage" component={CameraScreen} />
-                  <Stack.Screen
-                    name="MediaPage"
-                    component={MediaPage}
-                    options={{
-                      animation: 'none',
-                      presentation: 'transparentModal',
-                    }}
-                  />
                 </Stack.Navigator>
+                {/* {!isNavBarHidden && <NavBar />} */}
               </NavigationContainer>
             </Suspense>
           </SnackbarProvider>

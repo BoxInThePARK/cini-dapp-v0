@@ -71,10 +71,15 @@ const CameraScreen = ({navigation}: Props) => {
   }, []);
 
   useEffect(() => {
+    console.log('open camera');
+    requestCameraPermission();
+  }, []);
+
+  useEffect(() => {
     Camera.getCameraPermissionStatus().then(setCameraPermission);
     checkDirExists();
     setHidden(true);
-  }, []);
+  }, [cameraPermissionStatus]);
 
   // const onMediaCaptured = useCallback(
   //   (media: PhotoFile, type: 'photo') => {
@@ -164,7 +169,9 @@ const CameraScreen = ({navigation}: Props) => {
 
   const handleSettingClick = () => {};
 
-  const handleNavigateToUndevelopedPage = () => {};
+  const handleNavigateToUndevelopedPage = () => {
+    navigation.navigate('UserProfilePage');
+  };
 
   if (cameraPermission === null) {
     return (
