@@ -170,7 +170,7 @@ const CameraScreen = ({navigation}: Props) => {
   const handleSettingClick = () => {};
 
   const handleNavigateToUndevelopedPage = () => {
-    navigation.navigate('UserProfilePage');
+    navigation.navigate('UserProfilePage', {initialTab: 3});
   };
 
   if (cameraPermission === null) {

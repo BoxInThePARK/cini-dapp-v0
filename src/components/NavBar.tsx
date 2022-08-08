@@ -48,7 +48,7 @@ const NavBar = ({navigation}: NavBarProps) => {
       <TouchableOpacity
         onPress={() => {
           console.log('navigate to user profile page');
-          navigation.navigate('UserProfilePage');
+          navigation.navigate('UserProfilePage', {initialTab: 0});
         }}>
         <MaterialCommunityIcons
           name="account"

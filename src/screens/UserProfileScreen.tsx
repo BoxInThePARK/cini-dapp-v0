@@ -21,10 +21,15 @@ type Props = NativeStackScreenProps<Routes, 'UserProfilePage'>;
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const UserProfileScreen = ({navigation}: Props) => {
+const UserProfileScreen = ({navigation, route}: Props) => {
+  const {initialTab} = route.params;
   const [hasMediaLoaded, setHasMediaLoaded] = useState(false);
-  const [imageList, setImageList] = useState<String[]>(['']);
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [developedList, setDevelopedList] = useState<String[]>([]);
+  const [saleingList, setSaleingList] = useState<String[]>([]);
+  const [collectedList, setCollectedList] = useState<String[]>([]);
+  const [undevelopedList, setUndevelopedList] = useState<String[]>([]);
+
+  const [selectedTab, setSelectedTab] = useState(initialTab ?? 0);
 
   const getImageList = useCallback(async () => {
     try {
@@ -36,7 +41,7 @@ const UserProfileScreen = ({navigation}: Props) => {
         .filter(item => item.isFile)
         .map(item => item.path);
 
-      setImageList(imageList);
+      setUndevelopedList(imageList);
     } catch (err) {
       console.log(err);
     }
@@ -72,6 +77,112 @@ const UserProfileScreen = ({navigation}: Props) => {
           setPressedTab={setSelectedTab}
         />
 
+        {selectedTab !== 3 && (
+          <ScrollView
+            style={{
+              width: '100%',
+              flexGrow: 1,
+            }}>
+            <View
+              style={{
+                width: '100%',
+                height: '100%',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}>
+              {selectedTab === 0 &&
+                (developedList.length > 0 ? (
+                  developedList.map((source, index) => (
+                    <Image
+                      key={index}
+                      source={{uri: `file://${source}`}}
+                      style={{
+                        width: '33.33%',
+                        height: windowWidth / 3,
+                      }}
+                      resizeMode="cover"
+                      // onLoadEnd={onMediaLoadEnd}
+                      // onLoad={onMediaLoad}
+                    />
+                  ))
+                ) : (
+                  <View style={styles.noImageWrapper}>
+                    <Text style={styles.noImageText}>
+                      Go pick one photo to develop! 📸
+                    </Text>
+                  </View>
+                ))}
+              {selectedTab === 1 &&
+                (saleingList.length > 0 ? (
+                  saleingList.map((source, index) => (
+                    <Image
+                      key={index}
+                      source={{uri: `file://${source}`}}
+                      style={{
+                        width: '33.33%',
+                        height: windowWidth / 3,
+                      }}
+                      resizeMode="cover"
+                      // onLoadEnd={onMediaLoadEnd}
+                      // onLoad={onMediaLoad}
+                    />
+                  ))
+                ) : (
+                  <View style={styles.noImageWrapper}>
+                    <Text style={styles.noImageText}>
+                      Nothing for sale now~
+                    </Text>
+                  </View>
+                ))}
+              {selectedTab === 2 &&
+                (collectedList.length > 0 ? (
+                  collectedList.map((source, index) => (
+                    <Image
+                      key={index}
+                      source={{uri: `file://${source}`}}
+                      style={{
+                        width: '33.33%',
+                        height: windowWidth / 3,
+                      }}
+                      resizeMode="cover"
+                      // onLoadEnd={onMediaLoadEnd}
+                      // onLoad={onMediaLoad}
+                    />
+                  ))
+                ) : (
+                  <View style={styles.noImageWrapper}>
+                    <Text style={styles.noImageText}>
+                      Go to have your collection! 🖼
+                    </Text>
+                  </View>
+                ))}
+                {/* {selectedTab === 3 &&
+                (collectedList.length > 0 ? (
+                  collectedList.map((source, index) => (
+                    <Image
+                      key={index}
+                      source={{uri: `file://${source}`}}
+                      style={{
+                        width: '33.33%',
+                        height: windowWidth / 3,
+                      }}
+                      resizeMode="cover"
+                      // onLoadEnd={onMediaLoadEnd}
+                      // onLoad={onMediaLoad}
+                    />
+                  ))
+                ) : (
+                  <View style={styles.noImageWrapper}>
+                    <Text style={styles.noImageText}>
+                      Capture your first photo! 📸
+                    </Text>
+                  </View>
+                ))} */}
+            </View>
+            <View style={{width: '100%', height: 260}}></View>
+          </ScrollView>
+        )}
+
         {selectedTab === 3 && (
           <ScrollView
             style={{
@@ -84,12 +195,12 @@ const UserProfileScreen = ({navigation}: Props) => {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
               }}>
-              {imageList.map((source, index) => (
+              {undevelopedList.map((source, index) => (
                 <Image
                   key={index}
                   source={{uri: `file://${source}`}}
                   style={{
-                    width: windowWidth / 3.3,
+                    width: '33.33%',
                     height: windowWidth / 3,
                   }}
                   resizeMode="cover"
@@ -97,12 +208,12 @@ const UserProfileScreen = ({navigation}: Props) => {
                   // onLoad={onMediaLoad}
                 />
               ))}
-              {imageList.map((source, index) => (
+              {undevelopedList.map((source, index) => (
                 <Image
                   key={index}
                   source={{uri: `file://${source}`}}
                   style={{
-                    width: windowWidth / 3.3,
+                    width: '33.33%',
                     height: windowWidth / 3,
                   }}
                   resizeMode="cover"
@@ -110,12 +221,12 @@ const UserProfileScreen = ({navigation}: Props) => {
                   // onLoad={onMediaLoad}
                 />
               ))}
-              {imageList.map((source, index) => (
+              {undevelopedList.map((source, index) => (
                 <Image
                   key={index}
                   source={{uri: `file://${source}`}}
                   style={{
-                    width: windowWidth / 3.3,
+                    width: '33.33%',
                     height: windowWidth / 3,
                   }}
                   resizeMode="cover"
@@ -123,12 +234,12 @@ const UserProfileScreen = ({navigation}: Props) => {
                   // onLoad={onMediaLoad}
                 />
               ))}
-              {imageList.map((source, index) => (
+              {undevelopedList.map((source, index) => (
                 <Image
                   key={index}
                   source={{uri: `file://${source}`}}
                   style={{
-                    width: windowWidth / 3.3,
+                    width: '33.33%',
                     height: windowWidth / 3,
                   }}
                   resizeMode="cover"
@@ -136,12 +247,12 @@ const UserProfileScreen = ({navigation}: Props) => {
                   // onLoad={onMediaLoad}
                 />
               ))}
-              {imageList.map((source, index) => (
+              {undevelopedList.map((source, index) => (
                 <Image
                   key={index}
                   source={{uri: `file://${source}`}}
                   style={{
-                    width: windowWidth / 3.3,
+                    width: '33.33%',
                     height: windowWidth / 3,
                   }}
                   resizeMode="cover"
@@ -242,6 +353,17 @@ const styles = StyleSheet.create({
   img: {
     flexBasis: '33.33%',
     height: windowWidth / 3,
+  },
+  noImageWrapper: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  noImageText: {
+    fontSize: 18,
+    color: '#262626',
   },
 });
 
