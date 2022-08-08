@@ -38,20 +38,22 @@ const Main = ({navigation}: MainProps) => {
 
   return (
     // <ThemeContext.Provider value={handleNavBar}>
-    <>
-      <Drawer.Navigator
-        screenOptions={{
-          headerShown: false,
-          statusBarStyle: 'dark',
-          animationTypeForReplace: 'push',
-        }}
-        initialRouteName="InitialPage">
-        <Drawer.Screen name="MockHome" component={MockGallery} />
-        {/* <Stack.Screen name="CameraPage" component={CameraScreen} /> */}
-        <Drawer.Screen name="UserProfilePage" component={UserProfileScreen} />
-      </Drawer.Navigator>
+    <View style={{width: '100%', height: '100%'}}>
+      <View style={{flex: 1}}>
+        <Drawer.Navigator
+          screenOptions={{
+            headerShown: false,
+            statusBarStyle: 'dark',
+            animationTypeForReplace: 'push',
+          }}
+          initialRouteName="InitialPage">
+          <Drawer.Screen name="MockHome" component={MockGallery} />
+          {/* <Stack.Screen name="CameraPage" component={CameraScreen} /> */}
+          <Drawer.Screen name="UserProfilePage" component={UserProfileScreen} />
+        </Drawer.Navigator>
+      </View>
       <NavBar navigation={navigation} />
-    </>
+    </View>
     // </ThemeContext.Provider>
   );
 };
