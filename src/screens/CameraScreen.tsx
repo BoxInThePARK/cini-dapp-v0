@@ -71,6 +71,7 @@ const CameraScreen = ({navigation}: Props) => {
   }, []);
 
   useEffect(() => {
+    console.log('open camera');
     requestCameraPermission();
   }, []);
 

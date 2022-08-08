@@ -12,12 +12,10 @@ const UserProfileScreen = ({navigation}: Props) => {
   const [imageList, setImageList] = useState<String[]>(['']);
 
   const getImageList = useCallback(async () => {
-    console.log('checkout 1');
     try {
       const result = await RNFS.readDir(
         `${RNFS.DocumentDirectoryPath}/cini_media`,
       );
-      console.log('result len:', result.length);
 
       const imageList = result
         .filter(item => item.isFile)
@@ -25,13 +23,13 @@ const UserProfileScreen = ({navigation}: Props) => {
 
       setImageList(imageList);
 
-      console.log('imageList len:', imageList.length);
     } catch (err) {
       console.log(err);
     }
   }, []);
 
   useEffect(() => {
+    console.log('open user profile page');
     getImageList();
   }, []);
 
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#F1E8DF',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

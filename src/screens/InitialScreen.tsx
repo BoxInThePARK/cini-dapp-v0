@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {Routes} from './Routes';
 import {View, ImageBackground, Text, StyleSheet} from 'react-native';
@@ -13,19 +13,19 @@ const InitialScreen = ({navigation}: Props) => {
   const [nextStep, setNextStep] = useState(false);
 
   const walletLogin = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('MainPages');
   };
 
   const googleLogin = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('MainPages');
   };
 
   const appleLogin = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('MainPages');
   };
 
   const facebookLogin = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('MainPages');
   };
 
   const addLoginCredentials = () => {};
@@ -118,8 +118,13 @@ const InitialScreen = ({navigation}: Props) => {
         </View>
       </ImageBackground>
       <View style={styles.informationBox}>
-        <Text style={styles.informationText}>Team: BoxInThePARK, Cini-prototype-v0.0.1</Text>
-        <Text style={styles.informationText}>Background image comes from Unsplash: https://unsplash.com/photos/o7wNBwl8sFk </Text>
+        <Text style={styles.informationText}>
+          Team: BoxInThePARK, Cini-prototype-v0.0.1
+        </Text>
+        <Text style={styles.informationText}>
+          Background image comes from Unsplash:
+          https://unsplash.com/photos/o7wNBwl8sFk{' '}
+        </Text>
       </View>
     </View>
   );
@@ -225,12 +230,12 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     bottom: StaticSafeAreaInsets.safeAreaInsetsBottom,
-    paddingHorizontal: StaticSafeAreaInsets.safeAreaInsetsLeft+16,
+    paddingHorizontal: StaticSafeAreaInsets.safeAreaInsetsLeft + 16,
   },
   informationText: {
     fontSize: 8,
-    color: '#ffffff'
-  }
+    color: '#ffffff',
+  },
 });
 
 export default InitialScreen;
