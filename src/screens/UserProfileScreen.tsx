@@ -1,7 +1,14 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {Routes} from './Routes';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import {Button} from 'react-native-paper';
 import RNFS from 'react-native-fs';
 import TabBar from '../components/TabBar';
@@ -10,6 +17,9 @@ import {SAFE_AREA_PADDING} from '../utils/constants';
 const TAB_LIST = ['developed', 'for sale', 'collected', 'undeveloped'];
 
 type Props = NativeStackScreenProps<Routes, 'UserProfilePage'>;
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const UserProfileScreen = ({navigation}: Props) => {
   const [hasMediaLoaded, setHasMediaLoaded] = useState(false);
@@ -56,18 +66,93 @@ const UserProfileScreen = ({navigation}: Props) => {
       </View>
 
       <View style={styles.ContentWrapper}>
-        <TabBar tabList={TAB_LIST} currentTabIndex={selectedTab} setPressedTab={setSelectedTab} />
+        <TabBar
+          tabList={TAB_LIST}
+          currentTabIndex={selectedTab}
+          setPressedTab={setSelectedTab}
+        />
 
-        {imageList.map((source, index) => (
-          <Image
-            key={index}
-            source={{uri: `file://${source}`}}
-            style={styles.img}
-            resizeMode="cover"
-            // onLoadEnd={onMediaLoadEnd}
-            // onLoad={onMediaLoad}
-          />
-        ))}
+        {selectedTab === 3 && (
+          <ScrollView
+            style={{
+              width: '100%',
+              flexGrow: 1,
+            }}>
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}>
+              {imageList.map((source, index) => (
+                <Image
+                  key={index}
+                  source={{uri: `file://${source}`}}
+                  style={{
+                    width: windowWidth / 3.3,
+                    height: windowWidth / 3,
+                  }}
+                  resizeMode="cover"
+                  // onLoadEnd={onMediaLoadEnd}
+                  // onLoad={onMediaLoad}
+                />
+              ))}
+              {imageList.map((source, index) => (
+                <Image
+                  key={index}
+                  source={{uri: `file://${source}`}}
+                  style={{
+                    width: windowWidth / 3.3,
+                    height: windowWidth / 3,
+                  }}
+                  resizeMode="cover"
+                  // onLoadEnd={onMediaLoadEnd}
+                  // onLoad={onMediaLoad}
+                />
+              ))}
+              {imageList.map((source, index) => (
+                <Image
+                  key={index}
+                  source={{uri: `file://${source}`}}
+                  style={{
+                    width: windowWidth / 3.3,
+                    height: windowWidth / 3,
+                  }}
+                  resizeMode="cover"
+                  // onLoadEnd={onMediaLoadEnd}
+                  // onLoad={onMediaLoad}
+                />
+              ))}
+              {imageList.map((source, index) => (
+                <Image
+                  key={index}
+                  source={{uri: `file://${source}`}}
+                  style={{
+                    width: windowWidth / 3.3,
+                    height: windowWidth / 3,
+                  }}
+                  resizeMode="cover"
+                  // onLoadEnd={onMediaLoadEnd}
+                  // onLoad={onMediaLoad}
+                />
+              ))}
+              {imageList.map((source, index) => (
+                <Image
+                  key={index}
+                  source={{uri: `file://${source}`}}
+                  style={{
+                    width: windowWidth / 3.3,
+                    height: windowWidth / 3,
+                  }}
+                  resizeMode="cover"
+                  // onLoadEnd={onMediaLoadEnd}
+                  // onLoad={onMediaLoad}
+                />
+              ))}
+            </View>
+            <View style={{width: '100%', height: 260}}></View>
+          </ScrollView>
+        )}
       </View>
 
       {/* <Button
@@ -131,6 +216,14 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingHorizontal: SAFE_AREA_PADDING.paddingLeft,
   },
+  ImageWrapper: {
+    width: '100%',
+    height: '100%',
+    overflowY: 'scroll',
+    display: 'flex',
+    flexGrow: 2,
+    // justifyContent: 'flex-start',
+  },
   startButton: {
     width: '100%',
     height: 52,
@@ -147,11 +240,8 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   img: {
-    // position: 'absolute',
-    width: 100,
-    height: 100,
-    // zIndex: 1,
-    marginBottom: 10,
+    flexBasis: '33.33%',
+    height: windowWidth / 3,
   },
 });
 

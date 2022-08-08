@@ -35,10 +35,6 @@ const TabBar = ({tabList, currentTabIndex, setPressedTab}: TabBarProps) => {
               setPressedTab(index);
             }}>
             {tab}
-            {/* <Text
-              
-              {tab}
-            </Text> */}
           </Button>
           //   </View>
         );
