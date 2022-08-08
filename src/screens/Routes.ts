@@ -2,7 +2,9 @@ export type Routes = {
   InitialPage: undefined;
   MainPages: undefined;
   MockHome: undefined;
-  UserProfilePage: undefined;
+  UserProfilePage: {
+    initialTab: number;
+  };
   PermissionsPage: undefined;
   CameraPage: undefined;
   MediaPage: {
