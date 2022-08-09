@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {Routes} from './Routes';
 import {
@@ -14,6 +14,7 @@ import {Button} from 'react-native-paper';
 import RNFS from 'react-native-fs';
 import TabBar from '../components/TabBar';
 import {SAFE_AREA_PADDING} from '../utils/constants';
+import {CaptureContext} from '../App';
 
 const TAB_LIST = ['developed', 'for sale', 'collected', 'undeveloped'];
 
@@ -24,6 +25,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const UserProfileScreen = ({navigation, route}: Props) => {
   const {initialTab} = route.params;
+  const captureContext = useContext(CaptureContext);
   const [hasMediaLoaded, setHasMediaLoaded] = useState(false);
   const [developedList, setDevelopedList] = useState<String[]>([]);
   const [saleingList, setSaleingList] = useState<String[]>([]);
@@ -31,9 +33,11 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const [undevelopedList, setUndevelopedList] = useState<String[]>([]);
 
   const [selectedTab, setSelectedTab] = useState(initialTab ?? 0);
+  const [isGranted, setIsGranted] = useState(false);
 
   const getImageList = useCallback(async () => {
     try {
+      console.log('getImageList');
       const result = await RNFS.readDir(
         `${RNFS.DocumentDirectoryPath}/cini_media`,
       );
@@ -43,6 +47,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
         .map(item => item.path);
 
       setUndevelopedList(imageList);
+      captureContext.setIsCapture(false);
     } catch (err) {
       console.log(err);
     }
@@ -57,19 +62,26 @@ const UserProfileScreen = ({navigation, route}: Props) => {
         buttonNeutral: 'Ask Me Later',
         buttonNegative: 'Cancel',
         buttonPositive: 'OK',
-      }
-    )
+      },
+    );
 
-    if(isGranted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can use the storage')
+    if (isGranted === PermissionsAndroid.RESULTS.GRANTED) {
+      setIsGranted(true);
+      console.log('You can use the storage');
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     console.log('open user profile page');
     getPermissions();
-    getImageList();
   }, []);
+
+  useEffect(() => {
+    console.log('isCapture', captureContext.isCapture);
+    if (captureContext.isCapture && isGranted) {
+      getImageList();
+    }
+  }, [isGranted, captureContext.isCapture]);
 
   return (
     <View style={styles.container}>
@@ -96,113 +108,111 @@ const UserProfileScreen = ({navigation, route}: Props) => {
           setPressedTab={setSelectedTab}
         />
 
-        {selectedTab !== 3 && (
-          <ScrollView
+        {/* {selectedTab !== 3 && ( */}
+        <ScrollView
+          style={{
+            width: '100%',
+            flexGrow: 1,
+          }}>
+          <View
             style={{
               width: '100%',
-              flexGrow: 1,
+              height: '100%',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
             }}>
-            <View
-              style={{
-                width: '100%',
-                height: '100%',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}>
-              {selectedTab === 0 &&
-                (developedList.length > 0 ? (
-                  developedList.map((source, index) => (
-                    <Image
-                      key={index}
-                      source={{uri: `file://${source}`}}
-                      style={{
-                        width: '33.33%',
-                        height: windowWidth / 3,
-                      }}
-                      resizeMode="cover"
-                      // onLoadEnd={onMediaLoadEnd}
-                      // onLoad={onMediaLoad}
-                    />
-                  ))
-                ) : (
-                  <View style={styles.noImageWrapper}>
-                    <Text style={styles.noImageText}>
-                      Go pick one photo to develop! 📸
-                    </Text>
-                  </View>
-                ))}
-              {selectedTab === 1 &&
-                (saleingList.length > 0 ? (
-                  saleingList.map((source, index) => (
-                    <Image
-                      key={index}
-                      source={{uri: `file://${source}`}}
-                      style={{
-                        width: '33.33%',
-                        height: windowWidth / 3,
-                      }}
-                      resizeMode="cover"
-                      // onLoadEnd={onMediaLoadEnd}
-                      // onLoad={onMediaLoad}
-                    />
-                  ))
-                ) : (
-                  <View style={styles.noImageWrapper}>
-                    <Text style={styles.noImageText}>
-                      Nothing for sale now~
-                    </Text>
-                  </View>
-                ))}
-              {selectedTab === 2 &&
-                (collectedList.length > 0 ? (
-                  collectedList.map((source, index) => (
-                    <Image
-                      key={index}
-                      source={{uri: `file://${source}`}}
-                      style={{
-                        width: '33.33%',
-                        height: windowWidth / 3,
-                      }}
-                      resizeMode="cover"
-                      // onLoadEnd={onMediaLoadEnd}
-                      // onLoad={onMediaLoad}
-                    />
-                  ))
-                ) : (
-                  <View style={styles.noImageWrapper}>
-                    <Text style={styles.noImageText}>
-                      Go to have your collection! 🖼
-                    </Text>
-                  </View>
-                ))}
-                {/* {selectedTab === 3 &&
-                (collectedList.length > 0 ? (
-                  collectedList.map((source, index) => (
-                    <Image
-                      key={index}
-                      source={{uri: `file://${source}`}}
-                      style={{
-                        width: '33.33%',
-                        height: windowWidth / 3,
-                      }}
-                      resizeMode="cover"
-                      // onLoadEnd={onMediaLoadEnd}
-                      // onLoad={onMediaLoad}
-                    />
-                  ))
-                ) : (
-                  <View style={styles.noImageWrapper}>
-                    <Text style={styles.noImageText}>
-                      Capture your first photo! 📸
-                    </Text>
-                  </View>
-                ))} */}
-            </View>
-            <View style={{width: '100%', height: 260}}></View>
-          </ScrollView>
-        )}
+            {selectedTab === 0 &&
+              (developedList.length > 0 ? (
+                developedList.map((source, index) => (
+                  <Image
+                    key={index}
+                    source={{uri: `file://${source}`}}
+                    style={{
+                      width: '33.33%',
+                      height: windowWidth / 3,
+                    }}
+                    resizeMode="cover"
+                    // onLoadEnd={onMediaLoadEnd}
+                    // onLoad={onMediaLoad}
+                  />
+                ))
+              ) : (
+                <View style={styles.noImageWrapper}>
+                  <Text style={styles.noImageText}>
+                    Go pick one photo to develop! 📸
+                  </Text>
+                </View>
+              ))}
+            {selectedTab === 1 &&
+              (saleingList.length > 0 ? (
+                saleingList.map((source, index) => (
+                  <Image
+                    key={index}
+                    source={{uri: `file://${source}`}}
+                    style={{
+                      width: '33.33%',
+                      height: windowWidth / 3,
+                    }}
+                    resizeMode="cover"
+                    // onLoadEnd={onMediaLoadEnd}
+                    // onLoad={onMediaLoad}
+                  />
+                ))
+              ) : (
+                <View style={styles.noImageWrapper}>
+                  <Text style={styles.noImageText}>Nothing for sale now~</Text>
+                </View>
+              ))}
+            {selectedTab === 2 &&
+              (collectedList.length > 0 ? (
+                collectedList.map((source, index) => (
+                  <Image
+                    key={index}
+                    source={{uri: `file://${source}`}}
+                    style={{
+                      width: '33.33%',
+                      height: windowWidth / 3,
+                    }}
+                    resizeMode="cover"
+                    // onLoadEnd={onMediaLoadEnd}
+                    // onLoad={onMediaLoad}
+                  />
+                ))
+              ) : (
+                <View style={styles.noImageWrapper}>
+                  <Text style={styles.noImageText}>
+                    Go to have your collection! 🖼
+                  </Text>
+                </View>
+              ))}
+            {selectedTab === 3 &&
+              (undevelopedList.length > 0 ? (
+                undevelopedList.map((source, index) => (
+                  <Image
+                    key={index}
+                    source={{uri: `file://${source}`}}
+                    style={{
+                      width: '33.33%',
+                      height: windowWidth / 3,
+                    }}
+                    resizeMode="cover"
+                    // onLoadEnd={onMediaLoadEnd}
+                    // onLoad={onMediaLoad}
+                  />
+                ))
+              ) : (
+                <View style={styles.noImageWrapper}>
+                  <Text style={styles.noImageText}>
+                    Capture your first photo! 📸
+                  </Text>
+                </View>
+              ))}
+          </View>
+          <View style={{width: '100%', height: 260}}></View>
+        </ScrollView>
+        {/* )} */}
 
-        {selectedTab === 3 && (
+        {/* {selectedTab === 3 && (
           <ScrollView
             style={{
               width: '100%',
@@ -282,7 +292,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
             </View>
             <View style={{width: '100%', height: 260}}></View>
           </ScrollView>
-        )}
+        )} */}
       </View>
 
       {/* <Button
