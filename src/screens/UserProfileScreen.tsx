@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  PermissionsAndroid,
 } from 'react-native';
 import {Button} from 'react-native-paper';
 import RNFS from 'react-native-fs';
@@ -47,8 +48,26 @@ const UserProfileScreen = ({navigation, route}: Props) => {
     }
   }, []);
 
+  const getPermissions = useCallback(async () => {
+    const isGranted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: 'Storage Permission',
+        message: 'Cini needs access to your storage to save your media.',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      }
+    )
+
+    if(isGranted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the storage')
+    }
+  },[])
+
   useEffect(() => {
     console.log('open user profile page');
+    getPermissions();
     getImageList();
   }, []);
 
