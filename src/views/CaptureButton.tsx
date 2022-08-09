@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState, useContext} from 'react';
 import {
   StyleSheet,
   View,
@@ -16,6 +16,7 @@ import type {
 } from 'react-native-vision-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import RNFS from 'react-native-fs';
+import { CaptureContext } from '../App';
 
 const BORDER_WIDTH = CAPTURE_BUTTON_SIZE * 0.1;
 const MEDIA_TYPE = 'photo';
@@ -31,6 +32,7 @@ const CaptureButton = ({
   camera,
   flash,
 }: CaptureButtonProps) => {
+  const captureContext = useContext(CaptureContext);
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
     () => ({
       photoCodec: 'jpeg',
@@ -74,6 +76,10 @@ const CaptureButton = ({
   const onHandlerStateChanged = useCallback(async () => {
     try {
       await takePhoto();
+      console.log('isCapture', captureContext.isCapture);
+      if(!captureContext.isCapture){
+        captureContext.setIsCapture(true);
+      }
     } finally {
       setTimeout(() => {
         console.log('reset');

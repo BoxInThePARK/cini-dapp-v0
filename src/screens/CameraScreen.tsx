@@ -12,18 +12,13 @@ import {
 import {
   Camera,
   CameraPermissionStatus,
-  CameraDeviceFormat,
   useCameraDevices,
-  sortFormats,
-  PhotoFile,
   CameraDevice,
 } from 'react-native-vision-camera';
-import {useIsForeground} from '../hooks/useIsForeground';
 import CaptureButton from '../views/CaptureButton';
 import type {Routes} from './Routes';
 import {SAFE_AREA_PADDING, CAPTURE_BUTTON_SIZE} from '../utils/constants';
 import {useIsFocused} from '@react-navigation/native';
-import {MediaPage} from './MediaPage';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RNFS from 'react-native-fs';

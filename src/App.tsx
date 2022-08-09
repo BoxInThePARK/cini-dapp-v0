@@ -22,46 +22,59 @@ import Main from './Main';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
 
-// export const ThemeContext = createContext((close: boolean) => {});
+interface CaptureContextProp {
+  isCapture: boolean;
+  setIsCapture: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const CaptureContext = createContext({} as CaptureContextProp);
 
 const Stack = createNativeStackNavigator<Routes>();
 
 export default function App() {
-
+  const [isCapture, setIsCapture] = useState<boolean>(true);
+  const contextObj = {
+    isCapture,
+    setIsCapture,
+  };
   // const showPermissionsPage = cameraPermission !== 'authorized';
 
   return (
     <ConnectionProvider endpoint={DEVNET_ENDPOINT}>
       <SafeAreaView style={styles.shell}>
-        {/* <ThemeContext.Provider value={handleNavBar}> */}
-        <PaperProvider>
-          <SnackbarProvider>
-            <Suspense
-              fallback={
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator
-                    size="large"
-                    style={styles.loadingIndicator}
-                  />
-                </View>
-              }>
-              <NavigationContainer>
-                <Stack.Navigator
-                  screenOptions={{
-                    headerShown: false,
-                    statusBarStyle: 'dark',
-                    animationTypeForReplace: 'push',
-                  }}
-                  initialRouteName="InitialPage">
-                  <Stack.Screen name="InitialPage" component={InitialScreen} />
-                  <Stack.Screen name="MainPages" component={Main} />
-                  <Stack.Screen name="CameraPage" component={CameraScreen} />
-                </Stack.Navigator>
-                {/* {!isNavBarHidden && <NavBar />} */}
-              </NavigationContainer>
-            </Suspense>
-          </SnackbarProvider>
-        </PaperProvider>
+        <CaptureContext.Provider value={contextObj}>
+          <PaperProvider>
+            <SnackbarProvider>
+              <Suspense
+                fallback={
+                  <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                      size="large"
+                      style={styles.loadingIndicator}
+                    />
+                  </View>
+                }>
+                <NavigationContainer>
+                  <Stack.Navigator
+                    screenOptions={{
+                      headerShown: false,
+                      statusBarStyle: 'dark',
+                      animationTypeForReplace: 'push',
+                    }}
+                    initialRouteName="InitialPage">
+                    <Stack.Screen
+                      name="InitialPage"
+                      component={InitialScreen}
+                    />
+                    <Stack.Screen name="MainPages" component={Main} />
+                    <Stack.Screen name="CameraPage" component={CameraScreen} />
+                  </Stack.Navigator>
+                  {/* {!isNavBarHidden && <NavBar />} */}
+                </NavigationContainer>
+              </Suspense>
+            </SnackbarProvider>
+          </PaperProvider>
+        </CaptureContext.Provider>
       </SafeAreaView>
     </ConnectionProvider>
   );
