@@ -32,7 +32,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const [collectedList, setCollectedList] = useState<String[]>([]);
   const [undevelopedList, setUndevelopedList] = useState<String[]>([]);
 
-  const [selectedTab, setSelectedTab] = useState(initialTab ?? 0);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [isGranted, setIsGranted] = useState(false);
 
   const getImageList = useCallback(async () => {
@@ -44,7 +44,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
 
       const imageList = result
         .filter(item => item.isFile)
-        .map(item => item.path);
+        .map(item => item.path).reverse();
 
       setUndevelopedList(imageList);
       captureContext.setIsCapture(false);
@@ -78,10 +78,14 @@ const UserProfileScreen = ({navigation, route}: Props) => {
 
   useEffect(() => {
     console.log('isCapture', captureContext.isCapture);
-    if (captureContext.isCapture && isGranted) {
+    if (isGranted) {
       getImageList();
     }
   }, [isGranted, captureContext.isCapture]);
+
+  useEffect(() => {
+    setSelectedTab(initialTab ?? 0)
+  },[initialTab])
 
   return (
     <View style={styles.container}>
@@ -108,7 +112,6 @@ const UserProfileScreen = ({navigation, route}: Props) => {
           setPressedTab={setSelectedTab}
         />
 
-        {/* {selectedTab !== 3 && ( */}
         <ScrollView
           style={{
             width: '100%',
@@ -210,99 +213,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
           </View>
           <View style={{width: '100%', height: 260}}></View>
         </ScrollView>
-        {/* )} */}
-
-        {/* {selectedTab === 3 && (
-          <ScrollView
-            style={{
-              width: '100%',
-              flexGrow: 1,
-            }}>
-            <View
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}>
-              {undevelopedList.map((source, index) => (
-                <Image
-                  key={index}
-                  source={{uri: `file://${source}`}}
-                  style={{
-                    width: '33.33%',
-                    height: windowWidth / 3,
-                  }}
-                  resizeMode="cover"
-                  // onLoadEnd={onMediaLoadEnd}
-                  // onLoad={onMediaLoad}
-                />
-              ))}
-              {undevelopedList.map((source, index) => (
-                <Image
-                  key={index}
-                  source={{uri: `file://${source}`}}
-                  style={{
-                    width: '33.33%',
-                    height: windowWidth / 3,
-                  }}
-                  resizeMode="cover"
-                  // onLoadEnd={onMediaLoadEnd}
-                  // onLoad={onMediaLoad}
-                />
-              ))}
-              {undevelopedList.map((source, index) => (
-                <Image
-                  key={index}
-                  source={{uri: `file://${source}`}}
-                  style={{
-                    width: '33.33%',
-                    height: windowWidth / 3,
-                  }}
-                  resizeMode="cover"
-                  // onLoadEnd={onMediaLoadEnd}
-                  // onLoad={onMediaLoad}
-                />
-              ))}
-              {undevelopedList.map((source, index) => (
-                <Image
-                  key={index}
-                  source={{uri: `file://${source}`}}
-                  style={{
-                    width: '33.33%',
-                    height: windowWidth / 3,
-                  }}
-                  resizeMode="cover"
-                  // onLoadEnd={onMediaLoadEnd}
-                  // onLoad={onMediaLoad}
-                />
-              ))}
-              {undevelopedList.map((source, index) => (
-                <Image
-                  key={index}
-                  source={{uri: `file://${source}`}}
-                  style={{
-                    width: '33.33%',
-                    height: windowWidth / 3,
-                  }}
-                  resizeMode="cover"
-                  // onLoadEnd={onMediaLoadEnd}
-                  // onLoad={onMediaLoad}
-                />
-              ))}
-            </View>
-            <View style={{width: '100%', height: 260}}></View>
-          </ScrollView>
-        )} */}
       </View>
-
-      {/* <Button
-        style={{width: '80%', height: 52, backgroundColor: '#279AF1'}}
-        contentStyle={styles.startButton}
-        mode="contained"
-        uppercase
-        onPress={() => {}}>
-        <Text style={styles.buttonText}>Camera Page</Text>
-      </Button> */}
     </View>
   );
 };
