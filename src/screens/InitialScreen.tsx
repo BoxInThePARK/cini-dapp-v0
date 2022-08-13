@@ -81,7 +81,7 @@ const InitialScreen = ({navigation}: Props) => {
                   width: '80%',
                   height: 52,
                   backgroundColor: '#ffffff',
-                  marginBottom: 24,
+                  marginBottom: 16,
                 }}
                 contentStyle={styles.startButton}
                 mode="contained"
@@ -91,13 +91,16 @@ const InitialScreen = ({navigation}: Props) => {
               </Button>
               <Button
                 style={{
-                  width: '80%',
-                  height: 52,
-                  //   backgroundColor: '#ffffff',
-                  borderColor: '#ffffff',
-                  marginBottom: 24,
+                  width: '40%',
+                  height: 36,
                 }}
-                mode="outlined"
+                contentStyle={{
+                  width: '100%',
+                  borderColor: '#ffffff',
+                  borderBottomWidth: 1,
+                  
+                }}
+                mode="text"
                 uppercase
                 onPress={walletLogin}>
                 <Text style={styles.connectWalletText}>Wallet Login</Text>
@@ -168,6 +171,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   logo: {
+    fontFamily: "'Montserrat'",
     fontSize: 52,
     fontWeight: 'bold',
     color: '#FFFFFF',
@@ -215,8 +219,8 @@ const styles = StyleSheet.create({
   },
   connectWalletText: {
     width: '100%',
-    fontSize: 24,
-    lineHeight: 40,
+    fontSize: 16,
+    lineHeight: 24,
     fontWeight: 'bold',
     color: '#ffffff',
   },
