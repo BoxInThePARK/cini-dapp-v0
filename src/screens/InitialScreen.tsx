@@ -39,7 +39,7 @@ const InitialScreen = ({navigation}: Props) => {
         <View
           style={nextStep ? styles.textPannelLogin : styles.textPannelInitial}>
           {nextStep ? (
-            <Text style={styles.logo}>Cini</Text>
+            <Text style={styles.logo}>CINI</Text>
           ) : (
             <>
               <Text style={styles.title}>Share Your View</Text>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   logo: {
-    fontFamily: "'Montserrat'",
+    fontFamily: "'Montserrat', 'Montserrat-Bold'",
     fontSize: 52,
     fontWeight: 'bold',
     color: '#FFFFFF',
