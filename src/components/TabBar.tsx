@@ -10,11 +10,12 @@ import {Button} from 'react-native-paper';
 
 interface TabBarProps {
   tabList: string[];
+  lenList: number[];
   currentTabIndex: number;
   setPressedTab: (index: number) => void;
 }
 
-const TabBar = ({tabList, currentTabIndex, setPressedTab}: TabBarProps) => {
+const TabBar = ({tabList, lenList, currentTabIndex, setPressedTab}: TabBarProps) => {
   return (
     <View style={styles.tabBarContainer}>
       {tabList.map((tab, index) => {
@@ -34,7 +35,7 @@ const TabBar = ({tabList, currentTabIndex, setPressedTab}: TabBarProps) => {
             onPress={() => {
               setPressedTab(index);
             }}>
-            {tab}
+            {tab} {lenList[index]}
           </Button>
           //   </View>
         );
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F1E8DF',
+    backgroundColor: '#FFFFFF',
   },
   tabButton: {
     height: 52,
@@ -65,23 +66,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabLabel: {
-    height: 18,
+    height: 24,
     fontSize: 12,
-    lineHeight: 18,
+    lineHeight: 20,
     fontWeight: 'bold',
     color: '#00000080',
-    textTransform: 'uppercase',
     borderRadius: 0,
   },
   selectedTabLabel: {
-    height: 18,
+    height: 24,
     fontSize: 12,
-    lineHeight: 18,
+    lineHeight: 20,
     fontWeight: 'bold',
     color: '#00000080',
-    textTransform: 'uppercase',
     borderBottomColor: '#262626',
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderRadius: 0,
   },
 });

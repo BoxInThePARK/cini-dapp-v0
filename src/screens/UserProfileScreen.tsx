@@ -9,28 +9,34 @@ import {
   Dimensions,
   ScrollView,
   PermissionsAndroid,
+  TouchableOpacity,
 } from 'react-native';
 import {Button} from 'react-native-paper';
 import RNFS from 'react-native-fs';
 import TabBar from '../components/TabBar';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import {CaptureContext} from '../App';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
-const TAB_LIST = ['developed', 'for sale', 'collected', 'undeveloped'];
+const TAB_LIST_USER = ['Developed', 'For Sale', 'Collected', 'Undeveloped'];
+const TAB_LIST_PUBLIC = ['Developed', 'For Sale', 'Collected'];
 
 type Props = NativeStackScreenProps<Routes, 'UserProfilePage'>;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const IMAGE_WIDTH = '48.5%';
 
 const UserProfileScreen = ({navigation, route}: Props) => {
   const {initialTab} = route.params;
   const captureContext = useContext(CaptureContext);
+  const [isUser, setIsUser] = useState<boolean>(true);
   const [hasMediaLoaded, setHasMediaLoaded] = useState(false);
   const [developedList, setDevelopedList] = useState<String[]>([]);
   const [saleingList, setSaleingList] = useState<String[]>([]);
   const [collectedList, setCollectedList] = useState<String[]>([]);
   const [undevelopedList, setUndevelopedList] = useState<String[]>([]);
+  const [listLenArray, setListLenArray] = useState<number[]>([0, 0, 0, 0]);
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [isGranted, setIsGranted] = useState(false);
@@ -44,9 +50,11 @@ const UserProfileScreen = ({navigation, route}: Props) => {
 
       const imageList = result
         .filter(item => item.isFile)
-        .map(item => item.path).reverse();
+        .map(item => item.path)
+        .reverse();
 
       setUndevelopedList(imageList);
+      setDevelopedList(imageList);
       captureContext.setIsCapture(false);
     } catch (err) {
       console.log(err);
@@ -84,8 +92,17 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   }, [isGranted, captureContext.isCapture]);
 
   useEffect(() => {
-    setSelectedTab(initialTab ?? 0)
-  },[initialTab])
+    setListLenArray([
+      developedList.length,
+      saleingList.length,
+      collectedList.length,
+      undevelopedList.length,
+    ]);
+  }, [developedList, saleingList, collectedList, undevelopedList]);
+
+  useEffect(() => {
+    setSelectedTab(initialTab ?? 0);
+  }, [initialTab]);
 
   return (
     <View style={styles.container}>
@@ -95,6 +112,13 @@ const UserProfileScreen = ({navigation, route}: Props) => {
           style={styles.coverImg}
           resizeMode="cover"
         />
+        <TouchableOpacity style={styles.pointButtonBox} onPress={() => {}}>
+          {isUser ? (
+            <IonIcon name="settings-sharp" size={12} color="#262626" />
+          ) : (
+            <IonIcon name="chevron-back" size={12} color="#262626" />
+          )}
+        </TouchableOpacity>
         <Image
           source={require('../assets/img/pfp.png')}
           style={styles.pfpImg}
@@ -103,11 +127,33 @@ const UserProfileScreen = ({navigation, route}: Props) => {
         <View style={styles.userNameBox}>
           <Text style={styles.userNameText}>@nearop</Text>
         </View>
+        <View style={styles.infomationBox}>
+          <View>
+            <Text style={styles.followNum}>169</Text>
+            <Text style={styles.followText}>Following</Text>
+          </View>
+          <View>
+            <Text style={styles.followNum}>239</Text>
+            <Text style={styles.followText}>Followers</Text>
+          </View>
+        </View>
+        <TouchableOpacity
+          style={styles.editFollowButton}
+          onPress={() => {
+            setIsUser(!isUser);
+          }}>
+          {isUser ? (
+            <Text style={styles.editFollowText}>Edit</Text>
+          ) : (
+            <Text style={styles.editFollowText}>Follow</Text>
+          )}
+        </TouchableOpacity>
       </View>
 
       <View style={styles.ContentWrapper}>
         <TabBar
-          tabList={TAB_LIST}
+          tabList={isUser ? TAB_LIST_USER : TAB_LIST_PUBLIC}
+          lenList={listLenArray}
           currentTabIndex={selectedTab}
           setPressedTab={setSelectedTab}
         />
@@ -123,6 +169,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
               height: '100%',
               flexDirection: 'row',
               flexWrap: 'wrap',
+              justifyContent: 'space-between',
             }}>
             {selectedTab === 0 &&
               (developedList.length > 0 ? (
@@ -130,10 +177,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                   <Image
                     key={index}
                     source={{uri: `file://${source}`}}
-                    style={{
-                      width: '33.33%',
-                      height: windowWidth / 3,
-                    }}
+                    style={styles.imageCard}
                     resizeMode="cover"
                     // onLoadEnd={onMediaLoadEnd}
                     // onLoad={onMediaLoad}
@@ -152,10 +196,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                   <Image
                     key={index}
                     source={{uri: `file://${source}`}}
-                    style={{
-                      width: '33.33%',
-                      height: windowWidth / 3,
-                    }}
+                    style={styles.imageCard}
                     resizeMode="cover"
                     // onLoadEnd={onMediaLoadEnd}
                     // onLoad={onMediaLoad}
@@ -172,10 +213,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                   <Image
                     key={index}
                     source={{uri: `file://${source}`}}
-                    style={{
-                      width: '33.33%',
-                      height: windowWidth / 3,
-                    }}
+                    style={styles.imageCard}
                     resizeMode="cover"
                     // onLoadEnd={onMediaLoadEnd}
                     // onLoad={onMediaLoad}
@@ -194,10 +232,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                   <Image
                     key={index}
                     source={{uri: `file://${source}`}}
-                    style={{
-                      width: '33.33%',
-                      height: windowWidth / 3,
-                    }}
+                    style={styles.imageCard}
                     resizeMode="cover"
                     // onLoadEnd={onMediaLoadEnd}
                     // onLoad={onMediaLoad}
@@ -222,7 +257,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#F1E8DF',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
@@ -232,35 +267,99 @@ const styles = StyleSheet.create({
   },
   coverImg: {
     width: '100%',
-    height: 180,
-    // zIndex: 1,
-    marginBottom: 80,
+    height: 197,
+    marginBottom: 68,
   },
-  pfpImg: {
+  pointButtonBox: {
     position: 'absolute',
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    top: 142,
-    left: 60,
-    zIndex: 10,
-  },
-  userNameBox: {
-    position: 'absolute',
-    width: 90,
-    height: 32,
+    width: 20,
+    height: 20,
     backgroundColor: '#ffffff',
-    borderRadius: 16,
-    top: 164,
-    left: 120,
+    borderRadius: 10,
+    top: 20,
+    left: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  userNameText: {
-    fontSize: 14,
-    fontWeight: '500',
-    lineHeight: 32,
+  pfpImg: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    top: 160,
+    left: 16,
+    zIndex: 10,
+    elevation: 20,
+  },
+  infomationBox: {
+    position: 'absolute',
+    width: 112,
+    height: 40,
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    top: 186,
+    right: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 6,
+    shadowOffset: {width: 0, height: 4},
+    shadowRadius: 6,
+    shadowOpacity: 0.25,
+    elevation: 10,
+  },
+  followNum: {
+    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontSize: 15,
+    fontWeight: 'bold',
+    lineHeight: 20,
     color: '#262626',
+    textAlign: 'center',
+  },
+  followText: {
+    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontSize: 8,
+    fontWeight: '600',
+    lineHeight: 12,
+    color: '#797575',
+    textAlign: 'center',
+  },
+  userNameBox: {
+    position: 'absolute',
+    width: 80,
+    height: 24,
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    top: 186,
+    left: 88,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 4},
+    shadowRadius: 6,
+    shadowOpacity: 0.25,
+    elevation: 10,
+  },
+  userNameText: {
+    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontSize: 12,
+    fontWeight: 'bold',
+    lineHeight: 24,
+    color: '#262626',
+  },
+  editFollowButton: {
+    position: 'absolute',
+    top: 212,
+    left: 104,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  editFollowText: {
+    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontSize: 12,
+    fontWeight: '500',
+    lineHeight: 18,
+    color: '#797575',
   },
   ContentWrapper: {
     width: '100%',
@@ -304,6 +403,12 @@ const styles = StyleSheet.create({
   noImageText: {
     fontSize: 18,
     color: '#262626',
+  },
+  imageCard: {
+    width: IMAGE_WIDTH,
+    height: windowWidth / 3,
+    borderRadius: 10,
+    marginBottom: 12,
   },
 });
 
