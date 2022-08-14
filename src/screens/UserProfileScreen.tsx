@@ -19,8 +19,8 @@ import TabBar from '../components/TabBar';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import type {Routes} from './Routes';
 
-const TAB_LIST_USER = ['Developed', 'For Sale', 'Collected', 'Undeveloped'];
-const TAB_LIST_PUBLIC = ['Developed', 'For Sale', 'Collected'];
+const TAB_LIST_USER = ['Developed', 'Listings', 'Collected', 'Undeveloped'];
+const TAB_LIST_PUBLIC = ['Creations', 'Listings', 'Collected'];
 
 type Props = NativeStackScreenProps<Routes, 'UserProfilePage'>;
 
