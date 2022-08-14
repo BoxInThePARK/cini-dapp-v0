@@ -1,8 +1,10 @@
-# Capture to Earn
+# Capture and Earn
 
-It is a decentralized "Capture to Earn" android mobile app for people who love taking photos. 
+It is a decentralized "Capture and Earn" android mobile app for people who love taking photos. 
 
-With a brand new token economics and native gallery for share and transact the Photo NFTs
+With a brand new token economics and native gallery for share and transact the Photo NFTs.
+
+Buliding the next generation film camera.
 
 ## Features
 
