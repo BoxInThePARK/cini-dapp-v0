@@ -1,28 +1,27 @@
-import {useIsFocused} from '@react-navigation/native';
+import React, {useState, useEffect, useMemo, useRef, useCallback} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
   FlatList,
   Linking,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
 } from 'react-native';
-import RNFS from 'react-native-fs';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   Camera,
-  CameraDevice,
   CameraPermissionStatus,
   useCameraDevices,
+  CameraDevice,
 } from 'react-native-vision-camera';
-
-import {CAPTURE_BUTTON_SIZE, SAFE_AREA_PADDING} from '../utils/constants';
 import CaptureButton from '../views/CaptureButton';
 import type {Routes} from './Routes';
+import {SAFE_AREA_PADDING, CAPTURE_BUTTON_SIZE} from '../utils/constants';
+import {useIsFocused} from '@react-navigation/native';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import RNFS from 'react-native-fs';
 
 const MockRollFilm = ['kodak', 'FUJI', 'Metropolis', 'canon', 'vintage'];
 const TRANSITIONS = ['fade', 'slide', 'none'];
@@ -46,6 +45,7 @@ const CameraScreen = ({navigation}: Props) => {
   );
   const [cameraPermission, setCameraPermission] =
     useState<CameraPermissionStatus>();
+  const [triggerFlicker, setTriggerFlicker] = useState<boolean>(false);
 
   const devices = useCameraDevices();
   const isFocused = useIsFocused();
@@ -223,6 +223,7 @@ const CameraScreen = ({navigation}: Props) => {
         style={styles.captureButton}
         camera={camera}
         flash={flashStatus}
+        setTriggerFlicker={setTriggerFlicker}
       />
       <View style={styles.flipCameraButton}>
         <TouchableOpacity onPress={handleCameraStatusChange}>
@@ -269,6 +270,12 @@ const CameraScreen = ({navigation}: Props) => {
           </TouchableOpacity>
         )}
       </View>
+      {/* <View style={styles.cameraFlicker} /> */}
+      <FilckerView
+        style={styles.cameraFlicker}
+        trigger={triggerFlicker}
+        setTriggerFlicker={setTriggerFlicker}
+      />
     </View>
   );
 };
@@ -279,6 +286,7 @@ const styles = StyleSheet.create({
   cameraWrapper: {
     flex: 1,
     backgroundColor: '#000',
+    position: 'relative',
   },
   camera: {
     width: '100%',
@@ -291,7 +299,7 @@ const styles = StyleSheet.create({
     left: SAFE_AREA_PADDING.paddingLeft,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   flashButton: {
     position: 'absolute',
@@ -300,7 +308,7 @@ const styles = StyleSheet.create({
     // top: SAFE_AREA_PADDING.paddingTop,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   settingButton: {
     position: 'absolute',
@@ -309,7 +317,7 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   photosButton: {
     position: 'absolute',
@@ -317,12 +325,13 @@ const styles = StyleSheet.create({
     left: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   captureButton: {
     position: 'absolute',
     alignSelf: 'center',
     bottom: SAFE_AREA_PADDING.paddingBottom,
+    zIndex: 20,
   },
   flipCameraButton: {
     position: 'absolute',
@@ -330,7 +339,7 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   rollFilmButton: {
     position: 'absolute',
@@ -338,7 +347,7 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   rollFilmList: {
     position: 'absolute',
@@ -346,7 +355,7 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 200,
-    zIndex: 1,
+    zIndex: 20,
   },
   icon: {
     textShadowColor: 'black',
@@ -366,4 +375,13 @@ const styles = StyleSheet.create({
     transform: [{rotate: '180deg'}],
   },
   cameraControlPannel: {},
+  cameraFlicker: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#ffffff',
+    zIndex: 10,
+  },
 });

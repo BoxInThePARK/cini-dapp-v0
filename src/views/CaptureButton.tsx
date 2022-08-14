@@ -1,34 +1,39 @@
-import CameraRoll from '@react-native-community/cameraroll';
-import React, {useCallback, useContext, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState, useContext} from 'react';
 import {
-  Alert,
-  Button,
   StyleSheet,
-  TouchableOpacity,
   View,
   ViewProps,
+  Button,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
-import RNFS from 'react-native-fs';
+import {CAPTURE_BUTTON_SIZE} from '../utils/constants';
 import type {
   Camera,
-  PhotoFile,
   TakePhotoOptions,
   TakeSnapshotOptions,
+  PhotoFile,
 } from 'react-native-vision-camera';
-
-import {CaptureContext} from '../App';
-import {CAPTURE_BUTTON_SIZE} from '../utils/constants';
+import CameraRoll from '@react-native-community/cameraroll';
+import RNFS from 'react-native-fs';
+import { CaptureContext } from '../App';
 
 const BORDER_WIDTH = CAPTURE_BUTTON_SIZE * 0.1;
 const MEDIA_TYPE = 'photo';
-const PHOTOS_PATH = RNFS.ExternalStorageDirectoryPath + '/DCIM';
+const PHOTOS_PATH = RNFS.ExternalStorageDirectoryPath+'/DCIM'
 
 interface CaptureButtonProps extends ViewProps {
   camera: React.RefObject<Camera>;
   flash: 'off' | 'on';
+  setTriggerFlicker: (isFlicker: boolean) => void;
 }
 
-const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
+const CaptureButton = ({
+  style,
+  camera,
+  flash,
+  setTriggerFlicker,
+}: CaptureButtonProps) => {
   const captureContext = useContext(CaptureContext);
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
     () => ({
@@ -43,9 +48,7 @@ const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
 
   const takePhoto = useCallback(async () => {
     try {
-      if (camera.current === null) {
-        throw new Error('Camera ref is null!');
-      }
+      if (camera.current === null) throw new Error('Camera ref is null!');
 
       console.log('Taking photo...');
       const media = await camera.current.takePhoto(takePhotoOptions);
@@ -75,8 +78,9 @@ const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
   const onHandlerStateChanged = useCallback(async () => {
     try {
       await takePhoto();
+      setTriggerFlicker(true);
       console.log('isCapture', captureContext.isCapture);
-      if (!captureContext.isCapture) {
+      if(!captureContext.isCapture){
         captureContext.setIsCapture(true);
       }
     } finally {
