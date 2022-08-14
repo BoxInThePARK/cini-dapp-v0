@@ -16,9 +16,8 @@ CINI is the next generation film camera ready to revolutionize the photo space w
 
 ## Demo
 
-[Hackathon Video Demo]:()
-
-[Hackathon Demo Slides]:()
+[hackathon video demo]: ()
+[hackathon demo slides]: ()
 
 Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 
@@ -57,6 +56,7 @@ After making changes to any of the client libraries in `js/packages/` you will n
 ## Built with
 
 Example React Native dApp
+
 ## License
 
 This project is licensed under the MIT License.
