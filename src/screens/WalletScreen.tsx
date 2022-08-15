@@ -18,4 +18,6 @@ const WalletScreen = () => {
   );
 };
 
+const styles = StyleSheet.create({});
+
 export default WalletScreen;
