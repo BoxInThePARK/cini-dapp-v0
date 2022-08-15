@@ -20,7 +20,7 @@ const FilckerView = ({
     if (trigger) {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 2,
+        duration: 1,
         useNativeDriver: true,
       }).start(({finished}) => {
         Animated.timing(fadeAnim, {
