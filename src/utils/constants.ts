@@ -27,3 +27,26 @@ export const SCREEN_HEIGHT = Platform.select<number>({
 
 // Capture Button
 export const CAPTURE_BUTTON_SIZE = 78;
+
+export const MockRollFilm: Record<string, Record<string, string>> = {
+  CINI: {
+    key: 'cini',
+    display: 'CINI 100',
+  },
+  LISBON: {
+    key: 'lisbon',
+    display: 'LISBON 400',
+  },
+  BERLIN: {
+    key: 'berlin',
+    display: 'BERLIN 400',
+  },
+  TAIPEI: {
+    key: 'taipei',
+    display: 'TAIPEI 800',
+  },
+  SEOUL: {
+    key: 'seoul',
+    display: 'SEOUL 400',
+  },
+};

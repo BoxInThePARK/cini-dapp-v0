@@ -1,4 +1,11 @@
-import React, {useCallback, useMemo, useState, useContext, useRef} from 'react';
+import React, {
+  useEffect,
+  useCallback,
+  useMemo,
+  useState,
+  useContext,
+  useRef,
+} from 'react';
 import {
   Animated,
   StyleSheet,
@@ -6,9 +13,11 @@ import {
   ViewProps,
   Button,
   TouchableOpacity,
+  PanResponder,
   Alert,
+  Image,
 } from 'react-native';
-import {CAPTURE_BUTTON_SIZE} from '../utils/constants';
+import {SAFE_AREA_PADDING, CAPTURE_BUTTON_SIZE} from '../utils/constants';
 import type {
   Camera,
   TakePhotoOptions,
@@ -17,6 +26,7 @@ import type {
 } from 'react-native-vision-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import RNFS from 'react-native-fs';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {CaptureContext} from '../App';
 
 const BORDER_WIDTH = CAPTURE_BUTTON_SIZE * 0.1;
@@ -24,13 +34,25 @@ const MEDIA_TYPE = 'photo';
 const PHOTOS_PATH = RNFS.ExternalStorageDirectoryPath + '/DCIM';
 
 interface CaptureButtonProps extends ViewProps {
+  isFileAccessGranted: boolean;
   camera: React.RefObject<Camera>;
+  filmRoll: string;
   flash: 'off' | 'on';
+  handleNavigateToUndevelopedPage: () => void;
 }
 
-const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
+const CaptureButton = ({
+  isFileAccessGranted,
+  style,
+  camera,
+  filmRoll,
+  flash,
+  handleNavigateToUndevelopedPage,
+}: CaptureButtonProps) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(1)).current;
   const captureContext = useContext(CaptureContext);
+  const [newPhotoPreview, setNewPhotoPreview] = useState<String>('');
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
     () => ({
       photoCodec: 'jpeg',
@@ -42,23 +64,43 @@ const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
     [flash],
   );
 
+  const getNewestPhoto = useCallback(async () => {
+    try {
+      const result = await RNFS.readDir(
+        `${RNFS.DocumentDirectoryPath}/cini_media`,
+      );
+
+      const imageList = result
+        .filter(item => item.isFile)
+        .map(item => item.path)
+        .reverse();
+
+      if (imageList.length > 0) {
+        setNewPhotoPreview(imageList[0]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   const takePhoto = useCallback(async () => {
     try {
       if (camera.current === null) throw new Error('Camera ref is null!');
 
-      console.log('Taking photo...');
+      // console.log('Taking photo...');
       const media = await camera.current.takePhoto(takePhotoOptions);
       if (media) {
-        console.log(`Media captured! ${JSON.stringify(media)}`);
+        // console.log(`Media captured! ${JSON.stringify(media)}`);
         const splitString = media.path.split('/');
-        const fileName = splitString.pop();
+        const fileName = splitString[splitString.length - 1];
+        const splitFileName = fileName.split('.');
         await CameraRoll.save(`file://${media.path}`, {
           type: MEDIA_TYPE,
         });
 
         await RNFS.copyFile(
           `file://${media.path}`,
-          `file://${RNFS.DocumentDirectoryPath}/cini_media/${fileName}`,
+          `file://${RNFS.DocumentDirectoryPath}/cini_media/${splitFileName[0]}_${filmRoll}.${splitFileName[1]}`,
         );
 
         await RNFS.unlink(`file://${media.path}`);
@@ -72,25 +114,25 @@ const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
   }, [camera, takePhotoOptions]);
 
   const makeScreenFlick = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 0.8,
-      useNativeDriver: true,
-    }).start(({finished}) => {
+    Animated.sequence([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 0.8,
+        useNativeDriver: true,
+      }),
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 0.8,
         useNativeDriver: true,
-      }).start();
-    });
+      }),
+    ]).start();
   };
 
   const onHandlerStateChanged = useCallback(async () => {
     try {
       makeScreenFlick();
       await takePhoto();
-      // setTriggerFlicker(true);
-      // console.log('isCapture', captureContext.isCapture);
+      getNewestPhoto();
       if (!captureContext.isCapture) {
         captureContext.setIsCapture(true);
       }
@@ -101,6 +143,12 @@ const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
     }
   }, [takePhoto]);
 
+  useEffect(() => {
+    if (isFileAccessGranted) {
+      getNewestPhoto();
+    }
+  }, [isFileAccessGranted]);
+
   return (
     <>
       <Animated.View
@@ -108,9 +156,36 @@ const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
           styles.cameraFlicker,
           {
             opacity: fadeAnim, // Bind opacity to animated value
+            // transform: [{scaleX: scaleAnim}], // Bind scale to animated value
           },
         ]}
       />
+      <View style={styles.photosButton}>
+        <TouchableOpacity onPress={handleNavigateToUndevelopedPage}>
+          {newPhotoPreview ? (
+            <View style={{position: 'relative'}}>
+              <MaterialIcons
+                name="photo"
+                size={48}
+                color="white"
+                style={styles.iconLeftRotate}
+              />
+              <Image
+                source={{uri: `file://${newPhotoPreview}`}}
+                style={styles.previewPhoto}
+                resizeMode="cover"
+              />
+            </View>
+          ) : (
+            <MaterialIcons
+              name="photo"
+              size={48}
+              color="white"
+              style={styles.icon}
+            />
+          )}
+        </TouchableOpacity>
+      </View>
       <View style={style}>
         <TouchableOpacity onPress={onHandlerStateChanged}>
           <View style={styles.button} />
@@ -136,6 +211,27 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#ffffff',
     zIndex: 10,
+  },
+  photosButton: {
+    position: 'absolute',
+    bottom: SAFE_AREA_PADDING.paddingBottom,
+    left: SAFE_AREA_PADDING.paddingRight,
+    width: 56,
+    height: 56,
+    zIndex: 20,
+  },
+  icon: {},
+  iconLeftRotate: {
+    transform: [{rotate: '-10deg'}],
+  },
+  previewPhoto: {
+    width: 40,
+    height: 40,
+    borderRadius: 5,
+    position: 'absolute',
+    top: 0,
+    left: 12,
+    elevation: 10,
   },
 });
 

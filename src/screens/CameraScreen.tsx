@@ -26,14 +26,13 @@ import {
 } from 'react-native-vision-camera';
 import CaptureButton from '../views/CaptureButton';
 import type {Routes} from './Routes';
-import {SAFE_AREA_PADDING} from '../utils/constants';
+import {MockRollFilm, SAFE_AREA_PADDING} from '../utils/constants';
 import {useIsFocused} from '@react-navigation/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {CaptureContext} from '../App';
 import RNFS from 'react-native-fs';
 
-const MockRollFilm = ['kodak', 'FUJI', 'Metropolis', 'canon', 'vintage'];
 const TRANSITIONS = ['fade', 'slide', 'none'];
 type FLASH_STATUS = 'off' | 'on';
 type CAMERA_STATUS = 'front' | 'back';
@@ -48,7 +47,10 @@ const CameraScreen = ({navigation}: Props) => {
   const [flashStatus, setFlashStatus] = useState<FLASH_STATUS>('off');
   const [cameraStatus, setCameraStatus] = useState<CAMERA_STATUS>('back');
   const [isRollFilmListOpen, setIsRollFilmListOpen] = useState<Boolean>(false);
-  const [selectedRollFilm, setSelectRollFilm] = useState<String>('kodak');
+  const [rollFilmList, setRollFilmList] = useState<string[]>([]);
+  const [selectedRollFilm, setSelectRollFilm] = useState<string>(
+    MockRollFilm['CINI'].display,
+  );
   const [hidden, setHidden] = useState(false);
   const [statusBarTransition, setStatusBarTransition] = useState(
     TRANSITIONS[0],
@@ -56,9 +58,6 @@ const CameraScreen = ({navigation}: Props) => {
   const [cameraPermission, setCameraPermission] =
     useState<CameraPermissionStatus>();
   const [isGranted, setIsGranted] = useState(false);
-
-  const [newPhotoPreview, setNewPhotoPreview] = useState<String>('');
-  const captureContext = useContext(CaptureContext);
   const devices = useCameraDevices();
   const isFocused = useIsFocused();
 
@@ -78,25 +77,6 @@ const CameraScreen = ({navigation}: Props) => {
     if (!dirExist) {
       await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media`);
       await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media_cache`);
-    }
-  }, []);
-
-  const getNewestPhoto = useCallback(async () => {
-    try {
-      const result = await RNFS.readDir(
-        `${RNFS.DocumentDirectoryPath}/cini_media`,
-      );
-
-      const imageList = result
-        .filter(item => item.isFile)
-        .map(item => item.path)
-        .reverse();
-
-      if (imageList.length > 0) {
-        setNewPhotoPreview(imageList[0]);
-      }
-    } catch (err) {
-      console.log(err);
     }
   }, []);
 
@@ -122,6 +102,11 @@ const CameraScreen = ({navigation}: Props) => {
     // console.log('open camera');
     requestCameraPermission();
     getPermissions();
+    setRollFilmList(
+      Object.keys(MockRollFilm).map((roll: string) => {
+        return MockRollFilm[roll].display;
+      }),
+    );
   }, []);
 
   useEffect(() => {
@@ -130,11 +115,11 @@ const CameraScreen = ({navigation}: Props) => {
     setHidden(true);
   }, [cameraPermissionStatus]);
 
-  useEffect(() => {
-    if (isGranted) {
-      getNewestPhoto();
-    }
-  }, [isGranted, captureContext.isCapture]);
+  // useEffect(() => {
+  //   if (isGranted) {
+  //     getNewestPhoto();
+  //   }
+  // }, [isGranted, captureContext.isCapture]);
 
   // const onMediaCaptured = useCallback(
   //   (media: PhotoFile, type: 'photo') => {
@@ -216,10 +201,12 @@ const CameraScreen = ({navigation}: Props) => {
   };
 
   const handleSelectRollFilm = (selectedItem: string) => {
-    setSelectRollFilm(selectedItem);
-    setIsRollFilmListOpen(false);
-    MockRollFilm.splice(MockRollFilm.indexOf(selectedItem), 1);
-    MockRollFilm.unshift(selectedItem);
+    if (rollFilmList !== undefined && rollFilmList.length > 0) {
+      setSelectRollFilm(selectedItem);
+      setIsRollFilmListOpen(false);
+      rollFilmList.splice(rollFilmList.indexOf(selectedItem), 1);
+      rollFilmList.unshift(selectedItem);
+    }
   };
 
   const handleSettingClick = () => {};
@@ -266,36 +253,13 @@ const CameraScreen = ({navigation}: Props) => {
         style={StyleSheet.absoluteFill}
         photo={true}
       />
-      <View style={styles.photosButton}>
-        <TouchableOpacity onPress={handleNavigateToUndevelopedPage}>
-          {newPhotoPreview ? (
-            <View style={{position: 'relative'}}>
-              <MaterialIcons
-                name="photo"
-                size={48}
-                color="white"
-                style={styles.iconLeftRotate}
-              />
-              <Image
-                source={{uri: `file://${newPhotoPreview}`}}
-                style={styles.previewPhoto}
-                resizeMode="cover"
-              />
-            </View>
-          ) : (
-            <MaterialIcons
-              name="photo"
-              size={48}
-              color="white"
-              style={styles.icon}
-            />
-          )}
-        </TouchableOpacity>
-      </View>
       <CaptureButton
         style={styles.captureButton}
+        isFileAccessGranted={isGranted}
         camera={camera}
+        filmRoll={selectedRollFilm.split(' ')[0]}
         flash={flashStatus}
+        handleNavigateToUndevelopedPage={handleNavigateToUndevelopedPage}
       />
       <View style={styles.flipCameraButton}>
         <TouchableOpacity onPress={handleCameraStatusChange}>
@@ -313,7 +277,7 @@ const CameraScreen = ({navigation}: Props) => {
         }>
         {isRollFilmListOpen ? (
           <FlatList
-            data={MockRollFilm}
+            data={rollFilmList}
             renderItem={({item}) => (
               <TouchableOpacity
                 style={{marginBottom: 8}}
