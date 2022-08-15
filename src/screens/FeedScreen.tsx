@@ -10,6 +10,7 @@ import {
   View,
   TextInput,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -40,7 +41,67 @@ const Titles = () => {
   );
 };
 
+interface GalleryProps {
+  inputImageList: string[];
+}
+
+const Gallery = ({inputImageList}: GalleryProps) => {
+  return (
+    <ScrollView
+      style={{
+        width: '100%',
+        flexGrow: 1,
+      }}>
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+        }}>
+        {inputImageList.map((source, index) => (
+          <Image
+            key={index}
+            source={{uri: `file://${source}`}}
+            style={styles.imageCard}
+            resizeMode="cover"
+            // onLoadEnd={onMediaLoadEnd}
+            // onLoad={onMediaLoad}
+          />
+        ))}
+      </View>
+    </ScrollView>
+  );
+};
+
 const FeedScreen = () => {
+  const [developedList, setDevelopedList] = useState<string[]>([]);
+
+  const getImageList = useCallback(async () => {
+    try {
+      const result = await RNFS.readDir(
+        `${RNFS.DocumentDirectoryPath}/cini_media/developed`,
+      );
+
+      const imageList = result
+        .filter(item => item.isFile)
+        .map(item => item.path)
+        .reverse();
+
+      setDevelopedList(imageList);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    // console.log('isCapture', captureContext.isCapture);
+    // if (isGranted) {
+    getImageList();
+    // }
+  }, []);
+
   return (
     <View style={styles.screenContainer}>
       <FeedHead />
@@ -116,6 +177,12 @@ const styles = StyleSheet.create({
     top: 0,
     left: 12,
     elevation: 10,
+  },
+  imageCard: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    marginBottom: 12,
   },
 });
 

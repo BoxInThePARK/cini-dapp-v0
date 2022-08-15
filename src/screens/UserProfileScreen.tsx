@@ -33,10 +33,10 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const captureContext = useContext(CaptureContext);
   const [isUser, setIsUser] = useState<boolean>(true);
   const [hasMediaLoaded, setHasMediaLoaded] = useState(false);
-  const [developedList, setDevelopedList] = useState<String[]>([]);
-  const [saleingList, setSaleingList] = useState<String[]>([]);
-  const [collectedList, setCollectedList] = useState<String[]>([]);
-  const [undevelopedList, setUndevelopedList] = useState<String[]>([]);
+  const [developedList, setDevelopedList] = useState<string[]>([]);
+  const [saleingList, setSaleingList] = useState<string[]>([]);
+  const [collectedList, setCollectedList] = useState<string[]>([]);
+  const [undevelopedList, setUndevelopedList] = useState<string[]>([]);
   const [listLenArray, setListLenArray] = useState<number[]>([0, 0, 0, 0]);
 
   const [selectedTab, setSelectedTab] = useState(0);
