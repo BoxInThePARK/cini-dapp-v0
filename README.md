@@ -32,11 +32,16 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 ### Android
 
 1. Install dependencies and build the client libraries locally with `yarn`.
-2. Start the React Native packager, build the application, and start the simulator with `yarn android`.
+2. Launch Android Studio and launch a virtual device.
+3. Start the React Native packager, build the application, and start the simulator with `yarn android`.
 
 ## Development
 
 After making changes to any of the client libraries in `js/packages/` you will need to re-run `yarn` in this directory. This will rebuild the client libraries and copy their build artifacts into the `node_modules/` folder of this example app.
+
+### Add new fonts
+
+Add in font file into `assets/fonts` and run `yarn link-asset`. This will compile the fonts into both iOS and Android. For more information, check out [this article](https://mehrankhandev.medium.com/ultimate-guide-to-use-custom-fonts-in-react-native-77fcdf859cf4).
 
 ## Authors and acknowledgment
 
