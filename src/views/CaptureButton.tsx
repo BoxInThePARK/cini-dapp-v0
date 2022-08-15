@@ -1,5 +1,6 @@
-import React, {useCallback, useMemo, useState, useContext} from 'react';
+import React, {useCallback, useMemo, useState, useContext, useRef} from 'react';
 import {
+  Animated,
   StyleSheet,
   View,
   ViewProps,
@@ -16,24 +17,19 @@ import type {
 } from 'react-native-vision-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import RNFS from 'react-native-fs';
-import { CaptureContext } from '../App';
+import {CaptureContext} from '../App';
 
 const BORDER_WIDTH = CAPTURE_BUTTON_SIZE * 0.1;
 const MEDIA_TYPE = 'photo';
-const PHOTOS_PATH = RNFS.ExternalStorageDirectoryPath+'/DCIM'
+const PHOTOS_PATH = RNFS.ExternalStorageDirectoryPath + '/DCIM';
 
 interface CaptureButtonProps extends ViewProps {
   camera: React.RefObject<Camera>;
   flash: 'off' | 'on';
-  setTriggerFlicker: (isFlicker: boolean) => void;
 }
 
-const CaptureButton = ({
-  style,
-  camera,
-  flash,
-  setTriggerFlicker,
-}: CaptureButtonProps) => {
+const CaptureButton = ({style, camera, flash}: CaptureButtonProps) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const captureContext = useContext(CaptureContext);
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
     () => ({
@@ -75,27 +71,52 @@ const CaptureButton = ({
     }
   }, [camera, takePhotoOptions]);
 
+  const makeScreenFlick = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 0.8,
+      useNativeDriver: true,
+    }).start(({finished}) => {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 0.8,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
   const onHandlerStateChanged = useCallback(async () => {
     try {
+      makeScreenFlick();
       await takePhoto();
-      setTriggerFlicker(true);
-      console.log('isCapture', captureContext.isCapture);
-      if(!captureContext.isCapture){
+      // setTriggerFlicker(true);
+      // console.log('isCapture', captureContext.isCapture);
+      if (!captureContext.isCapture) {
         captureContext.setIsCapture(true);
       }
     } finally {
       setTimeout(() => {
-        console.log('reset');
+        // console.log('reset');
       }, 500);
     }
   }, [takePhoto]);
 
   return (
-    <View style={style}>
-      <TouchableOpacity onPress={onHandlerStateChanged}>
-        <View style={styles.button} />
-      </TouchableOpacity>
-    </View>
+    <>
+      <Animated.View
+        style={[
+          styles.cameraFlicker,
+          {
+            opacity: fadeAnim, // Bind opacity to animated value
+          },
+        ]}
+      />
+      <View style={style}>
+        <TouchableOpacity onPress={onHandlerStateChanged}>
+          <View style={styles.button} />
+        </TouchableOpacity>
+      </View>
+    </>
   );
 };
 
@@ -106,6 +127,15 @@ const styles = StyleSheet.create({
     borderRadius: CAPTURE_BUTTON_SIZE / 2,
     borderWidth: BORDER_WIDTH,
     borderColor: 'white',
+  },
+  cameraFlicker: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#ffffff',
+    zIndex: 10,
   },
 });
 
