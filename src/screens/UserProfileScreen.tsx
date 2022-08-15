@@ -46,7 +46,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
     try {
       // console.log('getImageList');
       const result = await RNFS.readDir(
-        `${RNFS.DocumentDirectoryPath}/cini_media`,
+        `${RNFS.DocumentDirectoryPath}/cini_media/undeveloped`,
       );
 
       const imageList = result

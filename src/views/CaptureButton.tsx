@@ -66,7 +66,7 @@ const CaptureButton = ({
   const getNewestPhoto = useCallback(async () => {
     try {
       const result = await RNFS.readDir(
-        `${RNFS.DocumentDirectoryPath}/cini_media`,
+        `${RNFS.DocumentDirectoryPath}/cini_media/undeveloped`,
       );
 
       const imageList = result
@@ -100,7 +100,7 @@ const CaptureButton = ({
 
           await RNFS.copyFile(
             `file://${media.path}`,
-            `file://${RNFS.DocumentDirectoryPath}/cini_media/${splitFileName[0]}_${usedFilmRoll}.${splitFileName[1]}`,
+            `file://${RNFS.DocumentDirectoryPath}/cini_media/undeveloped/${splitFileName[0]}_${usedFilmRoll}.${splitFileName[1]}`,
           );
 
           await RNFS.unlink(`file://${media.path}`);
