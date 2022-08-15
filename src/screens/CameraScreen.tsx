@@ -75,7 +75,9 @@ const CameraScreen = ({navigation}: Props) => {
     );
     if (!dirExist) {
       await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media`);
-      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media_cache`);
+      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media/undeveloped`);
+      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media/developed`);
+      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media/collected`);
     }
   }, []);
 
@@ -114,7 +116,9 @@ const CameraScreen = ({navigation}: Props) => {
 
   useEffect(() => {
     Camera.getCameraPermissionStatus().then(setCameraPermission);
-    checkDirExists();
+    if (isGranted) {
+      checkDirExists();
+    }
     setHidden(true);
   }, [cameraPermissionStatus]);
 
