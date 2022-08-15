@@ -1,24 +1,24 @@
-import {ConnectionProvider} from '@solana/wallet-adapter-react';
 import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {ConnectionProvider} from '@solana/wallet-adapter-react';
 import {clusterApiUrl} from '@solana/web3.js';
 import React, {createContext, Suspense, useEffect, useState} from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Provider as PaperProvider, Text} from 'react-native-paper';
-
-import SnackbarProvider from './components/SnackbarProvider';
-import DemoConnectionScreen from './screens/DemoConnectionScreen';
-import {PermissionsPage} from './screens/PermissionsPage';
-import CameraScreen from './screens/CameraScreen';
-import {MediaPage} from './screens/MediaPage';
 // import {CameraPage} from './screens/CameraPage';
 import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import type {Routes} from './screens/Routes';
-import InitialScreen from './screens/InitialScreen';
-import MockGallery from './screens/MockGallery';
-import UserProfileScreen from './screens/UserProfileScreen';
+
 import NavBar from './components/NavBar';
+import SnackbarProvider from './components/SnackbarProvider';
 import Main from './Main';
+import CameraScreen from './screens/CameraScreen';
+import DemoConnectionScreen from './screens/DemoConnectionScreen';
+import InitialScreen from './screens/InitialScreen';
+import {MediaPage} from './screens/MediaPage';
+import MockGallery from './screens/MockGallery';
+import {PermissionsPage} from './screens/PermissionsPage';
+import type {Routes} from './screens/Routes';
+import UserProfileScreen from './screens/UserProfileScreen';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
 

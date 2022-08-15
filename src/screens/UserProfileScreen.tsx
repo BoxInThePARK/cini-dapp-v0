@@ -1,22 +1,23 @@
-import React, {useState, useEffect, useCallback, useContext} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {Routes} from './Routes';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
   Dimensions,
-  ScrollView,
+  Image,
   PermissionsAndroid,
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import {Button} from 'react-native-paper';
 import RNFS from 'react-native-fs';
+import {Button} from 'react-native-paper';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+
+import {CaptureContext} from '../App';
 import TabBar from '../components/TabBar';
 import {SAFE_AREA_PADDING} from '../utils/constants';
-import {CaptureContext} from '../App';
-import IonIcon from 'react-native-vector-icons/Ionicons';
+import type {Routes} from './Routes';
 
 const TAB_LIST_USER = ['Developed', 'For Sale', 'Collected', 'Undeveloped'];
 const TAB_LIST_PUBLIC = ['Developed', 'For Sale', 'Collected'];
@@ -246,7 +247,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                 </View>
               ))}
           </View>
-          <View style={{width: '100%', height: 260}}></View>
+          <View style={{width: '100%', height: 260}} />
         </ScrollView>
       </View>
     </View>
