@@ -1,30 +1,38 @@
-import {useIsFocused} from '@react-navigation/native';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+  useContext,
+} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  StatusBar,
+  TouchableOpacity,
+  PermissionsAndroid,
   FlatList,
   Linking,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
 } from 'react-native';
-import RNFS from 'react-native-fs';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   Camera,
-  CameraDevice,
   CameraPermissionStatus,
   useCameraDevices,
+  CameraDevice,
 } from 'react-native-vision-camera';
-
-import {CAPTURE_BUTTON_SIZE, SAFE_AREA_PADDING} from '../utils/constants';
 import CaptureButton from '../views/CaptureButton';
 import type {Routes} from './Routes';
+import {MockRollFilm, SAFE_AREA_PADDING} from '../utils/constants';
+import {useIsFocused} from '@react-navigation/native';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {CaptureContext} from '../App';
+import RNFS from 'react-native-fs';
 
-const MockRollFilm = ['kodak', 'FUJI', 'Metropolis', 'canon', 'vintage'];
 const TRANSITIONS = ['fade', 'slide', 'none'];
 type FLASH_STATUS = 'off' | 'on';
 type CAMERA_STATUS = 'front' | 'back';
@@ -39,14 +47,17 @@ const CameraScreen = ({navigation}: Props) => {
   const [flashStatus, setFlashStatus] = useState<FLASH_STATUS>('off');
   const [cameraStatus, setCameraStatus] = useState<CAMERA_STATUS>('back');
   const [isRollFilmListOpen, setIsRollFilmListOpen] = useState<Boolean>(false);
-  const [selectedRollFilm, setSelectRollFilm] = useState<String>('kodak');
+  const [rollFilmList, setRollFilmList] = useState<string[]>([]);
+  const [selectedRollFilm, setSelectRollFilm] = useState<string>(
+    MockRollFilm['CINI'].display,
+  );
   const [hidden, setHidden] = useState(false);
   const [statusBarTransition, setStatusBarTransition] = useState(
     TRANSITIONS[0],
   );
   const [cameraPermission, setCameraPermission] =
     useState<CameraPermissionStatus>();
-
+  const [isGranted, setIsGranted] = useState(false);
   const devices = useCameraDevices();
   const isFocused = useIsFocused();
 
@@ -65,12 +76,41 @@ const CameraScreen = ({navigation}: Props) => {
     );
     if (!dirExist) {
       await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media`);
+      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media_cache`);
     }
   }, []);
 
+  const getPermissions = useCallback(async () => {
+    const isGranted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: 'Storage Permission',
+        message: 'Cini needs access to your storage to save your media.',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+
+    if (isGranted === PermissionsAndroid.RESULTS.GRANTED) {
+      setIsGranted(true);
+      // console.log('You can use the storage');
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   console.log('selectedRollFilm', selectedRollFilm);
+  // }, [selectedRollFilm]);
+
   useEffect(() => {
-    console.log('open camera');
+    // console.log('open camera');
     requestCameraPermission();
+    getPermissions();
+    setRollFilmList(
+      Object.keys(MockRollFilm).map((roll: string) => {
+        return MockRollFilm[roll].display;
+      }),
+    );
   }, []);
 
   useEffect(() => {
@@ -78,6 +118,12 @@ const CameraScreen = ({navigation}: Props) => {
     checkDirExists();
     setHidden(true);
   }, [cameraPermissionStatus]);
+
+  // useEffect(() => {
+  //   if (isGranted) {
+  //     getNewestPhoto();
+  //   }
+  // }, [isGranted, captureContext.isCapture]);
 
   // const onMediaCaptured = useCallback(
   //   (media: PhotoFile, type: 'photo') => {
@@ -159,10 +205,12 @@ const CameraScreen = ({navigation}: Props) => {
   };
 
   const handleSelectRollFilm = (selectedItem: string) => {
-    setSelectRollFilm(selectedItem);
-    setIsRollFilmListOpen(false);
-    MockRollFilm.splice(MockRollFilm.indexOf(selectedItem), 1);
-    MockRollFilm.unshift(selectedItem);
+    if (rollFilmList !== undefined && rollFilmList.length > 0) {
+      setSelectRollFilm(selectedItem);
+      setIsRollFilmListOpen(false);
+      rollFilmList.splice(rollFilmList.indexOf(selectedItem), 1);
+      rollFilmList.unshift(selectedItem);
+    }
   };
 
   const handleSettingClick = () => {};
@@ -209,20 +257,13 @@ const CameraScreen = ({navigation}: Props) => {
         style={StyleSheet.absoluteFill}
         photo={true}
       />
-      <View style={styles.photosButton}>
-        <TouchableOpacity onPress={handleNavigateToUndevelopedPage}>
-          <MaterialIcons
-            name="photo"
-            size={48}
-            color="white"
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-      </View>
       <CaptureButton
         style={styles.captureButton}
+        isFileAccessGranted={isGranted}
         camera={camera}
+        filmRoll={selectedRollFilm}
         flash={flashStatus}
+        handleNavigateToUndevelopedPage={handleNavigateToUndevelopedPage}
       />
       <View style={styles.flipCameraButton}>
         <TouchableOpacity onPress={handleCameraStatusChange}>
@@ -240,7 +281,7 @@ const CameraScreen = ({navigation}: Props) => {
         }>
         {isRollFilmListOpen ? (
           <FlatList
-            data={MockRollFilm}
+            data={rollFilmList}
             renderItem={({item}) => (
               <TouchableOpacity
                 style={{marginBottom: 8}}
@@ -279,6 +320,7 @@ const styles = StyleSheet.create({
   cameraWrapper: {
     flex: 1,
     backgroundColor: '#000',
+    position: 'relative',
   },
   camera: {
     width: '100%',
@@ -286,30 +328,27 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    // top: SAFE_AREA_PADDING.paddingTop,
     top: 16,
     left: SAFE_AREA_PADDING.paddingLeft,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   flashButton: {
     position: 'absolute',
     alignSelf: 'center',
     top: 16,
-    // top: SAFE_AREA_PADDING.paddingTop,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   settingButton: {
     position: 'absolute',
     top: 16,
-    // top: SAFE_AREA_PADDING.paddingTop,
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   photosButton: {
     position: 'absolute',
@@ -317,12 +356,13 @@ const styles = StyleSheet.create({
     left: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   captureButton: {
     position: 'absolute',
     alignSelf: 'center',
     bottom: SAFE_AREA_PADDING.paddingBottom,
+    zIndex: 20,
   },
   flipCameraButton: {
     position: 'absolute',
@@ -330,7 +370,7 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   rollFilmButton: {
     position: 'absolute',
@@ -338,7 +378,7 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
-    zIndex: 1,
+    zIndex: 20,
   },
   rollFilmList: {
     position: 'absolute',
@@ -346,15 +386,20 @@ const styles = StyleSheet.create({
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 200,
-    zIndex: 1,
+    zIndex: 20,
   },
-  icon: {
-    textShadowColor: 'black',
-    textShadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    textShadowRadius: 1,
+  icon: {},
+  iconLeftRotate: {
+    transform: [{rotate: '-10deg'}],
+  },
+  previewPhoto: {
+    width: 40,
+    height: 40,
+    borderRadius: 5,
+    position: 'absolute',
+    top: 0,
+    left: 12,
+    elevation: 10,
   },
   iconFlip: {
     textShadowColor: 'black',
@@ -366,4 +411,13 @@ const styles = StyleSheet.create({
     transform: [{rotate: '180deg'}],
   },
   cameraControlPannel: {},
+  cameraFlicker: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#ffffff',
+    zIndex: 10,
+  },
 });
