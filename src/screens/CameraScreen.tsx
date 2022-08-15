@@ -131,7 +131,7 @@ const CameraScreen = ({navigation}: Props) => {
   }
 
   const handleCloseCamera = () => {
-    navigation.navigate('MockHome');
+    navigation.navigate('Home');
   };
 
   const handleFlashStatusChange = () => {

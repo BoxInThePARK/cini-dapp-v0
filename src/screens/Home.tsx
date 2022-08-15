@@ -5,9 +5,9 @@ import {Button} from 'react-native-paper';
 
 import type {Routes} from './Routes';
 
-type Props = NativeStackScreenProps<Routes, 'MockHome'>;
+type Props = NativeStackScreenProps<Routes, 'Home'>;
 
-const MockGallery = ({navigation}: Props) => {
+const Home = ({navigation}: Props) => {
   useEffect(() => {
     console.log('open mock home');
   }, []);
@@ -22,7 +22,7 @@ const MockGallery = ({navigation}: Props) => {
         onPress={goToCamera}>
         <Text style={styles.buttonText}>Camera Page</Text>
       </Button> */}
-      <Text style={styles.buttonText}>Mock Gallery</Text>
+      <Text style={styles.buttonText}>Home Page</Text>
     </View>
   );
 };
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MockGallery;
+export default Home;

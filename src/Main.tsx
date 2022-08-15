@@ -9,7 +9,7 @@ import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 
 import NavBar from './components/NavBar';
 import CameraScreen from './screens/CameraScreen';
-import MockGallery from './screens/MockGallery';
+import Home from './screens/Home';
 import type {Routes} from './screens/Routes';
 import UserProfileScreen from './screens/UserProfileScreen';
 
@@ -48,7 +48,7 @@ const Main = ({navigation}: MainProps) => {
             animationTypeForReplace: 'push',
           }}
           initialRouteName="InitialPage">
-          <Drawer.Screen name="MockHome" component={MockGallery} />
+          <Drawer.Screen name="Home" component={Home} />
           {/* <Stack.Screen name="CameraPage" component={CameraScreen} /> */}
           <Drawer.Screen name="UserProfilePage" component={UserProfileScreen} />
         </Drawer.Navigator>
