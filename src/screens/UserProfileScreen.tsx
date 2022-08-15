@@ -44,7 +44,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
 
   const getImageList = useCallback(async () => {
     try {
-      console.log('getImageList');
+      // console.log('getImageList');
       const result = await RNFS.readDir(
         `${RNFS.DocumentDirectoryPath}/cini_media`,
       );
@@ -55,7 +55,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
         .reverse();
 
       setUndevelopedList(imageList);
-      setDevelopedList(imageList);
+      // setDevelopedList(imageList);
       captureContext.setIsCapture(false);
     } catch (err) {
       console.log(err);
@@ -76,17 +76,17 @@ const UserProfileScreen = ({navigation, route}: Props) => {
 
     if (isGranted === PermissionsAndroid.RESULTS.GRANTED) {
       setIsGranted(true);
-      console.log('You can use the storage');
+      // console.log('You can use the storage');
     }
   }, []);
 
   useEffect(() => {
-    console.log('open user profile page');
+    // console.log('open user profile page');
     getPermissions();
   }, []);
 
   useEffect(() => {
-    console.log('isCapture', captureContext.isCapture);
+    // console.log('isCapture', captureContext.isCapture);
     if (isGranted) {
       getImageList();
     }

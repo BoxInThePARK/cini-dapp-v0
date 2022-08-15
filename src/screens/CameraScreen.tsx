@@ -1,11 +1,20 @@
-import React, {useState, useEffect, useMemo, useRef, useCallback} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+  useContext,
+} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
   Text,
   StyleSheet,
+  Image,
   StatusBar,
   TouchableOpacity,
+  PermissionsAndroid,
   FlatList,
   Linking,
 } from 'react-native';
@@ -21,6 +30,7 @@ import {SAFE_AREA_PADDING} from '../utils/constants';
 import {useIsFocused} from '@react-navigation/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {CaptureContext} from '../App';
 import RNFS from 'react-native-fs';
 
 const MockRollFilm = ['kodak', 'FUJI', 'Metropolis', 'canon', 'vintage'];
@@ -45,7 +55,10 @@ const CameraScreen = ({navigation}: Props) => {
   );
   const [cameraPermission, setCameraPermission] =
     useState<CameraPermissionStatus>();
+  const [isGranted, setIsGranted] = useState(false);
 
+  const [newPhotoPreview, setNewPhotoPreview] = useState<String>('');
+  const captureContext = useContext(CaptureContext);
   const devices = useCameraDevices();
   const isFocused = useIsFocused();
 
@@ -64,12 +77,51 @@ const CameraScreen = ({navigation}: Props) => {
     );
     if (!dirExist) {
       await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media`);
+      await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/cini_media_cache`);
+    }
+  }, []);
+
+  const getNewestPhoto = useCallback(async () => {
+    try {
+      const result = await RNFS.readDir(
+        `${RNFS.DocumentDirectoryPath}/cini_media`,
+      );
+
+      const imageList = result
+        .filter(item => item.isFile)
+        .map(item => item.path)
+        .reverse();
+
+      if (imageList.length > 0) {
+        setNewPhotoPreview(imageList[0]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  const getPermissions = useCallback(async () => {
+    const isGranted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: 'Storage Permission',
+        message: 'Cini needs access to your storage to save your media.',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+
+    if (isGranted === PermissionsAndroid.RESULTS.GRANTED) {
+      setIsGranted(true);
+      // console.log('You can use the storage');
     }
   }, []);
 
   useEffect(() => {
-    console.log('open camera');
+    // console.log('open camera');
     requestCameraPermission();
+    getPermissions();
   }, []);
 
   useEffect(() => {
@@ -77,6 +129,12 @@ const CameraScreen = ({navigation}: Props) => {
     checkDirExists();
     setHidden(true);
   }, [cameraPermissionStatus]);
+
+  useEffect(() => {
+    if (isGranted) {
+      getNewestPhoto();
+    }
+  }, [isGranted, captureContext.isCapture]);
 
   // const onMediaCaptured = useCallback(
   //   (media: PhotoFile, type: 'photo') => {
@@ -210,12 +268,28 @@ const CameraScreen = ({navigation}: Props) => {
       />
       <View style={styles.photosButton}>
         <TouchableOpacity onPress={handleNavigateToUndevelopedPage}>
-          <MaterialIcons
-            name="photo"
-            size={48}
-            color="white"
-            style={styles.icon}
-          />
+          {newPhotoPreview ? (
+            <View style={{position: 'relative'}}>
+              <MaterialIcons
+                name="photo"
+                size={48}
+                color="white"
+                style={styles.iconLeftRotate}
+              />
+              <Image
+                source={{uri: `file://${newPhotoPreview}`}}
+                style={styles.previewPhoto}
+                resizeMode="cover"
+              />
+            </View>
+          ) : (
+            <MaterialIcons
+              name="photo"
+              size={48}
+              color="white"
+              style={styles.icon}
+            />
+          )}
         </TouchableOpacity>
       </View>
       <CaptureButton
@@ -346,13 +420,18 @@ const styles = StyleSheet.create({
     height: 200,
     zIndex: 20,
   },
-  icon: {
-    textShadowColor: 'black',
-    textShadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    textShadowRadius: 1,
+  icon: {},
+  iconLeftRotate: {
+    transform: [{rotate: '-10deg'}],
+  },
+  previewPhoto: {
+    width: 40,
+    height: 40,
+    borderRadius: 5,
+    position: 'absolute',
+    top: 0,
+    left: 12,
+    elevation: 10,
   },
   iconFlip: {
     textShadowColor: 'black',
