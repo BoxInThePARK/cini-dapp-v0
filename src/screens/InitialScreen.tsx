@@ -44,7 +44,7 @@ const InitialScreen = ({navigation}: Props) => {
           ) : (
             <>
               <Text style={styles.title}>Share Your View</Text>
-              <Text style={styles.title}>Expend How You Earn</Text>
+              <Text style={styles.title}>Expand How You Earn</Text>
             </>
           )}
         </View>
@@ -62,7 +62,7 @@ const InitialScreen = ({navigation}: Props) => {
                 mode="contained"
                 uppercase
                 onPress={googleLogin}>
-                <Text style={styles.buttonText}>Goolge Login</Text>
+                <Text style={styles.buttonText}>Google Login</Text>
               </Button>
               {/* <Button
                   style={{
@@ -92,8 +92,7 @@ const InitialScreen = ({navigation}: Props) => {
               </Button>
               <Button
                 style={{
-                  width: '40%',
-                  height: 36,
+                  width: '47%',
                 }}
                 contentStyle={{
                   width: '100%',
@@ -108,7 +107,12 @@ const InitialScreen = ({navigation}: Props) => {
             </>
           ) : (
             <Button
-              style={{width: '80%', height: 52, backgroundColor: '#279AF1'}}
+              style={{
+                width: '80%',
+                height: 52,
+                backgroundColor: '#279AF1',
+                marginBottom: 40,
+              }}
               contentStyle={styles.startButton}
               mode="contained"
               uppercase
@@ -139,8 +143,6 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#fff',
     position: 'relative',
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
   },
   imageContainer: {
     flex: 2,
@@ -165,15 +167,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
+    fontFamily: 'Montserrat-Italic',
     fontSize: 32,
-    fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 8,
   },
   logo: {
-    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontFamily: 'Montserrat-Bold',
     fontSize: 52,
-    fontWeight: 'bold',
     color: '#FFFFFF',
   },
   controlPannel: {
@@ -202,6 +203,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   startButton: {
+    fontFamily: 'Montserrat-Bold',
     width: '100%',
     height: 52,
     // paddingVertical: 12,
@@ -212,16 +214,16 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     width: '100%',
-    fontSize: 24,
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 22,
     lineHeight: 40,
-    fontWeight: 'bold',
     color: '#262626',
   },
   connectWalletText: {
     width: '100%',
+    fontFamily: 'Montserrat-Bold',
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   spacer: {
@@ -237,6 +239,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: StaticSafeAreaInsets.safeAreaInsetsLeft + 16,
   },
   informationText: {
+    fontFamily: 'Montserrat-Regular',
     fontSize: 8,
     color: '#ffffff',
   },
