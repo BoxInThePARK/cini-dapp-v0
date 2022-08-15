@@ -50,7 +50,6 @@ const CaptureButton = ({
   handleNavigateToUndevelopedPage,
 }: CaptureButtonProps) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(1)).current;
   const captureContext = useContext(CaptureContext);
   const [newPhotoPreview, setNewPhotoPreview] = useState<String>('');
   const takePhotoOptions = useMemo<TakePhotoOptions & TakeSnapshotOptions>(
@@ -83,35 +82,42 @@ const CaptureButton = ({
     }
   }, []);
 
-  const takePhoto = useCallback(async () => {
-    try {
-      if (camera.current === null) throw new Error('Camera ref is null!');
+  // useEffect(() => {
+  //   console.log('before capture RollFilm', filmRoll);
+  // }, [filmRoll]);
 
-      // console.log('Taking photo...');
-      const media = await camera.current.takePhoto(takePhotoOptions);
-      if (media) {
-        // console.log(`Media captured! ${JSON.stringify(media)}`);
-        const splitString = media.path.split('/');
-        const fileName = splitString[splitString.length - 1];
-        const splitFileName = fileName.split('.');
-        await CameraRoll.save(`file://${media.path}`, {
-          type: MEDIA_TYPE,
-        });
+  const takePhoto = useCallback(
+    async (usedFilmRoll: string) => {
+      try {
+        if (camera.current === null) throw new Error('Camera ref is null!');
 
-        await RNFS.copyFile(
-          `file://${media.path}`,
-          `file://${RNFS.DocumentDirectoryPath}/cini_media/${splitFileName[0]}_${filmRoll}.${splitFileName[1]}`,
-        );
+        // console.log('Taking photo...');
+        const media = await camera.current.takePhoto(takePhotoOptions);
+        if (media) {
+          // console.log(`Media captured! ${JSON.stringify(media)}`);
+          const splitString = media.path.split('/');
+          const fileName = splitString[splitString.length - 1];
+          const splitFileName = fileName.split('.');
+          await CameraRoll.save(`file://${media.path}`, {
+            type: MEDIA_TYPE,
+          });
 
-        await RNFS.unlink(`file://${media.path}`);
-        await RNFS.unlink(`file://${PHOTOS_PATH}/${fileName}`);
-      } else {
-        console.error('Failed to take photo!');
+          await RNFS.copyFile(
+            `file://${media.path}`,
+            `file://${RNFS.DocumentDirectoryPath}/cini_media/${splitFileName[0]}_${usedFilmRoll}.${splitFileName[1]}`,
+          );
+
+          await RNFS.unlink(`file://${media.path}`);
+          await RNFS.unlink(`file://${PHOTOS_PATH}/${fileName}`);
+        } else {
+          console.error('Failed to take photo!');
+        }
+      } catch (e) {
+        console.error('Failed', e);
       }
-    } catch (e) {
-      console.error('Failed', e);
-    }
-  }, [camera, takePhotoOptions]);
+    },
+    [camera, takePhotoOptions],
+  );
 
   const makeScreenFlick = () => {
     Animated.sequence([
@@ -128,20 +134,24 @@ const CaptureButton = ({
     ]).start();
   };
 
-  const onHandlerStateChanged = useCallback(async () => {
-    try {
-      makeScreenFlick();
-      await takePhoto();
-      getNewestPhoto();
-      if (!captureContext.isCapture) {
-        captureContext.setIsCapture(true);
+  const onHandlerStateChanged = useCallback(
+    async (usedFilmRoll: string) => {
+      try {
+        // console.log('usedFilmRoll', usedFilmRoll);
+        makeScreenFlick();
+        await takePhoto(usedFilmRoll);
+        getNewestPhoto();
+        if (!captureContext.isCapture) {
+          captureContext.setIsCapture(true);
+        }
+      } finally {
+        setTimeout(() => {
+          // console.log('reset');
+        }, 500);
       }
-    } finally {
-      setTimeout(() => {
-        // console.log('reset');
-      }, 500);
-    }
-  }, [takePhoto]);
+    },
+    [takePhoto],
+  );
 
   useEffect(() => {
     if (isFileAccessGranted) {
@@ -187,7 +197,10 @@ const CaptureButton = ({
         </TouchableOpacity>
       </View>
       <View style={style}>
-        <TouchableOpacity onPress={onHandlerStateChanged}>
+        <TouchableOpacity
+          onPress={() => {
+            onHandlerStateChanged(filmRoll.split(' ')[0]);
+          }}>
           <View style={styles.button} />
         </TouchableOpacity>
       </View>

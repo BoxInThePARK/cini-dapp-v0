@@ -98,6 +98,10 @@ const CameraScreen = ({navigation}: Props) => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   console.log('selectedRollFilm', selectedRollFilm);
+  // }, [selectedRollFilm]);
+
   useEffect(() => {
     // console.log('open camera');
     requestCameraPermission();
@@ -257,7 +261,7 @@ const CameraScreen = ({navigation}: Props) => {
         style={styles.captureButton}
         isFileAccessGranted={isGranted}
         camera={camera}
-        filmRoll={selectedRollFilm.split(' ')[0]}
+        filmRoll={selectedRollFilm}
         flash={flashStatus}
         handleNavigateToUndevelopedPage={handleNavigateToUndevelopedPage}
       />
