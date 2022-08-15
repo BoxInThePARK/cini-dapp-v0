@@ -16,6 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import type {Routes} from '../screens/Routes';
 
 const BUTTON_SIZE = 48;
+const BUTTON_SIZE_SMALL = 44;
 
 interface NavBarProps {
   navigation: NativeStackNavigationProp<Routes, 'MainPages', undefined>;
@@ -40,7 +41,7 @@ const NavBar = ({navigation}: NavBarProps) => {
         }}>
         <MaterialCommunityIcons
           name="book-open-blank-variant"
-          size={BUTTON_SIZE}
+          size={BUTTON_SIZE_SMALL}
           color="#262626"
         />
       </TouchableOpacity>
@@ -58,7 +59,7 @@ const NavBar = ({navigation}: NavBarProps) => {
         onPress={() => {
           navigation.navigate('Wallet');
         }}>
-        <IonIcon name="wallet" size={BUTTON_SIZE} color="#262626" />
+        <IonIcon name="wallet" size={BUTTON_SIZE_SMALL} color="#262626" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
@@ -85,15 +86,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  startButton: {
-    width: 72,
-    height: 72,
-    // paddingVertical: 12,
-    backgroundColor: '#262626',
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
   },
 });

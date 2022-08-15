@@ -11,6 +11,7 @@ import NavBar from './components/NavBar';
 import CameraScreen from './screens/CameraScreen';
 import Home from './screens/Home';
 import FeedScreen from './screens/FeedScreen';
+import WalletScreen from './screens/WalletScreen';
 import type {Routes} from './screens/Routes';
 import UserProfileScreen from './screens/UserProfileScreen';
 
@@ -51,6 +52,7 @@ const Main = ({navigation}: MainProps) => {
           initialRouteName="InitialPage">
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Feed" component={FeedScreen} />
+          <Drawer.Screen name="Wallet" component={WalletScreen} />
           {/* <Stack.Screen name="CameraPage" component={CameraScreen} /> */}
           <Drawer.Screen name="UserProfilePage" component={UserProfileScreen} />
         </Drawer.Navigator>
