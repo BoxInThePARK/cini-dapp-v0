@@ -31,11 +31,20 @@ const FeedHead = () => {
   );
 };
 
+const Titles = () => {
+  return (
+    <View style={styles.titleWrapper}>
+      <Text style={styles.titleText}>New developed</Text>
+      <EntypoIcon name="chevron-up" size={28} color="#262626" />
+    </View>
+  );
+};
+
 const FeedScreen = () => {
   return (
     <View style={styles.screenContainer}>
       <FeedHead />
-      <Text style={styles.title}>New developed</Text>
+      <Titles />
     </View>
   );
 };
@@ -57,11 +66,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: {
+  titleWrapper: {
+    width: '100%',
+    paddingHorizontal: SAFE_AREA_PADDING.paddingLeft + 9,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  titleText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#262626',
-    paddingHorizontal: SAFE_AREA_PADDING.paddingLeft + 9,
+    marginRight: 8,
   },
   contentWrapper: {
     width: '100%',
