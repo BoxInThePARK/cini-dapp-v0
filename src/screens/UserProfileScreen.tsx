@@ -310,17 +310,15 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   followNum: {
-    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontFamily: 'Montserrat-Bold',
     fontSize: 15,
-    fontWeight: 'bold',
     lineHeight: 20,
     color: '#262626',
     textAlign: 'center',
   },
   followText: {
-    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontFamily: 'Montserrat-SemiBold',
     fontSize: 8,
-    fontWeight: '600',
     lineHeight: 12,
     color: '#797575',
     textAlign: 'center',
@@ -342,9 +340,8 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   userNameText: {
-    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontFamily: 'Montserrat-Bold',
     fontSize: 12,
-    fontWeight: 'bold',
     lineHeight: 24,
     color: '#262626',
   },
@@ -356,9 +353,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   editFollowText: {
-    fontFamily: "'Montserrat', 'Montserrat-Bold'",
+    fontFamily: 'Montserrat-Medium',
     fontSize: 12,
-    fontWeight: '500',
     lineHeight: 18,
     color: '#797575',
   },
@@ -385,9 +381,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     width: '100%',
+    fontFamily: 'Montserrat-Bold',
     fontSize: 24,
     lineHeight: 40,
-    fontWeight: 'bold',
     color: '#000',
   },
   img: {
