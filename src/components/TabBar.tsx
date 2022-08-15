@@ -15,7 +15,12 @@ interface TabBarProps {
   setPressedTab: (index: number) => void;
 }
 
-const TabBar = ({tabList, lenList, currentTabIndex, setPressedTab}: TabBarProps) => {
+const TabBar = ({
+  tabList,
+  lenList,
+  currentTabIndex,
+  setPressedTab,
+}: TabBarProps) => {
   return (
     <View style={styles.tabBarContainer}>
       {tabList.map((tab, index) => {

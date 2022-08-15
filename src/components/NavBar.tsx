@@ -1,17 +1,18 @@
-import React, {useState, useContext} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import React, {useContext, useState} from 'react';
 // import type {Routes} from './Routes';
 import {
-  View,
   ImageBackground,
-  Text,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {Button, Divider} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import type {Routes} from '../screens/Routes';
 
 const BUTTON_SIZE = 48;

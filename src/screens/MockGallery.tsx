@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {Routes} from './Routes';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
+
+import type {Routes} from './Routes';
 
 type Props = NativeStackScreenProps<Routes, 'MockHome'>;
 
