@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const FeedHead = () => {
   return (
@@ -25,6 +26,7 @@ const FeedHead = () => {
           keyboardType="default"
         />
       </View>
+      <FontAwesomeIcon name="sliders" size={24} color="#262626" />
     </View>
   );
 };
