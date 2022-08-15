@@ -1,10 +1,11 @@
-import React, {useState, useContext} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {Routes} from './Routes';
-import {View, ImageBackground, Text, StyleSheet} from 'react-native';
-import {Button, Divider} from 'react-native-paper';
+import React, {useContext, useState} from 'react';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import RNFS from 'react-native-fs';
+import {Button, Divider} from 'react-native-paper';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
+
+import type {Routes} from './Routes';
 // import coverImg from '../assets/img/coverImg.png';
 
 type Props = NativeStackScreenProps<Routes, 'InitialPage'>;
@@ -98,7 +99,6 @@ const InitialScreen = ({navigation}: Props) => {
                   width: '100%',
                   borderColor: '#ffffff',
                   borderBottomWidth: 1,
-                  
                 }}
                 mode="text"
                 uppercase

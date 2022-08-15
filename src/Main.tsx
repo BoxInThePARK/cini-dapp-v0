@@ -1,16 +1,17 @@
-import React, {createContext, useState, useContext, useEffect} from 'react';
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, ImageBackground, Text, StyleSheet} from 'react-native';
-import {Button, Divider, BottomNavigation} from 'react-native-paper';
-import RNFS from 'react-native-fs';
 import {NavigationContainer} from '@react-navigation/native';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import type {Routes} from './screens/Routes';
-import MockGallery from './screens/MockGallery';
-import UserProfileScreen from './screens/UserProfileScreen';
-import CameraScreen from './screens/CameraScreen';
-import NavBar from './components/NavBar';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import RNFS from 'react-native-fs';
+import {BottomNavigation, Button, Divider} from 'react-native-paper';
 import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
+
+import NavBar from './components/NavBar';
+import CameraScreen from './screens/CameraScreen';
+import MockGallery from './screens/MockGallery';
+import type {Routes} from './screens/Routes';
+import UserProfileScreen from './screens/UserProfileScreen';
 
 export const ThemeContext = createContext((close: boolean) => {});
 

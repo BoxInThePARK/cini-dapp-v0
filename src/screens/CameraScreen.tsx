@@ -1,27 +1,28 @@
-import React, {useState, useEffect, useMemo, useRef, useCallback} from 'react';
+import {useIsFocused} from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  TouchableOpacity,
   FlatList,
   Linking,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {
-  Camera,
-  CameraPermissionStatus,
-  useCameraDevices,
-  CameraDevice,
-} from 'react-native-vision-camera';
-import CaptureButton from '../views/CaptureButton';
-import type {Routes} from './Routes';
-import {SAFE_AREA_PADDING, CAPTURE_BUTTON_SIZE} from '../utils/constants';
-import {useIsFocused} from '@react-navigation/native';
+import RNFS from 'react-native-fs';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import RNFS from 'react-native-fs';
+import {
+  Camera,
+  CameraDevice,
+  CameraPermissionStatus,
+  useCameraDevices,
+} from 'react-native-vision-camera';
+
+import {CAPTURE_BUTTON_SIZE, SAFE_AREA_PADDING} from '../utils/constants';
+import CaptureButton from '../views/CaptureButton';
+import type {Routes} from './Routes';
 
 const MockRollFilm = ['kodak', 'FUJI', 'Metropolis', 'canon', 'vintage'];
 const TRANSITIONS = ['fade', 'slide', 'none'];
@@ -52,7 +53,9 @@ const CameraScreen = ({navigation}: Props) => {
   const requestCameraPermission = useCallback(async () => {
     const permission = await Camera.requestCameraPermission();
 
-    if (permission === 'denied') await Linking.openSettings();
+    if (permission === 'denied') {
+      await Linking.openSettings();
+    }
     setCameraPermissionStatus(permission);
   }, []);
 

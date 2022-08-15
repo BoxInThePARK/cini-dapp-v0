@@ -1,34 +1,39 @@
-import React, {useCallback, useMemo, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  ActivityIndicator,
-  PermissionsAndroid,
-  Platform,
-  TouchableOpacity,
-  StatusBar
-} from 'react-native';
-// import Video, { LoadError, OnLoadData } from 'react-native-video';
-import {SAFE_AREA_PADDING} from '../utils/constants';
-import {useIsForeground} from '../hooks/useIsForeground';
-// import { PressableOpacity } from 'react-native-pressable-opacity';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {Alert} from 'react-native';
 import CameraRoll from '@react-native-community/cameraroll';
+import {useIsFocused} from '@react-navigation/core';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {useCallback, useMemo, useState} from 'react';
 // import { StatusBarBlurBackground } from '../views/StatusBarBlurBackground';
 import type {NativeSyntheticEvent} from 'react-native';
 import type {ImageLoadEventData} from 'react-native';
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {
+  ActivityIndicator,
+  Image,
+  PermissionsAndroid,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Alert} from 'react-native';
+// import { PressableOpacity } from 'react-native-pressable-opacity';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import {useIsForeground} from '../hooks/useIsForeground';
+// import Video, { LoadError, OnLoadData } from 'react-native-video';
+import {SAFE_AREA_PADDING} from '../utils/constants';
 import type {Routes} from './Routes';
-import {useIsFocused} from '@react-navigation/core';
 
 const requestSavePermission = async (): Promise<boolean> => {
-  if (Platform.OS !== 'android') return true;
+  if (Platform.OS !== 'android') {
+    return true;
+  }
 
   const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
   console.log('check 1');
-  if (permission === null) return false;
+  if (permission === null) {
+    return false;
+  }
   console.log('check 2');
   let hasPermission = await PermissionsAndroid.check(permission);
   if (!hasPermission) {

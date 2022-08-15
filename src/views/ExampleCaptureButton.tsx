@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import React, {useCallback, useMemo, useRef} from 'react';
+import {StyleSheet, View, ViewProps} from 'react-native';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -12,15 +12,26 @@ import Reanimated, {
   Easing,
   Extrapolate,
   interpolate,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
   useAnimatedGestureHandler,
+  useAnimatedStyle,
   useSharedValue,
   withRepeat,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
-import type { Camera, PhotoFile, TakePhotoOptions, TakeSnapshotOptions, VideoFile } from 'react-native-vision-camera';
-import { CAPTURE_BUTTON_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH } from '../utils/constants';
+import type {
+  Camera,
+  PhotoFile,
+  TakePhotoOptions,
+  TakeSnapshotOptions,
+  VideoFile,
+} from 'react-native-vision-camera';
+
+import {
+  CAPTURE_BUTTON_SIZE,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+} from '../utils/constants';
 
 const PAN_GESTURE_HANDLER_FAIL_X = [-SCREEN_WIDTH, SCREEN_WIDTH];
 const PAN_GESTURE_HANDLER_ACTIVE_Y = [-2, 2];
@@ -73,7 +84,9 @@ const _CaptureButton: React.FC<Props> = ({
   //#region Camera Capture
   const takePhoto = useCallback(async () => {
     try {
-      if (camera.current == null) throw new Error('Camera ref is null!');
+      if (camera.current == null) {
+        throw new Error('Camera ref is null!');
+      }
 
       console.log('Taking photo...');
       const photo = await camera.current.takePhoto(takePhotoOptions);
@@ -90,7 +103,9 @@ const _CaptureButton: React.FC<Props> = ({
   }, [recordingProgress]);
   const stopRecording = useCallback(async () => {
     try {
-      if (camera.current == null) throw new Error('Camera ref is null!');
+      if (camera.current == null) {
+        throw new Error('Camera ref is null!');
+      }
 
       console.log('calling stopRecording()...');
       await camera.current.stopRecording();
@@ -101,16 +116,18 @@ const _CaptureButton: React.FC<Props> = ({
   }, [camera]);
   const startRecording = useCallback(() => {
     try {
-      if (camera.current == null) throw new Error('Camera ref is null!');
+      if (camera.current == null) {
+        throw new Error('Camera ref is null!');
+      }
 
       console.log('calling startRecording()...');
       camera.current.startRecording({
         flash: flash,
-        onRecordingError: (error) => {
+        onRecordingError: error => {
           console.error('Recording failed!', error);
           onStoppedRecording();
         },
-        onRecordingFinished: (video) => {
+        onRecordingFinished: video => {
           console.log(`Recording successfully finished! ${video.path}`);
           onMediaCaptured(video, 'video');
           onStoppedRecording();
@@ -128,7 +145,7 @@ const _CaptureButton: React.FC<Props> = ({
   //#region Tap handler
   const tapHandler = useRef<TapGestureHandler>();
   const onHandlerStateChanged = useCallback(
-    async ({ nativeEvent: event }: TapGestureHandlerStateChangeEvent) => {
+    async ({nativeEvent: event}: TapGestureHandlerStateChangeEvent) => {
       // This is the gesture handler for the circular "shutter" button.
       // Once the finger touches the button (State.BEGAN), a photo is being taken and "capture mode" is entered. (disabled tab bar)
       // Also, we set `pressDownDate` to the time of the press down event, and start a 200ms timeout. If the `pressDownDate` hasn't changed
@@ -160,7 +177,9 @@ const _CaptureButton: React.FC<Props> = ({
         case State.CANCELLED: {
           // exit "recording mode"
           try {
-            if (pressDownDate.current == null) throw new Error('PressDownDate ref .current was null!');
+            if (pressDownDate.current == null) {
+              throw new Error('PressDownDate ref .current was null!');
+            }
             const now = new Date();
             const diff = now.getTime() - pressDownDate.current.getTime();
             pressDownDate.current = undefined;
@@ -183,26 +202,46 @@ const _CaptureButton: React.FC<Props> = ({
           break;
       }
     },
-    [isPressingButton, recordingProgress, setIsPressingButton, startRecording, stopRecording, takePhoto],
+    [
+      isPressingButton,
+      recordingProgress,
+      setIsPressingButton,
+      startRecording,
+      stopRecording,
+      takePhoto,
+    ],
   );
   //#endregion
   //#region Pan handler
   const panHandler = useRef<PanGestureHandler>();
-  const onPanGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetY?: number; startY?: number }>({
+  const onPanGestureEvent = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    {offsetY?: number; startY?: number}
+  >({
     onStart: (event, context) => {
       context.startY = event.absoluteY;
       const yForFullZoom = context.startY * 0.7;
       const offsetYForFullZoom = context.startY - yForFullZoom;
 
       // extrapolate [0 ... 1] zoom -> [0 ... Y_FOR_FULL_ZOOM] finger position
-      context.offsetY = interpolate(cameraZoom.value, [minZoom, maxZoom], [0, offsetYForFullZoom], Extrapolate.CLAMP);
+      context.offsetY = interpolate(
+        cameraZoom.value,
+        [minZoom, maxZoom],
+        [0, offsetYForFullZoom],
+        Extrapolate.CLAMP,
+      );
     },
     onActive: (event, context) => {
       const offset = context.offsetY ?? 0;
       const startY = context.startY ?? SCREEN_HEIGHT;
       const yForFullZoom = startY * 0.7;
 
-      cameraZoom.value = interpolate(event.absoluteY - offset, [yForFullZoom, startY], [maxZoom, minZoom], Extrapolate.CLAMP);
+      cameraZoom.value = interpolate(
+        event.absoluteY - offset,
+        [yForFullZoom, startY],
+        [maxZoom, minZoom],
+        Extrapolate.CLAMP,
+      );
     },
   });
   //#endregion
