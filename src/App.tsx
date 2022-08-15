@@ -19,15 +19,9 @@ import {MediaPage} from './screens/MediaPage';
 import {PermissionsPage} from './screens/PermissionsPage';
 import type {Routes} from './screens/Routes';
 import UserProfileScreen from './screens/UserProfileScreen';
+import {CaptureContext} from './utils/context';
 
 const DEVNET_ENDPOINT = /*#__PURE__*/ clusterApiUrl('devnet');
-
-interface CaptureContextProp {
-  isCapture: boolean;
-  setIsCapture: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const CaptureContext = createContext({} as CaptureContextProp);
 
 const Stack = createNativeStackNavigator<Routes>();
 
