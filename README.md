@@ -1,7 +1,5 @@
 # CINI - Next Generation Film Camera
 
-![CINI](https://user-images.githubusercontent.com/50972884/184951158-a7e4aafd-58c0-4278-9319-9b0411294ab6.png)
-
 CINI is a mobile native dapp project created during the [Solana Summer Camp 2022](https://solana.com/summercamp). It aims to be the next generation film camera ready to revolutionize the photo space with a capture and earn model.
 
 ## Mobile Track for Solana Summer Camp 2022
