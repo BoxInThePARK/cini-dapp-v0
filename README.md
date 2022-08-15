@@ -1,6 +1,6 @@
 # Capture and Earn
 
-It is a decentralized "Capture and Earn" android mobile app for people who love taking photos. 
+It is a decentralized "Capture and Earn" android mobile app for people who love taking photos.
 
 With a brand new token economics and native gallery for share and transact the Photo NFTs.
 
@@ -8,10 +8,10 @@ Buliding the next generation film camera.
 
 ## Features
 
--   Authorize the web app for use with a native mobile wallet app.
--   Record a message of your choosing on-chain, using the Memo program.
--   Sign a message of your choosing.
--   Request an airdrop of SOL on devnet.
+- Authorize the web app for use with a native mobile wallet app.
+- Record a message of your choosing on-chain, using the Memo program.
+- Sign a message of your choosing.
+- Request an airdrop of SOL on devnet.
 
 ## Prerequisites
 
@@ -29,6 +29,7 @@ Buliding the next generation film camera.
 
 After making changes to any of the client libraries in `js/packages/` you will need to re-run `yarn` in this directory. This will rebuild the client libraries and copy their build artifacts into the `node_modules/` folder of this example app.
 
+###
 
 ## Authors and acknowledgment
 
@@ -46,6 +47,7 @@ After making changes to any of the client libraries in `js/packages/` you will n
 ## Built with
 
 Example React Native dApp
+
 ## License
 
 This project is licensed under the MIT License.
