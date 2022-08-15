@@ -17,7 +17,7 @@ import {
 } from 'react-native-vision-camera';
 import CaptureButton from '../views/CaptureButton';
 import type {Routes} from './Routes';
-import {SAFE_AREA_PADDING, CAPTURE_BUTTON_SIZE} from '../utils/constants';
+import {SAFE_AREA_PADDING} from '../utils/constants';
 import {useIsFocused} from '@react-navigation/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -45,7 +45,6 @@ const CameraScreen = ({navigation}: Props) => {
   );
   const [cameraPermission, setCameraPermission] =
     useState<CameraPermissionStatus>();
-  const [triggerFlicker, setTriggerFlicker] = useState<boolean>(false);
 
   const devices = useCameraDevices();
   const isFocused = useIsFocused();
@@ -223,7 +222,6 @@ const CameraScreen = ({navigation}: Props) => {
         style={styles.captureButton}
         camera={camera}
         flash={flashStatus}
-        setTriggerFlicker={setTriggerFlicker}
       />
       <View style={styles.flipCameraButton}>
         <TouchableOpacity onPress={handleCameraStatusChange}>
@@ -270,12 +268,6 @@ const CameraScreen = ({navigation}: Props) => {
           </TouchableOpacity>
         )}
       </View>
-      {/* <View style={styles.cameraFlicker} /> */}
-      <FilckerView
-        style={styles.cameraFlicker}
-        trigger={triggerFlicker}
-        setTriggerFlicker={setTriggerFlicker}
-      />
     </View>
   );
 };
@@ -294,7 +286,6 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    // top: SAFE_AREA_PADDING.paddingTop,
     top: 16,
     left: SAFE_AREA_PADDING.paddingLeft,
     width: 56,
@@ -305,7 +296,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     top: 16,
-    // top: SAFE_AREA_PADDING.paddingTop,
     width: 56,
     height: 56,
     zIndex: 20,
@@ -313,7 +303,6 @@ const styles = StyleSheet.create({
   settingButton: {
     position: 'absolute',
     top: 16,
-    // top: SAFE_AREA_PADDING.paddingTop,
     right: SAFE_AREA_PADDING.paddingRight,
     width: 56,
     height: 56,
