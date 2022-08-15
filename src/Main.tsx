@@ -53,7 +53,6 @@ const Main = ({navigation}: MainProps) => {
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Feed" component={FeedScreen} />
           <Drawer.Screen name="Wallet" component={WalletScreen} />
-          {/* <Stack.Screen name="CameraPage" component={CameraScreen} /> */}
           <Drawer.Screen name="UserProfilePage" component={UserProfileScreen} />
         </Drawer.Navigator>
       </View>
