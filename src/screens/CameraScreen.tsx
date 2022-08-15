@@ -30,7 +30,6 @@ import {MockRollFilm, SAFE_AREA_PADDING} from '../utils/constants';
 import {useIsFocused} from '@react-navigation/native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {CaptureContext} from '../App';
 import RNFS from 'react-native-fs';
 
 const TRANSITIONS = ['fade', 'slide', 'none'];

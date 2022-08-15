@@ -14,7 +14,7 @@ import RNFS from 'react-native-fs';
 import {Button} from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import {CaptureContext} from '../App';
+import {CaptureContext} from '../utils/context';
 import TabBar from '../components/TabBar';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import type {Routes} from './Routes';
