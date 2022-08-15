@@ -1,10 +1,10 @@
-import React, {useState, useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {
-  View,
   ImageBackground,
-  Text,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {Button} from 'react-native-paper';
 
@@ -25,8 +25,8 @@ const TabBar = ({
     <View style={styles.tabBarContainer}>
       {tabList.map((tab, index) => {
         return (
-          //   <View style={styles.tabButton}>
           <Button
+            key={tab}
             style={styles.tabButton}
             contentStyle={styles.tabButton}
             labelStyle={
@@ -42,7 +42,6 @@ const TabBar = ({
             }}>
             {tab} {lenList[index]}
           </Button>
-          //   </View>
         );
       })}
     </View>
@@ -72,17 +71,17 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     height: 24,
-    fontSize: 12,
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 10,
     lineHeight: 20,
-    fontWeight: 'bold',
     color: '#00000080',
     borderRadius: 0,
   },
   selectedTabLabel: {
     height: 24,
-    fontSize: 12,
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 10,
     lineHeight: 20,
-    fontWeight: 'bold',
     color: '#00000080',
     borderBottomColor: '#262626',
     borderBottomWidth: 2,

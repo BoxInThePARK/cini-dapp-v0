@@ -69,8 +69,8 @@ export function PermissionsPage({navigation}: Props): React.ReactElement {
 
 const styles = StyleSheet.create({
   welcome: {
+    fontFamily: 'Montserrat-Bold',
     fontSize: 38,
-    fontWeight: 'bold',
     maxWidth: '80%',
   },
   banner: {
@@ -92,9 +92,9 @@ const styles = StyleSheet.create({
   },
   hyperlink: {
     color: '#007aff',
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat-Bold',
   },
   bold: {
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat-Bold',
   },
 });

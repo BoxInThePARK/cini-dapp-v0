@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
+    fontFamily: 'Montserrat-Bold',
     fontSize: 24,
     lineHeight: 40,
-    fontWeight: 'bold',
     color: '#262626',
   },
 });
