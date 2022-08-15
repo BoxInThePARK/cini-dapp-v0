@@ -26,7 +26,6 @@ const NavBar = ({navigation}: NavBarProps) => {
     <View style={styles.navBarContainer}>
       <TouchableOpacity
         onPress={() => {
-          console.log('navigate to mock home');
           navigation.navigate('Home');
         }}>
         <MaterialCommunityIcons
@@ -37,7 +36,16 @@ const NavBar = ({navigation}: NavBarProps) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          console.log('navigate to camera page');
+          navigation.navigate('Feed');
+        }}>
+        <MaterialCommunityIcons
+          name="book-open-blank-variant"
+          size={BUTTON_SIZE}
+          color="#262626"
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
           navigation.navigate('CameraPage');
         }}>
         <MaterialCommunityIcons
@@ -48,7 +56,12 @@ const NavBar = ({navigation}: NavBarProps) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          console.log('navigate to user profile page');
+          navigation.navigate('Wallet');
+        }}>
+        <IonIcon name="wallet" size={BUTTON_SIZE} color="#262626" />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
           navigation.navigate('UserProfilePage', {initialTab: 0});
         }}>
         <MaterialCommunityIcons
