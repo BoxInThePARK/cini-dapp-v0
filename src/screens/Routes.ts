@@ -1,7 +1,7 @@
 export type Routes = {
   InitialPage: undefined;
   MainPages: undefined;
-  MockHome: undefined;
+  Home: undefined;
   UserProfilePage: {
     initialTab: number;
   };

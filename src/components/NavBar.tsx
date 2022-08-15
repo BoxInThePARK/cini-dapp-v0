@@ -27,7 +27,7 @@ const NavBar = ({navigation}: NavBarProps) => {
       <TouchableOpacity
         onPress={() => {
           console.log('navigate to mock home');
-          navigation.navigate('MockHome');
+          navigation.navigate('Home');
         }}>
         <MaterialCommunityIcons
           name="home"
