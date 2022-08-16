@@ -24,10 +24,11 @@ const windowWidth = Dimensions.get('window').width;
 type Props = NativeStackScreenProps<Routes, 'SinglePhoto'>;
 
 interface PhotoContentProps {
+  filmRollName: string;
   navigation: NativeStackNavigationProp<Routes, 'SinglePhoto', undefined>;
 }
 
-const PhotoContent = ({navigation}: PhotoContentProps) => {
+const PhotoContent = ({filmRollName, navigation}: PhotoContentProps) => {
   return (
     <ScrollView
       style={{
@@ -81,7 +82,7 @@ const PhotoContent = ({navigation}: PhotoContentProps) => {
         <View style={styles.purchaseBox}>
           <View>
             <Text style={styles.purchaseTitle}>Straight Price</Text>
-            <Text style={styles.priceText}>35 CINI</Text>
+            <Text style={styles.priceText}>350 CINI</Text>
           </View>
           <Button
             style={{
@@ -97,9 +98,20 @@ const PhotoContent = ({navigation}: PhotoContentProps) => {
             <Text style={styles.purchaseButtonText}>Purchase</Text>
           </Button>
         </View>
-        <View style={styles.tagBox}>
+        <View style={styles.tagsBox}>
           <Text style={styles.descriptionTitle}>Tags</Text>
           <Divider style={styles.spacer} />
+          <View style={styles.tagsContent}>
+            <View style={[styles.hashTagObj, {width: 56}]}>
+              <Text style={styles.hashTagText}>#{filmRollName}</Text>
+            </View>
+            <View style={[styles.hashTagObj, {width: 50}]}>
+              <Text style={styles.hashTagText}>#JEJU</Text>
+            </View>
+            <View style={[styles.hashTagObj, {width: 70}]}>
+              <Text style={styles.hashTagText}>#SUMMER</Text>
+            </View>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -149,7 +161,7 @@ const SinglePhotoScreen = ({navigation, route}: Props) => {
           </TouchableOpacity>
         </View>
       )}
-      <PhotoContent navigation={navigation} />
+      <PhotoContent filmRollName={filmRollName} navigation={navigation} />
     </View>
   );
 };
@@ -342,8 +354,37 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: '#FFFFFF',
   },
-  tagBox: {
+  tagsBox: {
     width: '100%',
+    height: '100%',
+  },
+  tagsContent: {
+    width: '100%',
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  hashTagObj: {
+    // width: 116,
+    height: 17,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    backgroundColor: '#FFDA58',
+    shadowOffset: {width: 0, height: 1},
+    shadowRadius: 2,
+    shadowColor: '#000000',
+    shadowOpacity: 0.15,
+    elevation: 5,
+    marginRight: 16,
+  },
+  hashTagText: {
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 10,
+    lineHeight: 15,
+    color: '#000000',
   },
   spacer: {
     marginVertical: 8,
