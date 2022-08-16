@@ -2,6 +2,7 @@ import {Dimensions, Platform, ImageSourcePropType} from 'react-native';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 
 export const CONTENT_SPACING = 15;
+const CINI_ROLL_NFT = require('../assets/img/3d-film-roll/cini.jpeg');
 const BERLIN_ROLL_NFT = require('../assets/img/3d-film-roll/berlin.png');
 const LISBON_ROLL_NFT = require('../assets/img/3d-film-roll/lisbon.png');
 const SEOUL_ROLL_NFT = require('../assets/img/3d-film-roll/seoul.png');
@@ -33,6 +34,7 @@ export const SCREEN_HEIGHT = Platform.select<number>({
 export const CAPTURE_BUTTON_SIZE = 78;
 
 export const ROLL_FILM_SRC: Record<string, ImageSourcePropType> = {
+  cini: CINI_ROLL_NFT,
   berlin: BERLIN_ROLL_NFT,
   lisbon: LISBON_ROLL_NFT,
   seoul: SEOUL_ROLL_NFT,
