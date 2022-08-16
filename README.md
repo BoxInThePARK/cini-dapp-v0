@@ -1,20 +1,34 @@
-# Capture and Earn
+# CINI - Next Generation Film Camera
 
-It is a decentralized "Capture and Earn" android mobile app for people who love taking photos. 
+![CINI](https://user-images.githubusercontent.com/50972884/184951158-a7e4aafd-58c0-4278-9319-9b0411294ab6.png)
 
-With a brand new token economics and native gallery for share and transact the Photo NFTs
+CINI is a mobile native dapp project created during the [Solana Summer Camp 2022](https://solana.com/summercamp). It aims to be the next generation film camera ready to revolutionize the photo space with a capture and earn model.
 
-## Features
+## Mobile Track for Solana Summer Camp 2022
 
--   Authorize the web app for use with a native mobile wallet app.
--   Record a message of your choosing on-chain, using the Memo program.
--   Sign a message of your choosing.
--   Request an airdrop of SOL on devnet.
+### Description
 
-## Prerequisites
+### Why this challenge?
 
-1. Set up the Android development environment by following the [environment setup instructions](https://reactnative.dev/docs/environment-setup) for your OS.
-2. Install at least one mobile wallet adapter compliant wallet app on your device/simulator. You can build and install [`fakewallet`](../../android/fakewallet/) for testing purposes.
+## Introducing CINI - Next Generation Film Camera 📸
+
+CINI is the next generation film camera ready to revolutionize the photo space with a capture and earn model which built on Solana.
+
+## Demo
+
+[Hackathon Video Demo]:()
+
+[Hackathon Demo Slides]:()
+
+Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
+
+### Model design
+
+![CINI_model_slide](https://user-images.githubusercontent.com/50972884/184951097-88b661b5-2593-4d76-89d0-93286f0d3728.png)
+
+## Roadmap
+
+![CINI_roadmap_slide](https://user-images.githubusercontent.com/50972884/184951241-aa0f9f9b-d26c-4e12-aa39-0775f2be43a2.png)
 
 ## Quick Start
 
