@@ -1,4 +1,9 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
+import type {
+  NativeStackScreenProps,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
+import type {Routes} from './Routes';
 import {
   Dimensions,
   Image,
@@ -18,6 +23,8 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+type Props = NativeStackScreenProps<Routes, 'Feed'>;
 
 const FeedHead = () => {
   return (
@@ -47,10 +54,11 @@ const Titles = () => {
 interface GalleryProps {
   inputImageList: string[];
   imageRatios: number[];
+  navigation: NativeStackNavigationProp<Routes, 'Feed', undefined>;
   // imageSizes: Record<string, number>[];
 }
 
-const Gallery = ({inputImageList, imageRatios}: GalleryProps) => {
+const Gallery = ({inputImageList, imageRatios, navigation}: GalleryProps) => {
   return (
     <ScrollView
       style={{
@@ -65,7 +73,6 @@ const Gallery = ({inputImageList, imageRatios}: GalleryProps) => {
           justifyContent: 'flex-start',
         }}>
         {inputImageList.map((source, index) => {
-          console.log(`imageRatios[${index}]`, imageRatios[index]);
           return (
             <View
               key={index}
@@ -92,7 +99,9 @@ const Gallery = ({inputImageList, imageRatios}: GalleryProps) => {
               <View style={styles.userInfoBox}>
                 <TouchableOpacity
                   style={styles.userInfoContent}
-                  onPress={() => {}}>
+                  onPress={() => {
+                    navigation.navigate('UserProfilePage', {initialTab: 0});
+                  }}>
                   <Image
                     source={require('../assets/img/pfp.png')}
                     style={styles.userPfp}
@@ -110,15 +119,16 @@ const Gallery = ({inputImageList, imageRatios}: GalleryProps) => {
   );
 };
 
-const FeedScreen = () => {
+const FeedScreen = ({navigation}: Props) => {
   const [developedList, setDevelopedList] = useState<string[]>([]);
   const [imageRatios, setImageRatios] = useState<number[]>([]);
 
   const getImageRatios = async (imageList: string[]) => {
-    const preRatio: number[] = [];
-    const promiseArr = imageList.map(source => {
+    const preRatio: number[] = imageList.map(() => 0);
+
+    const promiseArr = imageList.map((source, index) => {
       return Image.getSize(`file://${source}`, (width, height) => {
-        preRatio.push(width / height);
+        preRatio[index] = width / height;
       });
     });
 
@@ -153,7 +163,11 @@ const FeedScreen = () => {
       <FeedHead />
       <Titles />
       {developedList.length > 0 && imageRatios.length > 0 && (
-        <Gallery inputImageList={developedList} imageRatios={imageRatios} />
+        <Gallery
+          inputImageList={developedList}
+          imageRatios={imageRatios}
+          navigation={navigation}
+        />
       )}
     </View>
   );
