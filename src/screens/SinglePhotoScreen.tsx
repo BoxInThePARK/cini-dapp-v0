@@ -26,13 +26,11 @@ const SinglePhotoScreen = ({navigation, route}: Props) => {
   const [filmRollName, setFilmRollName] = useState('Loading...');
 
   useEffect(() => {
-    console.log('imageSource', imageSource);
-    console.log('imageRatio', imageRatio);
-    console.log('creatorInfo', creatorInfo);
     if (imageSource) {
       const splitArr = imageSource.split('/');
       const fileNameArr = splitArr[splitArr.length - 1].split('.');
       const nameArr = fileNameArr[0].split('_');
+
       setFilmRollName(nameArr[nameArr.length - 1]);
     }
   }, []);
@@ -54,13 +52,19 @@ const SinglePhotoScreen = ({navigation, route}: Props) => {
         }}>
         <IonIcon name="chevron-back" size={12} color="#262626" />
       </TouchableOpacity>
-      <View style={[styles.filmRollBox, {top: windowWidth / imageRatio - 14}]}>
-        <TouchableOpacity style={styles.filmRollContent} onPress={() => {}}>
-          <Text style={styles.filmRollText}>
-            {MockRollFilm[filmRollName].display}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {imageRatio && (
+        <View
+          style={[styles.filmRollBox, {top: windowWidth / imageRatio - 14}]}>
+          <TouchableOpacity style={styles.filmRollContent} onPress={() => {}}>
+            <Text style={styles.filmRollText}>
+              {filmRollName === 'Loading...'
+                ? filmRollName
+                : MockRollFilm[filmRollName].display}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       <Text>SinglePhoto Screen</Text>
     </View>
   );

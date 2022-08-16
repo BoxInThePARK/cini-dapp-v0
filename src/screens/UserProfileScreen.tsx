@@ -74,13 +74,12 @@ const UserProfileScreen = ({navigation, route}: Props) => {
           .reverse();
 
         setImageList(imageList);
-        switch (folder) {
-          case 'developed':
-            await getImageRatios(developedList, setDevelopedRatios);
-            break;
-          case 'undeveloped':
-            await getImageRatios(undevelopedList, setUndevelopedRatios);
-            break;
+        if (folder === 'developed') {
+          await getImageRatios(imageList, setDevelopedRatios);
+          console.log('developedRatios', developedRatios);
+        } else if (folder === 'undeveloped') {
+          await getImageRatios(imageList, setUndevelopedRatios);
+          console.log('undevelopedRatios', undevelopedRatios);
         }
         captureContext.setIsCapture(false);
       } catch (err) {
@@ -104,7 +103,6 @@ const UserProfileScreen = ({navigation, route}: Props) => {
 
     if (isGranted === PermissionsAndroid.RESULTS.GRANTED) {
       setIsGranted(true);
-      // console.log('You can use the storage');
     }
   }, []);
 
@@ -204,16 +202,19 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                 developedList.map((source, index) => (
                   // <View style={styles.imageCard}>
                   <Pressable
+                    key={index}
                     style={styles.imageCard}
                     onPress={() => {
-                      navigation.navigate('SinglePhoto', {
-                        imageSource: `file://${source}`,
-                        imageRatio: developedRatios[index],
-                        creatorInfo: {
-                          avatar: '../assets/img/pfp.png',
-                          name: '@nearop',
-                        },
-                      });
+                      if (developedRatios.length > 0) {
+                        navigation.navigate('SinglePhoto', {
+                          imageSource: `file://${source}`,
+                          imageRatio: developedRatios[index],
+                          creatorInfo: {
+                            avatar: '../assets/img/pfp.png',
+                            name: '@nearop',
+                          },
+                        });
+                      }
                     }}>
                     <Image
                       key={index}
