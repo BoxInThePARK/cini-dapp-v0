@@ -15,16 +15,16 @@ import {
   View,
 } from 'react-native';
 
-type Props = NativeStackScreenProps<Routes, 'Wallet'>;
+type Props = NativeStackScreenProps<Routes, 'SinglePhoto'>;
 
-const WalletScreen = ({navigation}: Props) => {
+const SinglePhotoScreen = ({navigation}: Props) => {
   return (
     <View>
-      <Text>Wallet Screen</Text>
+      <Text>SinglePhoto Screen</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({});
 
-export default WalletScreen;
+export default SinglePhotoScreen;
