@@ -12,15 +12,15 @@ import {
 import {TextInput} from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import {ROLL_FILM} from '../utils/constants';
+import {ROLL_FILM, ROLL_FILM_SRC} from '../utils/constants';
 import type {Routes} from './Routes';
 
 type Props = NativeStackScreenProps<Routes, 'Home'>;
 
 const Home = ({navigation}: Props) => {
-  useEffect(() => {
-    console.log('open mock home');
-  }, []);
+  // useEffect(() => {
+  //   console.log('open mock home');
+  // }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -59,47 +59,45 @@ const Home = ({navigation}: Props) => {
         <Text style={styles.seeAll}>See All</Text>
       </View>
       <ScrollView horizontal style={styles.filmShopWrapper}>
-        <FlatList
-          horizontal
-          data={Object.values(ROLL_FILM)}
-          keyExtractor={item => item.key}
-          renderItem={({item}) => (
-            <TouchableOpacity style={shopFilmItemStyle(item.backgroundColor)}>
-              <Text style={shopFilmRollTitle(item.color)}>{item.key}</Text>
-              <Image
-                style={styles.shopFilmRollImg}
-                source={item.src}
-                resizeMode="cover"
-              />
-              <Text style={shopFilmRollSubtitle(item.color)}>
-                {item.shots} EXP
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
+        {Object.values(ROLL_FILM).map((item, index) => (
+          <TouchableOpacity
+            key={item.key}
+            style={[
+              styles.shopFilmItem,
+              {backgroundColor: item.backgroundColor},
+            ]}>
+            <Text style={[styles.shopFilmRollTitle, {color: item.color}]}>
+              {item.key}
+            </Text>
+            <Image
+              style={styles.shopFilmRollImg}
+              source={ROLL_FILM_SRC[item.key]}
+              resizeMode="cover"
+            />
+            <Text style={[styles.shopFilmRollSubtitle, {color: item.color}]}>
+              {item.shots} EXP
+            </Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
       <View style={styles.sectionHeaderWrapper}>
         <Text style={styles.sectionHeader}>Your Film</Text>
         <Text style={styles.seeAll}>See All</Text>
       </View>
       <View style={styles.yourFilmWrapper}>
-        <FlatList
-          data={Object.values(ROLL_FILM)}
-          keyExtractor={item => item.key}
-          renderItem={({item}) => (
-            <TouchableOpacity style={styles.yourFilmItem}>
-              <View style={styles.yourFilmHeader}>
-                <Text style={styles.yourFilmTitle}>{item.display}</Text>
-                <Text style={styles.yourFilmCount}>11/{item.shots}</Text>
-              </View>
-              <Image
-                style={styles.yourFilmImg}
-                source={item.src}
-                resizeMode="cover"
-              />
-            </TouchableOpacity>
-          )}
-        />
+        {Object.values(ROLL_FILM).map((item, index) => (
+          <TouchableOpacity key={item.key} style={styles.yourFilmItem}>
+            <View style={styles.yourFilmHeader}>
+              <Text style={styles.yourFilmTitle}>{item.display}</Text>
+              <Text style={styles.yourFilmCount}>11/{item.shots}</Text>
+            </View>
+            <Image
+              style={styles.yourFilmImg}
+              source={ROLL_FILM_SRC[item.key]}
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
+        ))}
       </View>
     </ScrollView>
   );
@@ -236,7 +234,6 @@ const styles = StyleSheet.create({
     height: 230,
   },
   yourFilmWrapper: {
-    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
@@ -276,6 +273,34 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     transform: [{rotate: '-90deg'}, {translateX: 24}],
+  },
+  shopFilmItem: {
+    position: 'relative',
+    width: 233,
+    height: 260,
+    borderRadius: 25,
+    marginRight: 30,
+    paddingTop: 18,
+    borderColor: '#000',
+    borderWidth: 1,
+  },
+  shopFilmRollTitle: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    fontFamily: 'Montserrat-ExtraBold',
+    fontSize: 40,
+    lineHeight: 49,
+    textTransform: 'capitalize',
+  },
+  shopFilmRollSubtitle: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 20,
+    lineHeight: 24,
+    textTransform: 'uppercase',
   },
 });
 
