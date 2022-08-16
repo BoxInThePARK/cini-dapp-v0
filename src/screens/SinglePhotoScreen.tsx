@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -38,6 +39,13 @@ const SinglePhotoScreen = ({navigation, route}: Props) => {
         }}
         resizeMode="cover"
       />
+      <TouchableOpacity
+        style={styles.pointButtonBox}
+        onPress={() => {
+          navigation.goBack();
+        }}>
+        <IonIcon name="chevron-back" size={12} color="#262626" />
+      </TouchableOpacity>
       <Text>SinglePhoto Screen</Text>
     </View>
   );
@@ -50,8 +58,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    position: 'relative',
   },
   PhotoWrapper: {},
+  pointButtonBox: {
+    position: 'absolute',
+    width: 20,
+    height: 20,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    top: 20,
+    left: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default SinglePhotoScreen;

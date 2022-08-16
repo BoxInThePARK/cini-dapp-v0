@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Pressable,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import {Button} from 'react-native-paper';
@@ -34,18 +35,35 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const [isUser, setIsUser] = useState<boolean>(true);
   const [hasMediaLoaded, setHasMediaLoaded] = useState(false);
   const [developedList, setDevelopedList] = useState<string[]>([]);
+  const [developedRatios, setDevelopedRatios] = useState<number[]>([]);
   const [saleingList, setSaleingList] = useState<string[]>([]);
   const [collectedList, setCollectedList] = useState<string[]>([]);
   const [undevelopedList, setUndevelopedList] = useState<string[]>([]);
+  const [undevelopedRatios, setUndevelopedRatios] = useState<number[]>([]);
   const [listLenArray, setListLenArray] = useState<number[]>([0, 0, 0, 0]);
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [isGranted, setIsGranted] = useState(false);
 
+  const getImageRatios = async (
+    imageList: string[],
+    setImageRatios: (preRatio: number[]) => void,
+  ) => {
+    const preRatio: number[] = imageList.map(() => 0);
+
+    const promiseArr = imageList.map((source, index) => {
+      return Image.getSize(`file://${source}`, (width, height) => {
+        preRatio[index] = width / height;
+      });
+    });
+
+    await Promise.all(promiseArr);
+    setImageRatios(preRatio);
+  };
+
   const getImageList = useCallback(
     async (folder: string, setImageList: (imageList: string[]) => void) => {
       try {
-        // console.log('getImageList');
         const result = await RNFS.readDir(
           `${RNFS.DocumentDirectoryPath}/cini_media/${folder}`,
         );
@@ -56,6 +74,14 @@ const UserProfileScreen = ({navigation, route}: Props) => {
           .reverse();
 
         setImageList(imageList);
+        switch (folder) {
+          case 'developed':
+            await getImageRatios(developedList, setDevelopedRatios);
+            break;
+          case 'undeveloped':
+            await getImageRatios(undevelopedList, setUndevelopedRatios);
+            break;
+        }
         captureContext.setIsCapture(false);
       } catch (err) {
         console.log(err);
@@ -83,12 +109,10 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   }, []);
 
   useEffect(() => {
-    // console.log('open user profile page');
     getPermissions();
   }, []);
 
   useEffect(() => {
-    // console.log('isCapture', captureContext.isCapture);
     if (isGranted) {
       getImageList('developed', setDevelopedList);
       getImageList('undeveloped', setUndevelopedList);
@@ -178,14 +202,32 @@ const UserProfileScreen = ({navigation, route}: Props) => {
             {selectedTab === 0 &&
               (developedList.length > 0 ? (
                 developedList.map((source, index) => (
-                  <Image
-                    key={index}
-                    source={{uri: `file://${source}`}}
+                  // <View style={styles.imageCard}>
+                  <Pressable
                     style={styles.imageCard}
-                    resizeMode="cover"
-                    // onLoadEnd={onMediaLoadEnd}
-                    // onLoad={onMediaLoad}
-                  />
+                    onPress={() => {
+                      navigation.navigate('SinglePhoto', {
+                        imageSource: `file://${source}`,
+                        imageRatio: developedRatios[index],
+                        creatorInfo: {
+                          avatar: '../assets/img/pfp.png',
+                          name: '@nearop',
+                        },
+                      });
+                    }}>
+                    <Image
+                      key={index}
+                      source={{uri: `file://${source}`}}
+                      style={{
+                        width: '100%',
+                        height: windowWidth / 3,
+                        borderRadius: 10,
+                        marginBottom: 12,
+                      }}
+                      resizeMode="cover"
+                    />
+                  </Pressable>
+                  // </View>
                 ))
               ) : (
                 <View style={styles.noImageWrapper}>
