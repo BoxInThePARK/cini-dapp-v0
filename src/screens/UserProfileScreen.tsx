@@ -42,25 +42,27 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [isGranted, setIsGranted] = useState(false);
 
-  const getImageList = useCallback(async () => {
-    try {
-      // console.log('getImageList');
-      const result = await RNFS.readDir(
-        `${RNFS.DocumentDirectoryPath}/cini_media/undeveloped`,
-      );
+  const getImageList = useCallback(
+    async (folder: string, setImageList: (imageList: string[]) => void) => {
+      try {
+        // console.log('getImageList');
+        const result = await RNFS.readDir(
+          `${RNFS.DocumentDirectoryPath}/cini_media/${folder}`,
+        );
 
-      const imageList = result
-        .filter(item => item.isFile)
-        .map(item => item.path)
-        .reverse();
+        const imageList = result
+          .filter(item => item.isFile)
+          .map(item => item.path)
+          .reverse();
 
-      setUndevelopedList(imageList);
-      // setDevelopedList(imageList);
-      captureContext.setIsCapture(false);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+        setImageList(imageList);
+        captureContext.setIsCapture(false);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [],
+  );
 
   const getPermissions = useCallback(async () => {
     const isGranted = await PermissionsAndroid.request(
@@ -88,7 +90,8 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     // console.log('isCapture', captureContext.isCapture);
     if (isGranted) {
-      getImageList();
+      getImageList('developed', setDevelopedList);
+      getImageList('undeveloped', setUndevelopedList);
     }
   }, [isGranted, captureContext.isCapture]);
 
