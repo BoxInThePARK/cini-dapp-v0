@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {Divider} from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {MockRollFilm} from '../utils/constants';
 import {SAFE_AREA_PADDING} from '../utils/constants';
@@ -63,6 +64,22 @@ const PhotoContent = ({navigation}: PhotoContentProps) => {
             </View>
           </View>
         </View>
+        <View style={styles.descriptionBox}>
+          <Text style={styles.descriptionTitle}>Description</Text>
+          <Divider style={styles.spacer} />
+          <View style={styles.descriptionContentWarpper}>
+            <Text style={styles.descriptionContents}>
+              “Lorem ipsum dolor sit amet, consectetur adipiscing Eli“ {'\n'}
+              {'\n '}
+              Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+              cupidatat non proident, sunt in culpa qui officia deserunt mollit
+              anim
+            </Text>
+          </View>
+        </View>
+        <View style={styles.purchaseBox}></View>
+        <View style={styles.tagBox}></View>
       </View>
     </ScrollView>
   );
@@ -172,6 +189,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 4,
+    marginBottom: 16,
   },
   test: {},
 
@@ -235,8 +253,42 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 8,
     lineHeight: 20,
-    color: '#262626',
+    color: '#000000',
     marginLeft: 4,
+  },
+  descriptionBox: {
+    width: '100%',
+    height: 136,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  descriptionTitle: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 12,
+    lineHeight: 18,
+    color: '#000000',
+  },
+  descriptionContentWarpper: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  descriptionContents: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 12,
+    lineHeight: 18,
+    color: '#000000',
+  },
+  purchaseBox: {
+    width: '100%',
+  },
+  tagBox: {
+    width: '100%',
+  },
+  spacer: {
+    marginVertical: 8,
+    width: '100%',
   },
 });
 
