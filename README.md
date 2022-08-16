@@ -38,7 +38,7 @@ After making changes to any of the client libraries in `js/packages/` you will n
 - [Ting](https://github.com/this-ting) | Front-end | tchangysl@gmail.com
 - [Peter](https://github.com/sc0Vu) | Full-stack | alk03073135@gmail.com
 - [Wade](https://github.com/Nasuyue) | Product | wadde.yang@gmail.com
-- [Cavin]() | Photographer & Designer | cavin@live.com
+- [Cavin]() | Product & UX Designer | cavin@live.com
 - [Yolanda]() | CM | yolicai1028@gmail.com
 
 ## Built with
