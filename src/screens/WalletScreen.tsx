@@ -1,4 +1,9 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
+import type {
+  NativeStackScreenProps,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
+import type {Routes} from './Routes';
 import {
   Dimensions,
   Image,
@@ -10,7 +15,9 @@ import {
   View,
 } from 'react-native';
 
-const WalletScreen = () => {
+type Props = NativeStackScreenProps<Routes, 'Wallet'>;
+
+const WalletScreen = ({navigation}: Props) => {
   return (
     <View>
       <Text>Wallet Screen</Text>
