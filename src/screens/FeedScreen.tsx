@@ -3,6 +3,7 @@ import {
   Dimensions,
   Image,
   PermissionsAndroid,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,6 +15,9 @@ import RNFS from 'react-native-fs';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const FeedHead = () => {
   return (
@@ -40,12 +44,13 @@ const Titles = () => {
     </View>
   );
 };
-
 interface GalleryProps {
   inputImageList: string[];
+  imageRatios: number[];
+  // imageSizes: Record<string, number>[];
 }
 
-const Gallery = ({inputImageList}: GalleryProps) => {
+const Gallery = ({inputImageList, imageRatios}: GalleryProps) => {
   return (
     <ScrollView
       style={{
@@ -56,20 +61,50 @@ const Gallery = ({inputImageList}: GalleryProps) => {
         style={{
           width: '100%',
           height: '100%',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
+          paddingHorizontal: SAFE_AREA_PADDING.paddingLeft + 9,
+          justifyContent: 'flex-start',
         }}>
-        {inputImageList.map((source, index) => (
-          <Image
-            key={index}
-            source={{uri: `file://${source}`}}
-            style={styles.imageCard}
-            resizeMode="cover"
-            // onLoadEnd={onMediaLoadEnd}
-            // onLoad={onMediaLoad}
-          />
-        ))}
+        {inputImageList.map((source, index) => {
+          console.log(`imageRatios[${index}]`, imageRatios[index]);
+          return (
+            <View
+              key={index}
+              style={{
+                width: windowWidth - (SAFE_AREA_PADDING.paddingLeft + 9) * 2,
+                aspectRatio: imageRatios[index],
+                marginBottom: 12,
+                position: 'relative',
+              }}>
+              <Image
+                key={index}
+                source={{uri: `file://${source}`}}
+                style={[
+                  styles.imageCard,
+                  {
+                    width:
+                      windowWidth - (SAFE_AREA_PADDING.paddingLeft + 9) * 2,
+                    aspectRatio: imageRatios[index],
+                  },
+                ]}
+                resizeMode="cover"
+              />
+              {/* <TouchableOpacity onPress={() => {}}> */}
+              <View style={styles.userInfoBox}>
+                <TouchableOpacity
+                  style={styles.userInfoContent}
+                  onPress={() => {}}>
+                  <Image
+                    source={require('../assets/img/pfp.png')}
+                    style={styles.userPfp}
+                    resizeMode="cover"
+                  />
+                  <Text style={styles.userNameText}>@nearop</Text>
+                </TouchableOpacity>
+              </View>
+              {/* </TouchableOpacity> */}
+            </View>
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -77,6 +112,19 @@ const Gallery = ({inputImageList}: GalleryProps) => {
 
 const FeedScreen = () => {
   const [developedList, setDevelopedList] = useState<string[]>([]);
+  const [imageRatios, setImageRatios] = useState<number[]>([]);
+
+  const getImageRatios = async (imageList: string[]) => {
+    const preRatio: number[] = [];
+    const promiseArr = imageList.map(source => {
+      return Image.getSize(`file://${source}`, (width, height) => {
+        preRatio.push(width / height);
+      });
+    });
+
+    await Promise.all(promiseArr);
+    setImageRatios(preRatio);
+  };
 
   const getImageList = useCallback(async () => {
     try {
@@ -90,22 +138,23 @@ const FeedScreen = () => {
         .reverse();
 
       setDevelopedList(imageList);
+      await getImageRatios(imageList);
     } catch (err) {
       console.log(err);
     }
   }, []);
 
   useEffect(() => {
-    // console.log('isCapture', captureContext.isCapture);
-    // if (isGranted) {
     getImageList();
-    // }
   }, []);
 
   return (
     <View style={styles.screenContainer}>
       <FeedHead />
       <Titles />
+      {developedList.length > 0 && imageRatios.length > 0 && (
+        <Gallery inputImageList={developedList} imageRatios={imageRatios} />
+      )}
     </View>
   );
 };
@@ -133,6 +182,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    marginBottom: 16,
   },
   titleText: {
     fontSize: 24,
@@ -179,10 +229,43 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   imageCard: {
+    borderRadius: 15,
+  },
+  userInfoBox: {
+    width: 72,
+    height: 20,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    position: 'absolute',
+    top: 8,
+    left: 16,
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 5,
+    shadowColor: '#000000',
+    shadowOpacity: 0.4,
+    elevation: 10,
+  },
+  userInfoContent: {
     width: '100%',
     height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  userPfp: {
+    width: 20,
+    aspectRatio: 1,
     borderRadius: 10,
-    marginBottom: 12,
+  },
+  userNameText: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 8,
+    lineHeight: 20,
+    color: '#262626',
+    marginLeft: 4,
   },
 });
 
