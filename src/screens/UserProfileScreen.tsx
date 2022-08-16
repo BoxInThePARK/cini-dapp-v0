@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   Pressable,
+  Modal,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import {Button} from 'react-native-paper';
@@ -19,6 +20,7 @@ import {CaptureContext} from '../utils/context';
 import TabBar from '../components/TabBar';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import type {Routes} from './Routes';
+import {ROLL_FILM, MockRollFilm, ROLL_FILM_SRC} from '../utils/constants';
 
 const TAB_LIST_USER = ['Developed', 'Listings', 'Collected', 'Undeveloped'];
 const TAB_LIST_PUBLIC = ['Creations', 'Listings', 'Collected'];
@@ -42,8 +44,33 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const [undevelopedRatios, setUndevelopedRatios] = useState<number[]>([]);
   const [listLenArray, setListLenArray] = useState<number[]>([0, 0, 0, 0]);
 
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [isGranted, setIsGranted] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [isGranted, setIsGranted] = useState<boolean>(false);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalImageData, setModalImageDate] = useState<string>('');
+  const [modalFilmRoll, setModalFilmRoll] = useState<string>('');
+
+  useEffect(() => {
+    if (modalImageData) {
+      const splitArr = modalImageData.split('/');
+      const fileNameArr = splitArr[splitArr.length - 1].split('.');
+      const nameArr = fileNameArr[0].split('_');
+
+      if (nameArr[nameArr.length - 1].includes('m')) {
+        setModalFilmRoll('LISBON');
+      } else {
+        setModalFilmRoll(nameArr[nameArr.length - 1]);
+      }
+    }
+  }, [modalImageData]);
+
+  // useEffect(() => {
+  //   if (modalFilmRoll) {
+  //     console.log('film roll', modalFilmRoll);
+  //     console.log('check', MockRollFilm[modalFilmRoll].key);
+  //   }
+  // }, [modalFilmRoll]);
 
   const getImageRatios = async (
     imageList: string[],
@@ -75,6 +102,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
 
         setImageList(imageList);
         if (folder === 'developed') {
+          setSaleingList(imageList);
           await getImageRatios(imageList, setDevelopedRatios);
         } else if (folder === 'undeveloped') {
           await getImageRatios(imageList, setUndevelopedRatios);
@@ -151,7 +179,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
         <View style={styles.userNameBox}>
           <Text style={styles.userNameText}>@nearop</Text>
         </View>
-        <View style={styles.infomationBox}>
+        <View style={styles.informationBox}>
           <View>
             <Text style={styles.followNum}>169</Text>
             <Text style={styles.followText}>Following</Text>
@@ -274,14 +302,27 @@ const UserProfileScreen = ({navigation, route}: Props) => {
             {selectedTab === 3 &&
               (undevelopedList.length > 0 ? (
                 undevelopedList.map((source, index) => (
-                  <Image
+                  <Pressable
                     key={index}
-                    source={{uri: `file://${source}`}}
                     style={styles.imageCard}
-                    resizeMode="cover"
-                    // onLoadEnd={onMediaLoadEnd}
-                    // onLoad={onMediaLoad}
-                  />
+                    onPress={() => {
+                      setIsModalOpen(true);
+                      setModalImageDate(`file://${source}`);
+                    }}>
+                    <Image
+                      key={index}
+                      source={{uri: `file://${source}`}}
+                      style={{
+                        width: '100%',
+                        height: windowWidth / 3,
+                        borderRadius: 10,
+                        marginBottom: 12,
+                      }}
+                      resizeMode="cover"
+                      // onLoadEnd={onMediaLoadEnd}
+                      // onLoad={onMediaLoad}
+                    />
+                  </Pressable>
                 ))
               ) : (
                 <View style={styles.noImageWrapper}>
@@ -294,6 +335,64 @@ const UserProfileScreen = ({navigation, route}: Props) => {
           <View style={{width: '100%', height: 260}} />
         </ScrollView>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalOpen}
+        onRequestClose={() => {
+          setIsModalOpen(false);
+        }}>
+        <View style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.modalBackButton}
+            onPress={() => {
+              setIsModalOpen(false);
+            }}>
+            <IonIcon name="chevron-back" size={24} color="#262626" />
+          </TouchableOpacity>
+          {modalImageData && modalFilmRoll && (
+            <>
+              <Image
+                source={{uri: modalImageData}}
+                style={{
+                  width: '100%',
+                  height: 536,
+                  borderRadius: 25,
+                  marginTop: 36,
+                }}
+                resizeMode="cover"
+              />
+              <View style={styles.modalFilmRollBox}>
+                <View style={styles.filmRollInfoBox}>
+                  <View style={styles.filmTitleBox}>
+                    <Text style={styles.filmTitleCaption}>Shot with</Text>
+                    <Text style={styles.filmTitleMain}>
+                      {MockRollFilm[modalFilmRoll].display}
+                    </Text>
+                  </View>
+                  <View style={styles.filmRollStatusBox}>
+                    <Text style={styles.stateText}>Developed</Text>
+                    <Text style={styles.expText}>11/36</Text>
+                  </View>
+                </View>
+                <Image
+                  style={styles.filmRollImg}
+                  source={ROLL_FILM_SRC[MockRollFilm[modalFilmRoll].key]}
+                  resizeMode="cover"
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.developButton}
+                onPress={() => {
+                  setIsModalOpen(false);
+                }}>
+                <IonIcon name="arrow-forward" size={24} color="#262626" />
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -336,7 +435,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     elevation: 20,
   },
-  infomationBox: {
+  informationBox: {
     position: 'absolute',
     width: 132,
     height: 60,
@@ -450,6 +549,103 @@ const styles = StyleSheet.create({
     height: windowWidth / 3,
     borderRadius: 10,
     marginBottom: 12,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0,0.9)',
+    position: 'relative',
+  },
+  modalBackButton: {
+    position: 'absolute',
+    width: 30,
+    height: 30,
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
+    top: 28,
+    left: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalFilmRollBox: {
+    width: 240,
+    height: 136,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 25,
+    paddingHorizontal: 28,
+    paddingVertical: 16,
+    marginTop: 36,
+  },
+  filmRollInfoBox: {
+    width: '50%',
+    height: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  filmTitleBox: {
+    width: 103,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    borderRadius: 15,
+    backgroundColor: '#FFDA58',
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 5,
+    shadowColor: '#000000',
+    shadowOpacity: 0.25,
+    elevation: 5,
+    paddingHorizontal: 12,
+    marginRight: 16,
+    marginBottom: 24,
+  },
+  filmTitleCaption: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 10,
+    lineHeight: 10,
+    color: '#000000',
+  },
+  filmTitleMain: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 12,
+    lineHeight: 12,
+    color: '#000000',
+  },
+  filmRollStatusBox: {
+    width: 110,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  stateText: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 12,
+    lineHeight: 12,
+    color: '#000000',
+  },
+  expText: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 30,
+    lineHeight: 40,
+    color: '#000000',
+  },
+  filmRollImg: {
+    width: '50%',
+    height: 160,
+  },
+  developButton: {
+    position: 'absolute',
+    width: 30,
+    height: 30,
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
+    bottom: 156,
+    right: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
