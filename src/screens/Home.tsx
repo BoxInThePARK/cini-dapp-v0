@@ -82,6 +82,25 @@ const Home = ({navigation}: Props) => {
         <Text style={styles.sectionHeader}>Your Film</Text>
         <Text style={styles.seeAll}>See All</Text>
       </View>
+      <View style={styles.yourFilmWrapper}>
+        <FlatList
+          data={Object.values(ROLL_FILM)}
+          keyExtractor={item => item.key}
+          renderItem={({item}) => (
+            <TouchableOpacity style={styles.yourFilmItem}>
+              <View style={styles.yourFilmHeader}>
+                <Text style={styles.yourFilmTitle}>{item.display}</Text>
+                <Text style={styles.yourFilmCount}>11/{item.shots}</Text>
+              </View>
+              <Image
+                style={styles.yourFilmImg}
+                source={item.src}
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -186,7 +205,7 @@ const styles = StyleSheet.create({
     color: '#262626',
   },
   sectionSubheader: {
-    fontFam9ily: 'Montserrat-Bold',
+    fontFamily: 'Montserrat-Bold',
     fontSize: 12,
     lineHeight: 15,
     color: '#262626',
@@ -215,6 +234,48 @@ const styles = StyleSheet.create({
   shopFilmRollImg: {
     width: '100%',
     height: 230,
+  },
+  yourFilmWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+  },
+  yourFilmItem: {
+    height: 105,
+    width: '45%',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    backgroundColor: '#0000002',
+    borderRadius: 5,
+    margin: 5,
+  },
+  yourFilmHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  yourFilmTitle: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 14,
+    lineHeight: 17,
+    color: '#000',
+  },
+  yourFilmCount: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 8,
+    lineHeight: 10,
+    color: '#000',
+    backgroundColor: '#D9D9D9',
+    borderRadius: 5,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+  },
+  yourFilmImg: {
+    width: '100%',
+    height: 150,
+    transform: [{rotate: '-90deg'}, {translateX: 24}],
   },
 });
 
