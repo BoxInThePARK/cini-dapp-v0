@@ -95,7 +95,6 @@ const Gallery = ({inputImageList, imageRatios, navigation}: GalleryProps) => {
                 ]}
                 resizeMode="cover"
               />
-              {/* <TouchableOpacity onPress={() => {}}> */}
               <View style={styles.userInfoBox}>
                 <TouchableOpacity
                   style={styles.userInfoContent}
@@ -110,7 +109,6 @@ const Gallery = ({inputImageList, imageRatios, navigation}: GalleryProps) => {
                   <Text style={styles.userNameText}>@nearop</Text>
                 </TouchableOpacity>
               </View>
-              {/* </TouchableOpacity> */}
             </View>
           );
         })}
