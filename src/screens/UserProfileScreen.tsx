@@ -76,10 +76,8 @@ const UserProfileScreen = ({navigation, route}: Props) => {
         setImageList(imageList);
         if (folder === 'developed') {
           await getImageRatios(imageList, setDevelopedRatios);
-          console.log('developedRatios', developedRatios);
         } else if (folder === 'undeveloped') {
           await getImageRatios(imageList, setUndevelopedRatios);
-          console.log('undevelopedRatios', undevelopedRatios);
         }
         captureContext.setIsCapture(false);
       } catch (err) {
