@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Divider} from 'react-native-paper';
+import {Divider, Button} from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {MockRollFilm} from '../utils/constants';
 import {SAFE_AREA_PADDING} from '../utils/constants';
@@ -78,8 +78,29 @@ const PhotoContent = ({navigation}: PhotoContentProps) => {
             </Text>
           </View>
         </View>
-        <View style={styles.purchaseBox}></View>
-        <View style={styles.tagBox}></View>
+        <View style={styles.purchaseBox}>
+          <View>
+            <Text style={styles.purchaseTitle}>Straight Price</Text>
+            <Text style={styles.priceText}>35 CINI</Text>
+          </View>
+          <Button
+            style={{
+              width: '100%',
+              height: 36,
+              backgroundColor: '#000000',
+              borderRadius: 5,
+            }}
+            contentStyle={styles.purchaseButton}
+            mode="contained"
+            uppercase
+            onPress={() => {}}>
+            <Text style={styles.purchaseButtonText}>Purchase</Text>
+          </Button>
+        </View>
+        <View style={styles.tagBox}>
+          <Text style={styles.descriptionTitle}>Tags</Text>
+          <Divider style={styles.spacer} />
+        </View>
       </View>
     </ScrollView>
   );
@@ -168,6 +189,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000000',
     shadowOpacity: 0.25,
     elevation: 10,
+    zIndex: 10,
   },
   filmRollContent: {
     width: '100%',
@@ -261,7 +283,7 @@ const styles = StyleSheet.create({
     height: 136,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginBottom: 16,
+    marginBottom: 40,
   },
   descriptionTitle: {
     fontFamily: 'Montserrat-Bold',
@@ -282,6 +304,43 @@ const styles = StyleSheet.create({
   },
   purchaseBox: {
     width: '100%',
+    height: 118,
+    border: 'solid',
+    borderWidth: 1,
+    borderColor: '#F1F1F1',
+    borderRadius: 6,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    marginBottom: 40,
+  },
+  purchaseTitle: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 12,
+    lineHeight: 12,
+    color: '#000000',
+  },
+  priceText: {
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 30,
+    lineHeight: 38,
+    color: '#000000',
+  },
+  purchaseButton: {
+    width: '100%',
+    height: 36,
+    backgroundColor: '#000000',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  purchaseButtonText: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 12,
+    lineHeight: 18,
+    color: '#FFFFFF',
   },
   tagBox: {
     width: '100%',
