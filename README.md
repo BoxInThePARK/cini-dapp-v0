@@ -1,23 +1,28 @@
-# CINI - Next Generation Film Camera
+# CINI - Next Generation Film Camera 📸
 
-CINI is a mobile native dapp project created during the [Solana Summer Camp 2022](https://solana.com/summercamp). It aims to be the next generation film camera ready to revolutionize the photo space with a capture and earn model.
+![CINI](https://user-images.githubusercontent.com/50972884/184951158-a7e4aafd-58c0-4278-9319-9b0411294ab6.png)
 
-## Mobile Track for Solana Summer Camp 2022
+CINI is a mobile native dapp project created during the [Solana Summer Camp Hackathon 2022](https://solana.com/summercamp). It aims to be the next generation film camera ready to revolutionize the photo space with a capture and earn model built on Solana.
+
+## Mobile Track for [Solana Summer Camp Hackathon 2022](https://solana.com/summercamp)
 
 ### Description
 
+It's time to build crypto on the go. Make your mobile-first web3 project using the Solana Mobile Stack.
+
 ### Why this challenge?
 
-## Introducing CINI - Next Generation Film Camera 📸
-
-CINI is the next generation film camera ready to revolutionize the photo space with a capture and earn model which built on Solana.
+We are a group of people passionate about capturing the everyday moments in life. We were looking for a fun and creative project that could solve a core issue.
 
 ## Demo
 
-[hackathon video demo]: ()
-[hackathon demo slides]: ()
+[Hackathon Video Demo](https://www.loom.com/share/4c90f0b34d5d4843964c953ff56872e4)
+
+[Hackathon Slide Deck](https://drive.google.com/drive/folders/1lgAWviQLD_MMj2C3Wy8nWdoddrUfe-LK?usp=sharing)
 
 Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
+
+### Features
 
 ### Model design
 
@@ -32,7 +37,9 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 ### Android
 
 1. Install dependencies and build the client libraries locally with `yarn`.
+
 2. Launch Android Studio and launch a virtual device.
+
 3. Start the React Native packager, build the application, and start the simulator with `yarn android`.
 
 ## Development
@@ -50,10 +57,15 @@ Add in font file into `assets/fonts` and run `yarn link-asset`. This will compil
 ### Members:
 
 - [Dan](https://github.com/danhsucowboy) | Front-end | hsu86110@gmail.com
+
 - [Ting](https://github.com/this-ting) | Front-end | tchangysl@gmail.com
+
 - [Peter](https://github.com/sc0Vu) | Full-stack | alk03073135@gmail.com
+
 - [Wade](https://github.com/Nasuyue) | Product | wadde.yang@gmail.com
+
 - [Cavin](https://github.com/imcavinc) | Product & UI/UX Designer | cavin@live.com
+
 - [Yolanda](https://github.com/Yolandatsai) | Community Manager | yolicai1028@gmail.com
 
 ## Built with
