@@ -24,13 +24,16 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 
 ### Features
 
-### Model design
+![CINI_Features_Slide](https://user-images.githubusercontent.com/46632205/184971019-44b89e4f-e83b-41cf-9372-4303c8b381fa.png)
 
-![CINI_model_slide](https://user-images.githubusercontent.com/50972884/184951097-88b661b5-2593-4d76-89d0-93286f0d3728.png)
+
+### Model Design
+
+![CINI_Model_Slide](https://user-images.githubusercontent.com/50972884/184951097-88b661b5-2593-4d76-89d0-93286f0d3728.png)
 
 ## Roadmap
 
-![CINI_roadmap_slide](https://user-images.githubusercontent.com/50972884/184951241-aa0f9f9b-d26c-4e12-aa39-0775f2be43a2.png)
+![CINI_Roadmap_Slide](https://user-images.githubusercontent.com/50972884/184951241-aa0f9f9b-d26c-4e12-aa39-0775f2be43a2.png)
 
 ## Getting Started
 
