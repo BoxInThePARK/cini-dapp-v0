@@ -30,7 +30,7 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 
 ![CINI_roadmap_slide](https://user-images.githubusercontent.com/50972884/184951241-aa0f9f9b-d26c-4e12-aa39-0775f2be43a2.png)
 
-## Quick Start
+## Getting Started
 
 ### Android
 
@@ -40,7 +40,6 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 ## Development
 
 After making changes to any of the client libraries in `js/packages/` you will need to re-run `yarn` in this directory. This will rebuild the client libraries and copy their build artifacts into the `node_modules/` folder of this example app.
-
 
 ## Authors and acknowledgment
 
@@ -52,8 +51,8 @@ After making changes to any of the client libraries in `js/packages/` you will n
 - [Ting](https://github.com/this-ting) | Front-end | tchangysl@gmail.com
 - [Peter](https://github.com/sc0Vu) | Full-stack | alk03073135@gmail.com
 - [Wade](https://github.com/Nasuyue) | Product | wadde.yang@gmail.com
-- [Cavin]() | Product & UX Designer | cavin@live.com
-- [Yolanda]() | CM | yolicai1028@gmail.com
+- [Cavin](https://github.com/imcavinc) | Product & UX Designer | cavin@live.com
+- [Yolanda](https://github.com/Yolandatsai) | CM | yolicai1028@gmail.com
 
 ## Built with
 
