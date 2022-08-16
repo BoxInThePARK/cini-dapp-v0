@@ -1,43 +1,40 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
-  FlatList,
   Image,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {TextInput} from 'react-native-paper';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import {ROLL_FILM, ROLL_FILM_SRC} from '../utils/constants';
+import {SAFE_AREA_PADDING} from '../utils/constants';
 import type {Routes} from './Routes';
 
 type Props = NativeStackScreenProps<Routes, 'Home'>;
 
 const Home = ({navigation}: Props) => {
-  // useEffect(() => {
-  //   console.log('open mock home');
-  // }, []);
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerWrapper}>
         <TouchableOpacity style={styles.settingsIcon} onPress={() => {}}>
           <IonIcon name="settings-sharp" size={13} color="#262626" />
         </TouchableOpacity>
-        <TextInput
-          label="Search"
-          mode="outlined"
-          // onChangeText={text => {
-          //   setMemoText(text);
-          // }}
-          left={<TextInput.Icon name="magnify" color="#00000080" />}
-          style={styles.textInput}
-          value={'teste'}
-        />
+        <View style={styles.searchBar}>
+          <EntypoIcon name="magnifying-glass" size={16} color="#262626" />
+          <TextInput
+            placeholder="Search"
+            placeholderTextColor="#00000050"
+            keyboardType="default"
+            // left={<TextInput.Icon name="magnify" color="#00000080" />}
+            style={styles.searchInputTextBox}
+          />
+        </View>
       </View>
       <View style={styles.userWrapper}>
         <View>
@@ -144,11 +141,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingHorizontal: 20,
   },
+
   headerWrapper: {
-    padding: 20,
+    paddingVertical: 20,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   settingsIcon: {
     width: 30,
@@ -163,11 +162,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     elevation: 10,
   },
-  textInput: {
-    height: 35,
-    background: 'rgba(237, 237, 237, 0.5)',
-    borderRadius: 50,
+  searchBar: {
+    width: 232,
+    height: 40,
+    paddingHorizontal: SAFE_AREA_PADDING.paddingLeft,
+    borderRadius: 20,
+    backgroundColor: '#EEEEEE',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     flexGrow: 1,
+  },
+  searchInputTextBox: {
+    width: '100%',
+    height: '100%',
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 16,
+    color: '#262626',
   },
   userWrapper: {
     display: 'flex',
