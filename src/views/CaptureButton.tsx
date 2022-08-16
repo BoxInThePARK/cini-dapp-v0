@@ -27,7 +27,7 @@ import type {
 import CameraRoll from '@react-native-community/cameraroll';
 import RNFS from 'react-native-fs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {CaptureContext} from '../App';
+import {CaptureContext} from '../utils/context';
 
 const BORDER_WIDTH = CAPTURE_BUTTON_SIZE * 0.1;
 const MEDIA_TYPE = 'photo';
@@ -66,7 +66,7 @@ const CaptureButton = ({
   const getNewestPhoto = useCallback(async () => {
     try {
       const result = await RNFS.readDir(
-        `${RNFS.DocumentDirectoryPath}/cini_media`,
+        `${RNFS.DocumentDirectoryPath}/cini_media/undeveloped`,
       );
 
       const imageList = result
@@ -81,10 +81,6 @@ const CaptureButton = ({
       console.log(err);
     }
   }, []);
-
-  // useEffect(() => {
-  //   console.log('before capture RollFilm', filmRoll);
-  // }, [filmRoll]);
 
   const takePhoto = useCallback(
     async (usedFilmRoll: string) => {
@@ -104,7 +100,7 @@ const CaptureButton = ({
 
           await RNFS.copyFile(
             `file://${media.path}`,
-            `file://${RNFS.DocumentDirectoryPath}/cini_media/${splitFileName[0]}_${usedFilmRoll}.${splitFileName[1]}`,
+            `file://${RNFS.DocumentDirectoryPath}/cini_media/undeveloped/${splitFileName[0]}_${usedFilmRoll}.${splitFileName[1]}`,
           );
 
           await RNFS.unlink(`file://${media.path}`);

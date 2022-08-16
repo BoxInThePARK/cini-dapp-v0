@@ -2,6 +2,8 @@ export type Routes = {
   InitialPage: undefined;
   MainPages: undefined;
   Home: undefined;
+  Feed: undefined;
+  Wallet: undefined;
   UserProfilePage: {
     initialTab: number;
   };

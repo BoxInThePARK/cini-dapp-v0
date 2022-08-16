@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 10,
     lineHeight: 20,
-    color: '#00000080',
+    color: '#262626',
     borderBottomColor: '#262626',
     borderBottomWidth: 2,
     borderRadius: 0,

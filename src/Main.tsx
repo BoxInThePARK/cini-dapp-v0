@@ -10,6 +10,8 @@ import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 import NavBar from './components/NavBar';
 import CameraScreen from './screens/CameraScreen';
 import Home from './screens/Home';
+import FeedScreen from './screens/FeedScreen';
+import WalletScreen from './screens/WalletScreen';
 import type {Routes} from './screens/Routes';
 import UserProfileScreen from './screens/UserProfileScreen';
 
@@ -49,7 +51,8 @@ const Main = ({navigation}: MainProps) => {
           }}
           initialRouteName="InitialPage">
           <Drawer.Screen name="Home" component={Home} />
-          {/* <Stack.Screen name="CameraPage" component={CameraScreen} /> */}
+          <Drawer.Screen name="Feed" component={FeedScreen} />
+          <Drawer.Screen name="Wallet" component={WalletScreen} />
           <Drawer.Screen name="UserProfilePage" component={UserProfileScreen} />
         </Drawer.Navigator>
       </View>

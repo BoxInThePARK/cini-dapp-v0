@@ -14,7 +14,7 @@ import RNFS from 'react-native-fs';
 import {Button} from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import {CaptureContext} from '../App';
+import {CaptureContext} from '../utils/context';
 import TabBar from '../components/TabBar';
 import {SAFE_AREA_PADDING} from '../utils/constants';
 import type {Routes} from './Routes';
@@ -33,34 +33,36 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const captureContext = useContext(CaptureContext);
   const [isUser, setIsUser] = useState<boolean>(true);
   const [hasMediaLoaded, setHasMediaLoaded] = useState(false);
-  const [developedList, setDevelopedList] = useState<String[]>([]);
-  const [saleingList, setSaleingList] = useState<String[]>([]);
-  const [collectedList, setCollectedList] = useState<String[]>([]);
-  const [undevelopedList, setUndevelopedList] = useState<String[]>([]);
+  const [developedList, setDevelopedList] = useState<string[]>([]);
+  const [saleingList, setSaleingList] = useState<string[]>([]);
+  const [collectedList, setCollectedList] = useState<string[]>([]);
+  const [undevelopedList, setUndevelopedList] = useState<string[]>([]);
   const [listLenArray, setListLenArray] = useState<number[]>([0, 0, 0, 0]);
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [isGranted, setIsGranted] = useState(false);
 
-  const getImageList = useCallback(async () => {
-    try {
-      // console.log('getImageList');
-      const result = await RNFS.readDir(
-        `${RNFS.DocumentDirectoryPath}/cini_media`,
-      );
+  const getImageList = useCallback(
+    async (folder: string, setImageList: (imageList: string[]) => void) => {
+      try {
+        // console.log('getImageList');
+        const result = await RNFS.readDir(
+          `${RNFS.DocumentDirectoryPath}/cini_media/${folder}`,
+        );
 
-      const imageList = result
-        .filter(item => item.isFile)
-        .map(item => item.path)
-        .reverse();
+        const imageList = result
+          .filter(item => item.isFile)
+          .map(item => item.path)
+          .reverse();
 
-      setUndevelopedList(imageList);
-      // setDevelopedList(imageList);
-      captureContext.setIsCapture(false);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+        setImageList(imageList);
+        captureContext.setIsCapture(false);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [],
+  );
 
   const getPermissions = useCallback(async () => {
     const isGranted = await PermissionsAndroid.request(
@@ -88,7 +90,8 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     // console.log('isCapture', captureContext.isCapture);
     if (isGranted) {
-      getImageList();
+      getImageList('developed', setDevelopedList);
+      getImageList('undeveloped', setUndevelopedList);
     }
   }, [isGranted, captureContext.isCapture]);
 
