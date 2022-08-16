@@ -13,6 +13,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Pressable,
   View,
   TextInput,
 } from 'react-native';
@@ -76,39 +77,58 @@ const Gallery = ({inputImageList, imageRatios, navigation}: GalleryProps) => {
           return (
             <View
               key={index}
-              style={{
-                width: windowWidth - (SAFE_AREA_PADDING.paddingLeft + 9) * 2,
-                aspectRatio: imageRatios[index],
-                marginBottom: 12,
-                position: 'relative',
-              }}>
-              <Image
-                key={index}
-                source={{uri: `file://${source}`}}
-                style={[
-                  styles.imageCard,
-                  {
+              style={[
+                styles.imageCard,
+                {
+                  aspectRatio: imageRatios[index],
+                },
+              ]}>
+              <Pressable
+                // style={({pressed}) => [
+                //   {
+                //     width:
+                //       windowWidth - (SAFE_AREA_PADDING.paddingLeft + 9) * 2,
+                //     aspectRatio: imageRatios[index],
+                //     borderRadius: 15,
+                //     backgroundColor: 'transparent',
+                //   },
+                // ]}
+                onPress={() => {
+                  navigation.navigate('SinglePhoto', {
+                    imageSource: `file://${source}`,
+                    imageRatio: imageRatios[index],
+                    creatorInfo: {
+                      avatar: '../assets/img/pfp.png',
+                      name: '@nearop',
+                    },
+                  });
+                }}>
+                <Image
+                  key={index}
+                  source={{uri: `file://${source}`}}
+                  style={{
                     width:
                       windowWidth - (SAFE_AREA_PADDING.paddingLeft + 9) * 2,
                     aspectRatio: imageRatios[index],
-                  },
-                ]}
-                resizeMode="cover"
-              />
-              <View style={styles.userInfoBox}>
-                <TouchableOpacity
-                  style={styles.userInfoContent}
-                  onPress={() => {
-                    navigation.navigate('UserProfilePage', {initialTab: 0});
-                  }}>
-                  <Image
-                    source={require('../assets/img/pfp.png')}
-                    style={styles.userPfp}
-                    resizeMode="cover"
-                  />
-                  <Text style={styles.userNameText}>@nearop</Text>
-                </TouchableOpacity>
-              </View>
+                    borderRadius: 15,
+                  }}
+                  resizeMode="cover"
+                />
+                <View style={styles.userInfoBox}>
+                  <TouchableOpacity
+                    style={styles.userInfoContent}
+                    onPress={() => {
+                      navigation.navigate('UserProfilePage', {initialTab: 0});
+                    }}>
+                    <Image
+                      source={require('../assets/img/pfp.png')}
+                      style={styles.userPfp}
+                      resizeMode="cover"
+                    />
+                    <Text style={styles.userNameText}>@nearop</Text>
+                  </TouchableOpacity>
+                </View>
+              </Pressable>
             </View>
           );
         })}
@@ -241,8 +261,18 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   imageCard: {
+    width: windowWidth - (SAFE_AREA_PADDING.paddingLeft + 9) * 2,
+    marginBottom: 16,
+    position: 'relative',
+    shadowOffset: {width: 0, height: 1},
+    shadowRadius: 5,
+    shadowColor: '#000000',
+    shadowOpacity: 0.25,
+    elevation: 10,
+    backgroundColor: 'transparent',
     borderRadius: 15,
   },
+  CardContent: {},
   userInfoBox: {
     width: 72,
     height: 20,
@@ -258,7 +288,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowColor: '#000000',
     shadowOpacity: 0.4,
-    elevation: 10,
+    elevation: 20,
   },
   userInfoContent: {
     width: '100%',
