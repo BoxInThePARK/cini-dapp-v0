@@ -28,25 +28,43 @@ export const SCREEN_HEIGHT = Platform.select<number>({
 // Capture Button
 export const CAPTURE_BUTTON_SIZE = 78;
 
-export const MockRollFilm: Record<string, Record<string, string>> = {
-  CINI: {
-    key: 'cini',
-    display: 'CINI 100',
+export const ROLL_FILM: Record<string, Record<string, string>> = {
+  BERLIN: {
+    key: 'berlin',
+    display: 'BERLIN 400',
+    shots: '36',
+    src: require('../assets/img/3d-film-roll/berlin.png'),
+    backgroundColor: '#000',
   },
   LISBON: {
     key: 'lisbon',
     display: 'LISBON 400',
-  },
-  BERLIN: {
-    key: 'berlin',
-    display: 'BERLIN 400',
-  },
-  TAIPEI: {
-    key: 'taipei',
-    display: 'TAIPEI 800',
+    shots: '36',
+    src: require('../assets/img/3d-film-roll/lisbon.png'),
+    backgroundColor: '#fff',
+    color: '#000',
   },
   SEOUL: {
     key: 'seoul',
     display: 'SEOUL 400',
+    shots: '36',
+    src: require('../assets/img/3d-film-roll/seoul.png'),
+    backgroundColor: '#08004E',
   },
+  TAIPEI: {
+    key: 'taipei',
+    display: 'TAIPEI 800',
+    shots: '24',
+    src: require('../assets/img/3d-film-roll/taipei.png'),
+    backgroundColor: '#BDEBA0',
+  },
+};
+
+export const MockRollFilm: Record<string, Record<string, string, number>> = {
+  CINI: {
+    key: 'cini',
+    display: 'CINI 100',
+    shots: '10',
+  },
+  ...ROLL_FILM,
 };

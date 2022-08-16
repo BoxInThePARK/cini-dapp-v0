@@ -1,6 +1,7 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
 import {
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -8,10 +9,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Button, TextInput} from 'react-native-paper';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import {TextInput} from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
+import {ROLL_FILM} from '../utils/constants';
 import type {Routes} from './Routes';
 
 type Props = NativeStackScreenProps<Routes, 'Home'>;
@@ -58,54 +59,66 @@ const Home = ({navigation}: Props) => {
         <Text style={styles.seeAll}>See All</Text>
       </View>
       <ScrollView horizontal style={styles.filmShopWrapper}>
-        <Image
-          source={require('../assets/img/pfp.png')}
-          style={styles.pfpImg}
-          resizeMode="cover"
-        />
-        <Image
-          source={require('../assets/img/pfp.png')}
-          style={styles.pfpImg}
-          resizeMode="cover"
-        />
-        <Image
-          source={require('../assets/img/pfp.png')}
-          style={styles.pfpImg}
-          resizeMode="cover"
-        />
-        <Image
-          source={require('../assets/img/pfp.png')}
-          style={styles.pfpImg}
-          resizeMode="cover"
-        />
-        <Image
-          source={require('../assets/img/pfp.png')}
-          style={styles.pfpImg}
-          resizeMode="cover"
-        />
-        <Image
-          source={require('../assets/img/pfp.png')}
-          style={styles.pfpImg}
-          resizeMode="cover"
+        <FlatList
+          horizontal
+          data={Object.values(ROLL_FILM)}
+          keyExtractor={item => item.key}
+          renderItem={({item}) => (
+            <TouchableOpacity style={shopFilmItemStyle(item.backgroundColor)}>
+              <Text style={shopFilmRollTitle(item.color)}>{item.key}</Text>
+              <Image
+                style={styles.shopFilmRollImg}
+                source={item.src}
+                resizeMode="cover"
+              />
+              <Text style={shopFilmRollSubtitle(item.color)}>
+                {item.shots} EXP
+              </Text>
+            </TouchableOpacity>
+          )}
         />
       </ScrollView>
       <View style={styles.sectionHeaderWrapper}>
         <Text style={styles.sectionHeader}>Your Film</Text>
         <Text style={styles.seeAll}>See All</Text>
       </View>
-
-      {/* <Button
-        style={{width: '80%', height: 52, backgroundColor: '#279AF1'}}
-        contentStyle={styles.startButton}
-        mode="contained"
-        uppercase
-        onPress={goToCamera}>
-        <Text style={styles.buttonText}>Camera Page</Text>
-      </Button> */}
-      {/* <Text style={styles.buttonText}>Home Page</Text> */}
     </ScrollView>
   );
 };
+
+const shopFilmItemStyle = (backgroundColor: string) => ({
+  position: 'relative',
+  width: 233,
+  height: 260,
+  backgroundColor: backgroundColor,
+  borderRadius: 25,
+  marginRight: 30,
+  paddingTop: 18,
+  borderColor: '#000',
+  borderWidth: 1,
+});
+
+const shopFilmRollTitle = (color: string) => ({
+  position: 'absolute',
+  top: 20,
+  left: 20,
+  fontFamily: 'Montserrat-ExtraBold',
+  fontSize: 40,
+  lineHeight: 49,
+  color: color || '#fff',
+  textTransform: 'capitalize',
+});
+// shopFilmRollImg: {zIndex: 5},
+const shopFilmRollSubtitle = (color: string) => ({
+  position: 'absolute',
+  bottom: 20,
+  right: 20,
+  fontFamily: 'Montserrat-Regular',
+  fontSize: 20,
+  lineHeight: 24,
+  color: color || '#fff',
+  textTransform: 'uppercase',
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -198,6 +211,10 @@ const styles = StyleSheet.create({
   },
   filmShopWrapper: {
     marginBottom: 30,
+  },
+  shopFilmRollImg: {
+    width: '100%',
+    height: 230,
   },
 });
 
