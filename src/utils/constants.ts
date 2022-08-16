@@ -2,7 +2,7 @@ import {Dimensions, Platform, ImageSourcePropType} from 'react-native';
 import StaticSafeAreaInsets from 'react-native-static-safe-area-insets';
 
 export const CONTENT_SPACING = 15;
-const CINI_ROLL_NFT = require('../assets/img/3d-film-roll/cini.jpeg');
+const CINI_ROLL_NFT = require('../assets/img/3d-film-roll/cini.png');
 const BERLIN_ROLL_NFT = require('../assets/img/3d-film-roll/berlin.png');
 const LISBON_ROLL_NFT = require('../assets/img/3d-film-roll/lisbon.png');
 const SEOUL_ROLL_NFT = require('../assets/img/3d-film-roll/seoul.png');
