@@ -1,7 +1,5 @@
 # CINI - Next Generation Film Camera
 
-![CINI](https://user-images.githubusercontent.com/50972884/184951158-a7e4aafd-58c0-4278-9319-9b0411294ab6.png)
-
 CINI is a mobile native dapp project created during the [Solana Summer Camp 2022](https://solana.com/summercamp). It aims to be the next generation film camera ready to revolutionize the photo space with a capture and earn model.
 
 ## Mobile Track for Solana Summer Camp 2022
@@ -16,9 +14,8 @@ CINI is the next generation film camera ready to revolutionize the photo space w
 
 ## Demo
 
-[Hackathon Video Demo]:()
-
-[Hackathon Demo Slides]:()
+[hackathon video demo]: ()
+[hackathon demo slides]: ()
 
 Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 
@@ -35,11 +32,16 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 ### Android
 
 1. Install dependencies and build the client libraries locally with `yarn`.
-2. Start the React Native packager, build the application, and start the simulator with `yarn android`.
+2. Launch Android Studio and launch a virtual device.
+3. Start the React Native packager, build the application, and start the simulator with `yarn android`.
 
 ## Development
 
 After making changes to any of the client libraries in `js/packages/` you will need to re-run `yarn` in this directory. This will rebuild the client libraries and copy their build artifacts into the `node_modules/` folder of this example app.
+
+### Add new fonts
+
+Add in font file into `assets/fonts` and run `yarn link-asset`. This will compile the fonts into both iOS and Android. For more information, check out [this article](https://mehrankhandev.medium.com/ultimate-guide-to-use-custom-fonts-in-react-native-77fcdf859cf4).
 
 ## Authors and acknowledgment
 
@@ -57,6 +59,7 @@ After making changes to any of the client libraries in `js/packages/` you will n
 ## Built with
 
 Example React Native dApp
+
 ## License
 
 This project is licensed under the MIT License.
