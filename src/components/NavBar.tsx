@@ -1,22 +1,13 @@
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useContext, useState} from 'react';
-// import type {Routes} from './Routes';
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {Button, Divider} from 'react-native-paper';
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type {Routes} from '../screens/Routes';
 
-const BUTTON_SIZE = 48;
-const BUTTON_SIZE_SMALL = 44;
+const BUTTON_SIZE = 34;
+const BUTTON_SIZE_SMALL = 30;
 
 interface NavBarProps {
   navigation: NativeStackNavigationProp<Routes, 'MainPages', undefined>;
@@ -71,7 +62,6 @@ const NavBar = ({navigation}: NavBarProps) => {
           color="#262626"
         />
       </TouchableOpacity>
-      {/* <Text style={{color:'#000'}}>Test</Text> */}
     </View>
   );
 };
@@ -81,11 +71,19 @@ export default NavBar;
 const styles = StyleSheet.create({
   navBarContainer: {
     width: '100%',
-    height: 72,
+    height: 56,
     backgroundColor: '#ffffff',
     paddingHorizontal: 24,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+    elevation: 24,
   },
 });
