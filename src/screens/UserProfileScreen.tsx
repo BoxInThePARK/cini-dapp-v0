@@ -11,6 +11,7 @@ import {
   View,
   Pressable,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import {Button} from 'react-native-paper';
@@ -48,8 +49,12 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   const [isGranted, setIsGranted] = useState<boolean>(false);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] =
+    useState<boolean>(false);
   const [modalImageData, setModalImageDate] = useState<string>('');
   const [modalFilmRoll, setModalFilmRoll] = useState<string>('');
+  const [mockFilmRollExp, setMockFilmRollExp] = useState<number>(11);
+  const [startTransac, setStartTransac] = useState<boolean>(false);
 
   useEffect(() => {
     if (modalImageData) {
@@ -57,7 +62,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
       const fileNameArr = splitArr[splitArr.length - 1].split('.');
       const nameArr = fileNameArr[0].split('_');
 
-      if (nameArr[nameArr.length - 1].includes('m')) {
+      if (nameArr[nameArr.length - 1].length > 6) {
         setModalFilmRoll('LISBON');
       } else {
         setModalFilmRoll(nameArr[nameArr.length - 1]);
@@ -132,6 +137,32 @@ const UserProfileScreen = ({navigation, route}: Props) => {
     }
   }, []);
 
+  const developPhoto = useCallback(
+    async (inputPath: string, usedFilmRoll: string) => {
+      const splitArr = inputPath.split('/');
+      const fileNameArr = splitArr[splitArr.length - 1].split('.');
+      const nameArr = fileNameArr[0].split('_');
+
+      try {
+        await RNFS.copyFile(
+          inputPath,
+          `file://${RNFS.DocumentDirectoryPath}/cini_media/developed/${
+            nameArr[0]
+          }_${usedFilmRoll}.${fileNameArr[fileNameArr.length - 1]}`,
+        );
+        await RNFS.unlink(inputPath);
+        await getImageList('developed', setDevelopedList);
+        await getImageList('undeveloped', setUndevelopedList);
+        setStartTransac(false);
+        setIsTransactionModalOpen(false);
+        setIsModalOpen(false);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     getPermissions();
   }, []);
@@ -155,6 +186,15 @@ const UserProfileScreen = ({navigation, route}: Props) => {
   useEffect(() => {
     setSelectedTab(initialTab ?? 0);
   }, [initialTab]);
+
+  useEffect(() => {
+    if (startTransac && modalImageData && modalFilmRoll) {
+      setTimeout(
+        async () => await developPhoto(modalImageData, modalFilmRoll),
+        5000,
+      );
+    }
+  }, [startTransac]);
 
   return (
     <View style={styles.container}>
@@ -373,7 +413,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
                   </View>
                   <View style={styles.filmRollStatusBox}>
                     <Text style={styles.stateText}>Developed</Text>
-                    <Text style={styles.expText}>11/36</Text>
+                    <Text style={styles.expText}>{mockFilmRollExp}/36</Text>
                   </View>
                 </View>
                 <Image
@@ -385,13 +425,62 @@ const UserProfileScreen = ({navigation, route}: Props) => {
               <TouchableOpacity
                 style={styles.developButton}
                 onPress={() => {
-                  setIsModalOpen(false);
+                  setIsTransactionModalOpen(true);
                 }}>
                 <IonIcon name="arrow-forward" size={24} color="#262626" />
               </TouchableOpacity>
             </>
           )}
         </View>
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isTransactionModalOpen}
+        onRequestClose={() => {
+          setIsTransactionModalOpen(false);
+        }}>
+        {modalFilmRoll && (
+          <View style={styles.transacModalContainer}>
+            <View style={styles.transacModalBox}>
+              {startTransac ? (
+                <>
+                  <Text style={styles.developingContent}>
+                    Developing your photo to NFT...
+                  </Text>
+                  <ActivityIndicator
+                    size={100}
+                    style={styles.loadingIndicator}
+                  />
+                </>
+              ) : (
+                <>
+                  <Text style={styles.transacModalContent}>
+                    Develop will count one exp on your{' '}
+                    {MockRollFilm[modalFilmRoll].display} film roll
+                  </Text>
+                  <Button
+                    style={{
+                      width: '80%',
+                      height: 48,
+                      backgroundColor: '#000000',
+                      borderRadius: 12,
+                    }}
+                    contentStyle={styles.transacButton}
+                    mode="contained"
+                    uppercase
+                    onPress={() => {
+                      setMockFilmRollExp(mockFilmRollExp - 1);
+                      setStartTransac(true);
+                    }}>
+                    <Text style={styles.transacButtonText}>Develop</Text>
+                  </Button>
+                </>
+              )}
+            </View>
+          </View>
+        )}
       </Modal>
     </View>
   );
@@ -646,6 +735,58 @@ const styles = StyleSheet.create({
     right: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  transacModalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    position: 'relative',
+  },
+  transacModalBox: {
+    width: 360,
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 25,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  transacModalContent: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 20,
+    lineHeight: 24,
+    color: '#000000',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  transacButton: {
+    width: '100%',
+    height: 48,
+    backgroundColor: '#000000',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+  },
+  transacButtonText: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 20,
+    lineHeight: 30,
+    color: '#FFFFFF',
+    textTransform: 'uppercase',
+  },
+  developingContent: {
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 20,
+    lineHeight: 24,
+    color: '#000000',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  loadingIndicator: {
+    marginVertical: 'auto',
   },
 });
 
