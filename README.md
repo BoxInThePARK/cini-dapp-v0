@@ -51,8 +51,8 @@ After making changes to any of the client libraries in `js/packages/` you will n
 - [Ting](https://github.com/this-ting) | Front-end | tchangysl@gmail.com
 - [Peter](https://github.com/sc0Vu) | Full-stack | alk03073135@gmail.com
 - [Wade](https://github.com/Nasuyue) | Product | wadde.yang@gmail.com
-- [Cavin](https://github.com/imcavinc) | Product & UX Designer | cavin@live.com
-- [Yolanda](https://github.com/Yolandatsai) | CM | yolicai1028@gmail.com
+- [Cavin](https://github.com/imcavinc) | Product & UI/UX Designer | cavin@live.com
+- [Yolanda](https://github.com/Yolandatsai) | Community Manager | yolicai1028@gmail.com
 
 ## Built with
 
