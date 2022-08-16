@@ -31,7 +31,7 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 
 ![CINI_Model_Slide](https://user-images.githubusercontent.com/50972884/184951097-88b661b5-2593-4d76-89d0-93286f0d3728.png)
 
-## Roadmap
+### Roadmap
 
 ![CINI_Roadmap_Slide](https://user-images.githubusercontent.com/50972884/184951241-aa0f9f9b-d26c-4e12-aa39-0775f2be43a2.png)
 
