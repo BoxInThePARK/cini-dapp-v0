@@ -56,10 +56,10 @@ export default function App() {
                       animationTypeForReplace: 'push',
                     }}
                     initialRouteName="InitialPage">
-                    <Stack.Screen
+                    {/* <Stack.Screen
                       name="InitialPage"
                       component={InitialScreen}
-                    />
+                    /> */}
                     <Stack.Screen name="MainPages" component={Main} />
                     <Stack.Screen name="CameraPage" component={CameraScreen} />
                   </Stack.Navigator>
