@@ -191,7 +191,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
     if (startTransac && modalImageData && modalFilmRoll) {
       setTimeout(
         async () => await developPhoto(modalImageData, modalFilmRoll),
-        5000,
+        2000,
       );
     }
   }, [startTransac]);
@@ -447,7 +447,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
               {startTransac ? (
                 <>
                   <Text style={styles.developingContent}>
-                    Developing your photo to NFT...
+                    Developing your photo into an NFT...
                   </Text>
                   <ActivityIndicator
                     size={100}
@@ -457,7 +457,7 @@ const UserProfileScreen = ({navigation, route}: Props) => {
               ) : (
                 <>
                   <Text style={styles.transacModalContent}>
-                    Develop will count one exp on your{' '}
+                    “Develop” will use up 1 EXP from your{' '}
                     {MockRollFilm[modalFilmRoll].display} film roll
                   </Text>
                   <Button
