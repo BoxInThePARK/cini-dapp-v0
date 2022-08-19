@@ -77,7 +77,7 @@ Add in font file into `assets/fonts` and run `yarn link-asset`. This will compil
 
 ## Built with
 
-Example React Native dApp
+[Example React Native dApp](https://github.com/solana-mobile/mobile-wallet-adapter/tree/main/examples/example-react-native-app) 
 
 ## License
 
