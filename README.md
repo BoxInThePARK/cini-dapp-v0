@@ -26,7 +26,6 @@ Built by [Team: Box-in-the-Park](#authors-and-acknowledgment)
 
 ![CINI_Features_Slide](https://user-images.githubusercontent.com/46632205/184971019-44b89e4f-e83b-41cf-9372-4303c8b381fa.png)
 
-
 ### Model Design
 
 ![CINI_Model_Slide](https://user-images.githubusercontent.com/50972884/184951097-88b661b5-2593-4d76-89d0-93286f0d3728.png)
@@ -55,7 +54,7 @@ Add in font file into `assets/fonts` and run `yarn link-asset`. This will compil
 
 ## Authors and acknowledgment
 
-### Team: Box-in-the-Park (Twitter [@InTheParkB](https://twitter.com/IntheparkB) | [@CToearn](https://twitter.com/CToearn))
+### Team: Box-in-the-Park
 
 ### Members:
 
@@ -64,9 +63,17 @@ Add in font file into `assets/fonts` and run `yarn link-asset`. This will compil
 - [Ting](https://github.com/this-ting) | Front-end | tchangysl@gmail.com
 
 - [Peter](https://github.com/sc0Vu) | Full-stack | alk03073135@gmail.com
+
 - [Wade](https://github.com/Nasuyue) | Product | wadde.yang@gmail.com
-- [Cavin]() | Photographer & Designer | cavin@live.com
-- [Yolanda]() | CM | yolicai1028@gmail.com
+
+- [Cavin](https://github.com/imcavinc) | Product & UI/UX Designer | cavin@live.com
+
+- [Yolanda](https://github.com/Yolandatsai) | Community Manager | yolicai1028@gmail.com
+
+## Twitter
+
+[@InTheParkB](https://twitter.com/IntheparkB)
+[@CiniEarn](https://twitter.com/CiniEarn)
 
 ## Built with
 
