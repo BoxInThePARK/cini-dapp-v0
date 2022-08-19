@@ -55,7 +55,7 @@ Add in font file into `assets/fonts` and run `yarn link-asset`. This will compil
 
 ## Authors and acknowledgment
 
-### Team: Box-in-the-Park
+### Team: Box-in-the-Park (Twitter [@InTheParkB](https://twitter.com/IntheparkB) | [@CToearn](https://twitter.com/CToearn))
 
 ### Members:
 
