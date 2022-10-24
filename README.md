@@ -73,7 +73,7 @@ Add in font file into `assets/fonts` and run `yarn link-asset`. This will compil
 ## Twitter
 
 [@InTheParkB](https://twitter.com/IntheparkB)
-[@CiniEarn](https://twitter.com/CiniEarn)
+[@cinixyz](https://twitter.com/cinixyz)
 
 ## Built with
 
